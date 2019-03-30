@@ -51,6 +51,7 @@ public class Apigw extends ServerResource {
                 component.getDefaultHost().attach("/bcos/api/json/crearSuscripcion", ApiCrearSuscripcion.class);
                 component.getDefaultHost().attach("/bcos/api/json/listarSuscripcion", ApiListarSuscripciones.class);
                 component.getDefaultHost().attach("/bcos/api/json/updateSuscripcion", ApiUpdateSuscripcion.class);
+                component.getDefaultHost().attach("/bcos/api/json/listarFichas", ApiListarFichas.class);
 
                 component.start();
             } else {

@@ -20,7 +20,7 @@ public class RFPlanes extends Registro {
 
     private static final Logger Log = Logger.getLogger(RFPlanes.class);
 
-    private static final int numCampos =4;
+   
             
     public static final int nombre_plan = 1;
     public static final int numero_maximo = 2;
