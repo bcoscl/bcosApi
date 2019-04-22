@@ -22,7 +22,7 @@ public class CFPlanes {
     private static final String conexionName = "conexionOCT";
 
     public static int insertPlan(String nombre_plan, String numero_maximo, String usuario_creador, String nombreUsuario) {
-        Log.info("insert Plan");
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
         
         try {
@@ -38,6 +38,7 @@ public class CFPlanes {
     }
 
     public static Iterator selectPlanes() {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
         Iterator it = null;
         try {

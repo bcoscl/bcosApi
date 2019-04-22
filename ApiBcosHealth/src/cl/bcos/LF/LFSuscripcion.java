@@ -18,12 +18,12 @@ public class LFSuscripcion {
     private static final Logger Log = Logger.getLogger(LFSuscripcion.class);
 
     public static int insertSuscripcion(String nombre_empresa, String contacto_empresa, String email_contacto, String numero_telefono, String fecha_inicio, String select_plan_code, String select_plan_name, String checkbox_activo, String nombre_completo, String usuario_creador) {
-        Log.info("insertSuscripcion");
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFSuscripcion.insertSuscripcion(nombre_empresa, contacto_empresa, email_contacto, numero_telefono, fecha_inicio, select_plan_code, select_plan_name, checkbox_activo, nombre_completo, usuario_creador);
     }
 
     public static Iterator selectSuscripciones() {
-        Log.info("selectSuscripciones");
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFSuscripcion.selectSuscripciones();
     }
 

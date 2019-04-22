@@ -21,13 +21,13 @@ public class LFPlanes {
 
    
     public static int insertPlan(String nombre_plan, String numero_maximo, String usuario_creador, String nombreUsuario) {
-        Log.info("insertPlan");
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
               
         return CFPlanes.insertPlan(nombre_plan,numero_maximo,usuario_creador,nombreUsuario);
     }
 
     public static Iterator selectPlanes() {
-        
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFPlanes.selectPlanes();
     }
 

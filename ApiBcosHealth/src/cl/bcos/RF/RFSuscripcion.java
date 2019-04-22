@@ -5,10 +5,6 @@
  */
 package cl.bcos.RF;
 
-import static cl.bcos.RF.RFPlanes.fecha_creacion;
-import static cl.bcos.RF.RFPlanes.nombre_plan;
-import static cl.bcos.RF.RFPlanes.nombre_usuario_creador;
-import static cl.bcos.RF.RFPlanes.numero_maximo;
 import cl.bcos.data.AdmRegistros;
 import cl.bcos.data.Registro;
 import java.sql.Connection;
@@ -47,7 +43,7 @@ public class RFSuscripcion extends Registro {
             String email_contacto, String numero_telefono, String fecha_inicio,
             String select_plan_code, String select_plan_name, String checkbox_activo,
             String nombre_completo, String usuario_creador) {
-
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
 
         qry.append(" INSERT INTO health_subscription( ");
@@ -89,7 +85,7 @@ public class RFSuscripcion extends Registro {
         qry.append("')");
 
         PreparedStatement ps = null;
-
+        Log.debug(qry.toString());
         try {
             ps = con.prepareStatement(qry.toString());
             return ps.executeUpdate();
@@ -109,6 +105,7 @@ public class RFSuscripcion extends Registro {
     }
 
     public static AdmRegistros selectSuscripciones(Connection con) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
 
         qry.append(" SELECT subscr_n_id,  ");
@@ -123,8 +120,8 @@ public class RFSuscripcion extends Registro {
         qry.append(" subscr_n_createuser,  ");
         qry.append(" subscr_d_createdate,  ");
         qry.append(" subscr_c_createusername ");
-        qry.append(" FROM public.health_subscription order by subscr_c_empresaname ");
-
+        qry.append(" FROM public.health_subscription order by subscr_c_empresaname ASC ");
+        Log.debug(qry.toString());
         AdmRegistros adm = new AdmRegistros(con,
                 qry.toString(),
                 12,
@@ -146,15 +143,16 @@ public class RFSuscripcion extends Registro {
         return adm;
     }
 
-    public static int updateEstado(Connection con,String id, String checkbox_activo, String nombre_completo) {
+    public static int updateEstado(Connection con, String id, String checkbox_activo, String nombre_completo) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
 
         qry.append(" UPDATE health_subscription ");
-	qry.append(" SET  subscr_c_estado= '");
+        qry.append(" SET  subscr_c_estado= '");
         qry.append(checkbox_activo);
-	qry.append("' WHERE subscr_n_id = ");
+        qry.append("' WHERE subscr_n_id = ");
         qry.append(id);
-
+        Log.debug(qry.toString());
         PreparedStatement ps = null;
 
         try {

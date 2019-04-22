@@ -20,8 +20,6 @@ public class RFPlanes extends Registro {
 
     private static final Logger Log = Logger.getLogger(RFPlanes.class);
 
-   
-            
     public static final int nombre_plan = 1;
     public static final int numero_maximo = 2;
     public static final int fecha_creacion = 3;
@@ -30,10 +28,9 @@ public class RFPlanes extends Registro {
     public RFPlanes() {
         super(5);
     }
-    
-    
-    public static int insertPlanes(Connection con, String nombre_plan, String numero_maximo, String usuario_creador, String nombreUsuario) {
 
+    public static int insertPlanes(Connection con, String nombre_plan, String numero_maximo, String usuario_creador, String nombreUsuario) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
 
         qry.append(" insert into health_plan  ");
@@ -46,8 +43,8 @@ public class RFPlanes extends Registro {
         qry.append(usuario_creador);
         qry.append(", NOW(),'");
         qry.append(nombreUsuario);
-         qry.append("')");
-
+        qry.append("')");
+        Log.debug(qry.toString());
         PreparedStatement ps = null;
         try {
             ps = con.prepareStatement(qry.toString());
@@ -68,12 +65,12 @@ public class RFPlanes extends Registro {
     }
 
     public static AdmRegistros selectPlanes(Connection con) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
 
         qry.append(" SELECT plan_c_name,plan_n_max,plan_d_createdate,plan_c_createusername  ");
         qry.append(" FROM public.health_plan p order by plan_n_max ASC ");
-               
-
+        Log.debug(qry.toString());
         AdmRegistros adm = new AdmRegistros(con,
                 qry.toString(),
                 4,
@@ -83,7 +80,7 @@ public class RFPlanes extends Registro {
         adm.setColumna(2, numero_maximo);
         adm.setColumna(3, fecha_creacion);
         adm.setColumna(4, nombre_usuario_creador);
-       
+
         return adm;
     }
 

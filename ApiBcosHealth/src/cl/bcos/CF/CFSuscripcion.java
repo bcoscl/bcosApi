@@ -5,7 +5,6 @@
  */
 package cl.bcos.CF;
 
-import cl.bcos.RF.RFPlanes;
 import cl.bcos.RF.RFSuscripcion;
 import cl.bcos.bd.Pool;
 import cl.bcos.data.TabRegistros;
@@ -23,7 +22,7 @@ public class CFSuscripcion {
     private static final String conexionName = "conexionOCT";
 
     public static int insertSuscripcion(String nombre_empresa, String contacto_empresa, String email_contacto, String numero_telefono, String fecha_inicio, String select_plan_code, String select_plan_name, String checkbox_activo, String nombre_completo, String usuario_creador) {
-        Log.info("insertSuscripcion");
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
 
         try {
@@ -39,6 +38,7 @@ public class CFSuscripcion {
     }
 
     public static Iterator selectSuscripciones() {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
         Iterator it = null;
         try {
@@ -58,7 +58,8 @@ public class CFSuscripcion {
     }
 
     public static int updateEstado(String id,String checkbox_activo, String nombre_completo) {
-         Log.info("updateEstado");
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        
         Connection con = null;
 
         try {
