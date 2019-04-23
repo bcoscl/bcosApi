@@ -75,7 +75,7 @@ public class RFFarmacos extends Registro {
         qry.append(" farmaco_numuser_paciente, ");
         qry.append(" farmaco_n_ultmod_numuser, ");
         qry.append(" farmaco_d_ultmod_date, ");
-        qry.append(" farmaco_c_ultmod_username) ");
+        qry.append(" farmaco_c_ultmod_username,farmaco_c_empresa) ");
 
         qry.append(" VALUES (nextval('health_seq_farmaco'),'");
         qry.append(farmaco_c_name);

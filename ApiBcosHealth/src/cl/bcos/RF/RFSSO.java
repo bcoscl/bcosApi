@@ -34,7 +34,7 @@ public class RFSSO extends Registro {
 
         qry.append("SELECT 'OK' FROM public.health_pass p ");
         qry.append("where p.pass_c_numuser=?");
-        qry.append("and p.pass_c_password=?");
+        qry.append("and p.pass_c_password=? and upper(p.pass_c_activo)='TRUE'");
         Log.debug(qry.toString());
         try {
             AdmRegistros adm = new AdmRegistros(con,

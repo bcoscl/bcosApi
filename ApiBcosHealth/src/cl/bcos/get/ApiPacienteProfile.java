@@ -118,6 +118,7 @@ public class ApiPacienteProfile extends ServerResource {
                     map.put("Paciente", prof);
 
                     Log.info("SELECT OK");
+                    Log.info("Paciente : "+prof.toString());
                     status = Status.SUCCESS_OK;
                     message = "SELECT_OK";
 

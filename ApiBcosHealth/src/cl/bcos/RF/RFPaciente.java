@@ -40,7 +40,7 @@ public class RFPaciente extends Registro {
     public static final int paciente_c_sexo = 17;
     public static final int paciente_d_fechaNacimiento = 18;
     public static final int paciente_n_edad = 19;
-    public static final int paciente_c_empresa = 19;
+    public static final int paciente_c_empresa = 20;
 
     public RFPaciente() {
         super(21);
