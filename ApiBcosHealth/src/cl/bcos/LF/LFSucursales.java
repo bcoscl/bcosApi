@@ -26,6 +26,10 @@ public class LFSucursales {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFSucursales.selectSucursales(empresa);
     }
+    public static Iterator selectSucursalesActive(String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        return CFSucursales.selectSucursalesActive(empresa);
+    }
 
 
     public static int updateEstado(String id, String checkbox_activo, String nombre_completo, String empresa) {

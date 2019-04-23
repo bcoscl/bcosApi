@@ -26,6 +26,10 @@ public class LFSuscripcion {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFSuscripcion.selectSuscripciones();
     }
+    public static Iterator selectSuscripcionesbyempresa(String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        return CFSuscripcion.selectSuscripcionesbyEmpresa(empresa);
+    }
 
 
     public static int updateEstado(String id, String checkbox_activo, String nombre_completo) {

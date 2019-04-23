@@ -56,6 +56,25 @@ public class CFSuscripcion {
         }
         return it;
     }
+    public static Iterator selectSuscripcionesbyEmpresa(String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+        Iterator it = null;
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            String[] param = {empresa};
+            TabRegistros tab = new TabRegistros();
+            tab.setContext(RFSuscripcion.selectSuscripcionesByEmpresa(con));
+            tab.execute(tab.USE_RS, param);            
+             it = tab.getRegistros();
+            return it;
+        } catch (Exception e) {
+            Log.error(e.toString());
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+        return it;
+    }
 
     public static int updateEstado(String id,String checkbox_activo, String nombre_completo) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

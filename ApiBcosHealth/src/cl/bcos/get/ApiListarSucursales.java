@@ -37,6 +37,7 @@ public class ApiListarSucursales extends ServerResource {
     private ImplementacionJWT jwt = null;
     private Map s = new HashMap();
     private final String ERROR_TOKEN = "TOKEN_NO_VALIDO";
+    private static final String LISTAR_SELECT_MULTIPLE_BY_ACTIVE = "LS-SELECT-MULT-BY-ACTIVE";
 
     public ApiListarSucursales() {
         jwt = new ImplementacionJWT();
@@ -53,10 +54,12 @@ public class ApiListarSucursales extends ServerResource {
         //String nombre_plan = getQuery().getValues("planName");
         //String numero_maximo = getQuery().getValues("userMax");
         String token = getQuery().getValues("token");
+        String accion = getQuery().getValues("accion");
 
         //Log.info("nombrePlan : " + nombre_plan);
         //Log.info("userMax : " + numero_maximo);
         Log.info("token : " + token);
+        Log.info("accion : " + accion);
 
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {
@@ -67,12 +70,17 @@ public class ApiListarSucursales extends ServerResource {
                     // String nombre_usuario = jwt.getJwt().getValue("name").toString();
                     // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
-
+                    Iterator it = null;
                     Log.info("roles :" + roles);
 
                     if (roles.contains("SUPER-ADMIN")) {
 
-                        Iterator it = LFSucursales.selectSucursales(empresa);
+                        if (accion.equalsIgnoreCase(LISTAR_SELECT_MULTIPLE_BY_ACTIVE)) {
+                            it = LFSucursales.selectSucursalesActive(empresa);
+                        } else {
+                            it = LFSucursales.selectSucursales(empresa);
+                        }
+
                         List<sucursales> l = new ArrayList();
                         while (it.hasNext()) {
                             Registro reg = (Registro) it.next();

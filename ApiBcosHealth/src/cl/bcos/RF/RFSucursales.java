@@ -143,6 +143,44 @@ public class RFSucursales extends Registro {
 
         return adm;
     }
+    public static AdmRegistros selectSucursalesActive(Connection con) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append(" SELECT suc_n_cod, ");
+        qry.append(" suc_c_nombre, ");
+        qry.append(" suc_c_comuna,  ");
+        qry.append(" suc_c_telefono,  ");
+        qry.append(" suc_n_cod_empresa,  ");
+        qry.append(" suc_c_nombre_empresa,  ");
+        qry.append(" suc_c_email,  ");
+        qry.append(" suc_c_createuser,  ");
+        qry.append(" suc_d_createdate,  ");
+        qry.append(" suc_c_createusername, ");
+        qry.append(" suc_c_contacname,suc_c_estado ");
+        qry.append(" FROM health_sucursal where suc_c_nombre_empresa=? and upper(suc_c_estado)='TRUE' order by suc_c_nombre ASC ");
+        Log.debug(qry.toString());
+
+        AdmRegistros adm = new AdmRegistros(con,
+                qry.toString(),
+                12,
+                new RFSuscripcion()
+        );
+        adm.setColumna(1, suc_n_cod);
+        adm.setColumna(2, suc_c_nombre);
+        adm.setColumna(3, suc_c_comuna);
+        adm.setColumna(4, suc_c_telefono);
+        adm.setColumna(5, suc_n_cod_empresa);
+        adm.setColumna(6, suc_c_nombre_empresa);
+        adm.setColumna(7, suc_c_email);
+        adm.setColumna(8, suc_c_createuser);
+        adm.setColumna(9, suc_d_createdate);
+        adm.setColumna(10, suc_c_createusername);
+        adm.setColumna(11, suc_c_contacname);
+        adm.setColumna(12, suc_c_estado);
+
+        return adm;
+    }
 
     public static int updateEstado(Connection con, String id, String checkbox_activo, String nombre_completo,String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -153,7 +191,7 @@ public class RFSucursales extends Registro {
         qry.append(checkbox_activo);
         qry.append("' WHERE suc_n_cod = ");
         qry.append(id);
-        qry.append("and  suc_c_nombre_empresa = '");
+        qry.append(" and  suc_c_nombre_empresa = '");
         qry.append(empresa);
         qry.append("' ");
         

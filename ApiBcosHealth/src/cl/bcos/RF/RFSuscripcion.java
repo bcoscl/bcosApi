@@ -120,7 +120,45 @@ public class RFSuscripcion extends Registro {
         qry.append(" subscr_n_createuser,  ");
         qry.append(" subscr_d_createdate,  ");
         qry.append(" subscr_c_createusername ");
-        qry.append(" FROM public.health_subscription order by subscr_c_empresaname ASC ");
+        qry.append(" FROM health_subscription order by subscr_c_empresaname ASC ");
+        Log.debug(qry.toString());
+        AdmRegistros adm = new AdmRegistros(con,
+                qry.toString(),
+                12,
+                new RFSuscripcion()
+        );
+        adm.setColumna(1, id);
+        adm.setColumna(2, nombre_empresa);
+        adm.setColumna(3, nombre_contacto);
+        adm.setColumna(4, email);
+        adm.setColumna(5, telefono);
+        adm.setColumna(6, fecha_inicio);
+        adm.setColumna(7, nombre_plan);
+        adm.setColumna(8, usermax);
+        adm.setColumna(9, estado);
+        adm.setColumna(10, usuario_creador);
+        adm.setColumna(11, fecha_creacion);
+        adm.setColumna(12, nombre_usuario_creador);
+
+        return adm;
+    }
+    public static AdmRegistros selectSuscripcionesByEmpresa(Connection con) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append(" SELECT subscr_n_id,  ");
+        qry.append(" subscr_c_empresaname,  ");
+        qry.append(" subscr_c_contacto,  ");
+        qry.append(" subscr_c_email,  ");
+        qry.append(" subscr_c_telefono,  ");
+        qry.append(" subscr_d_fechainicio,  ");
+        qry.append(" subscr_c_planname,  ");
+        qry.append(" subscr_n_max,  ");
+        qry.append(" subscr_c_estado,  ");
+        qry.append(" subscr_n_createuser,  ");
+        qry.append(" subscr_d_createdate,  ");
+        qry.append(" subscr_c_createusername ");
+        qry.append(" FROM health_subscription where  subscr_c_empresaname=? order by subscr_c_empresaname ASC ");
         Log.debug(qry.toString());
         AdmRegistros adm = new AdmRegistros(con,
                 qry.toString(),

@@ -57,6 +57,25 @@ public class CFSucursales {
         }
         return it;
     }
+    public static Iterator selectSucursalesActive(String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+        Iterator it = null;
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            String[] param = {empresa};
+            TabRegistros tab = new TabRegistros();
+            tab.setContext(RFSucursales.selectSucursalesActive(con));
+            tab.execute(tab.USE_RS, param);            
+             it = tab.getRegistros();
+            return it;
+        } catch (Exception e) {
+            Log.error(e.toString());
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+        return it;
+    }
 
     public static int updateEstado(String id,String checkbox_activo, String nombre_completo, String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
