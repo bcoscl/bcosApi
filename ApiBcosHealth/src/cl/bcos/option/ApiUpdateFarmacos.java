@@ -7,8 +7,6 @@ package cl.bcos.option;
 
 import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
-import cl.bcos.LF.LFAttentionList;
-import cl.bcos.LF.LFEnfermedadesCronicas;
 import cl.bcos.LF.LFFarmacos;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -43,6 +41,9 @@ public class ApiUpdateFarmacos extends ServerResource {
     @Post
     public Representation updateSucursales() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
+        Log.info("path : " + path);
+        
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();

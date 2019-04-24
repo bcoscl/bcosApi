@@ -60,7 +60,9 @@ public class ApiSSO extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-
+        
+        String path = getRequest().getResourceRef().getHostIdentifier()+ getRequest().getResourceRef().getPath();
+        
         jwt = new ImplementacionJWT();
 
         tokken = "";
@@ -74,6 +76,9 @@ public class ApiSSO extends ServerResource {
         Log.info("pass : " + passs);
         Log.info("accion : " + accion);
         Log.info("Validar Datos con BD, pass encritar antes de comprar");
+   
+        Log.info("getRequestURL : " + path);
+
 
         try {
 
@@ -84,9 +89,7 @@ public class ApiSSO extends ServerResource {
                     passs = BlowFish.encryptNoPadding(key, passs);
 
                     //Log.info("Encriptada :" + passs);
-
                     //Log.info("DesEncriptada :" + BlowFish.decryptNoPadding(key, passs));
-
                     if (LFSSO.autenticacion(userr, passs).equalsIgnoreCase("OK")) {
                         Log.info("USUARIO OK");
                         Log.info("agregar informacion basica en el token");
@@ -131,32 +134,31 @@ public class ApiSSO extends ServerResource {
     private void getUserInformation() {
 
         Iterator it = LFUsuarios.getUserInformation(userr);
-       
+
         while (it.hasNext()) {
-            
+
             Registro reg = (Registro) it.next();
-           
-                token.AddItem("name",reg.get(RFUsuarios.user_c_nombres) );     
-                token.AddItem("LastName",reg.get(RFUsuarios.user_c_apellido));       
-                token.AddItem("numUser",reg.get(RFUsuarios.user_c_numuser));       
-                token.AddItem("Roles",reg.get(RFUsuarios.user_c_role));           
-                token.AddItem("celular",reg.get(RFUsuarios.user_c_celular) );       
-                token.AddItem("nombreOficina",reg.get(RFUsuarios.user_c_nombre_oficina) );
-                token.AddItem("email",reg.get(RFUsuarios.user_c_email));          
-                token.AddItem("fechaCracion",reg.get(RFUsuarios.user_d_createdate));     
-                token.AddItem("creadoPor",reg.get(RFUsuarios.user_c_createusername)); 
-                token.AddItem("imgUrl",reg.get(RFUsuarios.user_c_img));           	
-                token.AddItem("Profesion",reg.get(RFUsuarios.user_c_profesion));       
-                token.AddItem("AboutMe",reg.get(RFUsuarios.user_c_obs));           	
-                token.AddItem("empresaName",reg.get(RFUsuarios.user_c_empresaname) );    
-                token.AddItem("numUserCreador",reg.get(RFUsuarios.user_n_createuser));      
-                token.AddItem("CodEmpresa",reg.get(RFUsuarios.user_n_cod_empresa));     
-                token.AddItem("userId",reg.get(RFUsuarios.user_n_iduser));          
-                token.AddItem("pUserId",reg.get(RFUsuarios.pass_n_id));          
-                token.AddItem("status",reg.get(RFUsuarios.pass_c_activo));          
+
+            token.AddItem("name", reg.get(RFUsuarios.user_c_nombres));
+            token.AddItem("LastName", reg.get(RFUsuarios.user_c_apellido));
+            token.AddItem("numUser", reg.get(RFUsuarios.user_c_numuser));
+            token.AddItem("Roles", reg.get(RFUsuarios.user_c_role));
+            token.AddItem("celular", reg.get(RFUsuarios.user_c_celular));
+            token.AddItem("nombreOficina", reg.get(RFUsuarios.user_c_nombre_oficina));
+            token.AddItem("email", reg.get(RFUsuarios.user_c_email));
+            token.AddItem("fechaCracion", reg.get(RFUsuarios.user_d_createdate));
+            token.AddItem("creadoPor", reg.get(RFUsuarios.user_c_createusername));
+            token.AddItem("imgUrl", reg.get(RFUsuarios.user_c_img));
+            token.AddItem("Profesion", reg.get(RFUsuarios.user_c_profesion));
+            token.AddItem("AboutMe", reg.get(RFUsuarios.user_c_obs));
+            token.AddItem("empresaName", reg.get(RFUsuarios.user_c_empresaname));
+            token.AddItem("numUserCreador", reg.get(RFUsuarios.user_n_createuser));
+            token.AddItem("CodEmpresa", reg.get(RFUsuarios.user_n_cod_empresa));
+            token.AddItem("userId", reg.get(RFUsuarios.user_n_iduser));
+            token.AddItem("pUserId", reg.get(RFUsuarios.pass_n_id));
+            token.AddItem("status", reg.get(RFUsuarios.pass_c_activo));
 
         }
-       
 
         tokken = token.generaToken("bcosHealth", "bearer", "public", "54000");
         Log.info(tokken);

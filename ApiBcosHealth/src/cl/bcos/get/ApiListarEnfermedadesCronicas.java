@@ -57,6 +57,8 @@ public class ApiListarEnfermedadesCronicas extends ServerResource {
         Log.info("accion : " + accion);
         Log.info("Paciente : " + Paciente);
         Log.info("token : " + token);
+        String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
+        Log.info("path : " + path);
 
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {

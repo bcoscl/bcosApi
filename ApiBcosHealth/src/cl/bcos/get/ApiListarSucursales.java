@@ -60,6 +60,9 @@ public class ApiListarSucursales extends ServerResource {
         //Log.info("userMax : " + numero_maximo);
         Log.info("token : " + token);
         Log.info("accion : " + accion);
+        
+        String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
+        Log.info("path : " + path);
 
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {

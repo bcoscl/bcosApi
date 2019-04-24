@@ -61,6 +61,9 @@ public class ApiListarSuscripciones extends ServerResource {
         //Log.info("userMax : " + numero_maximo);
         Log.info("token : " + token);
         
+        String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
+        Log.info("path : " + path);
+        
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {
             if (token != null && !token.equals("") && validaJWT.validarTokenRS(token)) {

@@ -58,6 +58,9 @@ public class ApiListarFarmacos extends ServerResource {
         Log.info("Paciente : " + Paciente);
         Log.info("token : " + token);
 
+        String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
+        Log.info("path : " + path);
+        
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {
             if (token != null && !token.equals("") && validaJWT.validarTokenRS(token)) {

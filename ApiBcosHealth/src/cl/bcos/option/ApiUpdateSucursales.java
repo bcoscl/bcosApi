@@ -27,6 +27,7 @@ import org.restlet.resource.Post;
 public class ApiUpdateSucursales extends ServerResource {
 
     private static final Logger Log = Logger.getLogger(ApiUpdateSucursales.class);
+    
 
     private ImplementacionJWT jwt = null;
     private Map s = new HashMap();
@@ -39,6 +40,10 @@ public class ApiUpdateSucursales extends ServerResource {
     @Post
     public Representation updateSucursales() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        
+        String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
+        Log.info("path : " + path);
+        
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();

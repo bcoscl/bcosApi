@@ -53,11 +53,13 @@ public class ApiListarAttentionList extends ServerResource {
         String accion = getQuery().getValues("accion");
         String doctor = getQuery().getValues("doctor");
         String token = getQuery().getValues("token");
-
+        
         Log.info("accion : " + accion);
         Log.info("doctor : " + doctor);
         Log.info("token : " + token);
-
+        String path = getRequest().getResourceRef().getHostIdentifier()+ getRequest().getResourceRef().getPath();
+        Log.info("path : " + path);
+        
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {
             if (token != null && !token.equals("") && validaJWT.validarTokenRS(token)) {

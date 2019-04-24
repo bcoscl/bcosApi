@@ -57,6 +57,9 @@ public class ApiListarPlanes extends ServerResource {
         //Log.info("nombrePlan : " + nombre_plan);
         //Log.info("userMax : " + numero_maximo);
         Log.info("token : " + token);
+        
+        String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
+        Log.info("path : " + path);
 
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {

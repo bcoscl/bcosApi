@@ -43,6 +43,10 @@ public class ApiUpdateConsultas extends ServerResource {
     @Post
     public Representation UpdateConsulta() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        
+        String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
+        Log.info("path : " + path);
+        
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
