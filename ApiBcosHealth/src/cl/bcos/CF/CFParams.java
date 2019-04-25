@@ -6,7 +6,6 @@
 package cl.bcos.CF;
 
 import cl.bcos.RF.RFParams;
-import cl.bcos.RF.RFSSO;
 import cl.bcos.bd.Pool;
 import cl.bcos.data.Registro;
 import cl.bcos.data.TabRegistros;
@@ -23,13 +22,13 @@ public class CFParams {
     private static final Logger Log = Logger.getLogger(CFParams.class);
     private static final String conexionName = "conexionOCT";
 
-    public static String getParams(String grupo, String subGrupo,String param1) {
+    public static String getParams(String grupo, String subGrupo, String param1) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
         String cadena = "";
         try {
             con = Pool.getInstancia().getConnection(conexionName);
-            String[] param = {grupo, subGrupo,param1};
+            String[] param = {grupo, subGrupo, param1};
             TabRegistros tab = new TabRegistros();
             tab.setContext(RFParams.getParams(con));
             tab.execute(tab.USE_RS, param);
@@ -45,6 +44,28 @@ public class CFParams {
             Pool.getInstancia().free(con);
         }
         return cadena;
+    }
+
+    public static Iterator getAllParams() {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+        
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            String[] param = {};
+            TabRegistros tab = new TabRegistros();
+            tab.setContext(RFParams.getAllParams(con));
+            tab.execute(tab.USE_RS, param);
+            Iterator it = tab.getRegistros();
+            return it;
+
+        } catch (Exception e) {
+            Log.error(e.toString());
+            return null;
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+
     }
 
     public static String getNewParamId() {
@@ -70,6 +91,54 @@ public class CFParams {
         }
         return ret;
     }
+
+    public static int insertParam(String params_n_grupo,
+            String params_n_subgrupo,
+            String params_n_param1,
+            String params_n_param2,
+            String params_n_param3,
+            String params_n_param4,
+            String params_c_numuser_utlmod,
+            String params_c_nombre_ultmod) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            return RFParams.insertParam(con, params_n_grupo,
+                    params_n_subgrupo,
+                    params_n_param1,
+                    params_n_param2,
+                    params_n_param3,
+                    params_n_param4,
+                    params_c_numuser_utlmod,
+                    params_c_nombre_ultmod);
+
+        } catch (Exception e) {
+            Log.error(e.toString());
+            return 0;
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+    }
+    
+     public static int deleteParams(String rowParamsId) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            return RFParams.deleteParams(con, rowParamsId);
+
+        } catch (Exception e) {
+            Log.error(e.toString());
+            return 0;
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+    }
+
+
 //
 //    public static int insertUserPass(String numuser_user, String password, String usuario_creador, String checkbox_activo, String nombre_completo, String rowid) {
 //        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

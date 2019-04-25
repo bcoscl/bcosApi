@@ -24,11 +24,14 @@ import cl.bcos.get.ApiListarRole;
 import cl.bcos.get.ApiListarProfesiones;
 import cl.bcos.get.ApiListarSucursales;
 import cl.bcos.get.ApiListarFichas;
+import cl.bcos.get.ApiListarMenu;
+import cl.bcos.get.ApiListarParam;
 import cl.bcos.option.ApiUpdateConsultas;
 import cl.bcos.option.ApiUpdateEnfermedadesCronicas;
 import cl.bcos.option.ApiUpdateExamenes;
 import cl.bcos.option.ApiUpdateFarmacos;
 import cl.bcos.option.ApiUpdatePacientes;
+import cl.bcos.option.ApiUpdateParam;
 import cl.bcos.put.ApiCrearSucursales;
 import cl.bcos.put.ApiAddAttentionList;
 import cl.bcos.put.ApiCrearConsultas;
@@ -40,6 +43,7 @@ import cl.bcos.put.ApiCrearSuscripcion;
 import cl.bcos.put.ApiCrearProfesiones;
 import cl.bcos.put.ApiCrearRole;
 import cl.bcos.put.ApiCrearPaciente;
+import cl.bcos.put.ApiCrearParam;
 import cl.bcos.put.ApiCrearPlanes;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
@@ -83,6 +87,13 @@ public class Apigw extends ServerResource {
                 component.getServers().add(Protocol.HTTP, port);
                 /*End Point de Autenticacion*/
                 component.getDefaultHost().attach("/bcos/api/json/SSO", ApiSSO.class);
+                
+                /*End Point Control de Configuracione avanzadas*/
+                component.getDefaultHost().attach("/bcos/api/json/crearParam", ApiCrearParam.class);
+                component.getDefaultHost().attach("/bcos/api/json/listarParam", ApiListarParam.class);                
+                component.getDefaultHost().attach("/bcos/api/json/updateParam", ApiUpdateParam.class); 
+                
+                component.getDefaultHost().attach("/bcos/api/json/listarMenu", ApiListarMenu.class); 
                 
                 /*End Point Control de Planes*/
                 component.getDefaultHost().attach("/bcos/api/json/planes", ApiCrearPlanes.class);

@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/RF/RFParams.java</file>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/entity/Param.java</file>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/api/Apigw.java</file>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/option/ApiUpdateParam.java</file>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/get/ApiListarParam.java</file>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/CF/CFParams.java</file>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/LF/LFParams.java</file>
+        </group>
     </open-files>
 </project-private>

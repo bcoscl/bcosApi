@@ -6,7 +6,7 @@
 package cl.bcos.LF;
 
 import cl.bcos.CF.CFParams;
-import cl.bcos.CF.CFSSO;
+import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 /**
@@ -17,11 +17,30 @@ public class LFParams {
 
     private static final Logger Log = Logger.getLogger(LFParams.class);
 
-    public static String getParams(String grupo, String subGrupo,String param1) {
+    public static String getParams(String grupo, String subGrupo, String param1) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
-        String Response = CFParams.getParams( grupo,  subGrupo, param1);
+        String Response = CFParams.getParams(grupo, subGrupo, param1);
 
         return Response;
+    }
+    public static Iterator getAllParams() {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        return CFParams.getAllParams();
+
+        
+    }
+
+    public static int insertParam(String params_n_grupo,
+            String params_n_subgrupo,
+            String params_n_param1,
+            String params_n_param2,
+            String params_n_param3,
+            String params_n_param4,
+            String params_c_numuser_utlmod,
+            String params_c_nombre_ultmod) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        return CFParams.insertParam(params_n_grupo, params_n_subgrupo, params_n_param1, params_n_param2, params_n_param3, params_n_param4,params_c_numuser_utlmod,params_c_nombre_ultmod);
+       
     }
 
     public static String getNewParamId() {
@@ -30,6 +49,13 @@ public class LFParams {
 
         return Response;
     }
+     public static int deleteParams(String Rowid) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        int Response = CFParams.deleteParams(Rowid);
+
+        return Response;
+    }
+    
 //
 //    public static int insertUserPass(String numuser_user, String password, String usuario_creador, String checkbox_activo, String nombre_completo, String rowid) {
 //        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

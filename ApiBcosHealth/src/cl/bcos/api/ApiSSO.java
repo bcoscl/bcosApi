@@ -62,6 +62,7 @@ public class ApiSSO extends ServerResource {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         
         String path = getRequest().getResourceRef().getHostIdentifier()+ getRequest().getResourceRef().getPath();
+        String pathSinHost = getRequest().getResourceRef().getPath();
         
         jwt = new ImplementacionJWT();
 
@@ -78,6 +79,7 @@ public class ApiSSO extends ServerResource {
         Log.info("Validar Datos con BD, pass encritar antes de comprar");
    
         Log.info("getRequestURL : " + path);
+        Log.info("getRequestURL sin Host : " + pathSinHost);
 
 
         try {
