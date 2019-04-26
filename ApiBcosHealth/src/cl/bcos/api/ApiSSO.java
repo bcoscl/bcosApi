@@ -38,7 +38,7 @@ public class ApiSSO extends ServerResource {
     private ImplementacionJWT jwt = null;
     private Map s = new HashMap();
     private Map b = new HashMap();
-    private final String ERROR_TOKEN = "Credenciale incorrectas";
+    private final String ERROR_TOKEN = "Credenciale incorrectas.";
     private String tokken = "";
     private String userr = "";
     private String passs = "";
