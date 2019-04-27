@@ -64,6 +64,15 @@ public class Apigw extends ServerResource {
     public static void main(String[] args) throws Exception {
         // TODO code application Logic here
 
+//        System.setProperty("http.proxyHost", "proxyfal.falabella.cl");
+//        System.setProperty("http.proxyPort", "8080");
+//        System.setProperty("http.proxyUser", "aacantero");
+//        System.setProperty("http.proxyPassword", "Kantero32.");
+//
+//        System.setProperty("https.proxyHost", "proxyfal.falabella.cl");
+//        System.setProperty("https.proxyPort", "8080");
+//        System.setProperty("https.proxyUser", "aacantero");
+//        System.setProperty("https.proxyPassword", "Kantero32.");
 
         int port = 0;
         if (args != null && args.length > 0) {
