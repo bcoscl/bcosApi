@@ -38,8 +38,8 @@ public class ApiListarExamenes extends ServerResource {
     private Map s = new HashMap();
     private final String ERROR_TOKEN = "TOKEN_NO_VALIDO";
     private final String LE_TABLA = "LE-TABLA";
-    private  final String CE_EXAMENES_PROFILE = "CE-EXAMENES-PROFILE";
-    private  final String LE_BY_PACIENTE_TABLA = "LE-TABLA-BY-PACIENTE";
+    private final String CE_EXAMENES_PROFILE = "CE-EXAMENES-PROFILE";
+    private final String LE_BY_PACIENTE_TABLA = "LE-TABLA-BY-PACIENTE";
 
     public ApiListarExamenes() {
         jwt = new ImplementacionJWT();
@@ -63,7 +63,7 @@ public class ApiListarExamenes extends ServerResource {
 
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {
             if (token != null && !token.equals("") && validaJWT.validarTokenRS(token)) {
@@ -76,21 +76,20 @@ public class ApiListarExamenes extends ServerResource {
 
                     Log.info("roles :" + roles);
                     Iterator it = null;
-                    if (roles.contains("SUPER-ADMIN")) {
-                        if(accion.equalsIgnoreCase(LE_TABLA)){
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN")) {
+                        if (accion.equalsIgnoreCase(LE_TABLA)) {
                             /*todos*/
-                             it = LFExamenes.selectExamenesAll(empresa);
-                        }else if(accion.equalsIgnoreCase(CE_EXAMENES_PROFILE)||accion.equalsIgnoreCase(LE_BY_PACIENTE_TABLA)){
+                            it = LFExamenes.selectExamenesAll(empresa);
+                        } else if (accion.equalsIgnoreCase(CE_EXAMENES_PROFILE) || accion.equalsIgnoreCase(LE_BY_PACIENTE_TABLA)) {
                             /*Por usuario*/
-                             it = LFExamenes.selectExamenesbyPaciente(Paciente,empresa);
+                            it = LFExamenes.selectExamenesbyPaciente(Paciente, empresa);
                         }
-                             
-                        
+
                         List<Examenes> l = new ArrayList();
                         while (it.hasNext()) {
                             Registro reg = (Registro) it.next();
                             Examenes s = new Examenes();
-                            
+
                             s.setExa_c_name(reg.get(RFExamenes.exa_c_name));
                             s.setExa_c_numuser_paciente(reg.get(RFExamenes.exa_c_numuser_paciente));
                             s.setExa_c_obs(reg.get(RFExamenes.exa_c_obs));
@@ -112,11 +111,9 @@ public class ApiListarExamenes extends ServerResource {
                         message = "SELECT_OK";
 
                     } else {
-
-                        Log.info("EL perfil no tiene acceso");
-                        message = "SELECT_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
-
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
                 } catch (Exception e) {
                     Log.error(e.toString());

@@ -42,7 +42,7 @@ public class ApiCrearParam extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -55,8 +55,7 @@ public class ApiCrearParam extends ServerResource {
         String params_n_param3 = getQuery().getValues("params_param3");
         String params_n_param4 = getQuery().getValues("params_param4");
         String accion = getQuery().getValues("accion");
-        
-        
+
         String token = getQuery().getValues("token");
 
         Log.info("params_n_grupo : " + params_n_grupo);
@@ -77,30 +76,37 @@ public class ApiCrearParam extends ServerResource {
                     String nombre_usuario = jwt.getJwt().getValue("name").toString();
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
-                    String nombre_completo = nombre_usuario+" "+apellido_usuario;
+                    String nombre_completo = nombre_usuario + " " + apellido_usuario;
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
-                    Log.info(usuario_creador);
+                    Log.info("usuario Creador:" + usuario_creador);
+                    if (roles.contains("SUPER-ADMIN")) {
 
-                    if (LFParams.insertParam(params_n_grupo, params_n_subgrupo, params_n_param1, params_n_param2, params_n_param3, params_n_param4,usuario_creador,nombre_completo) == 1) {
+                        if (LFParams.insertParam(params_n_grupo, params_n_subgrupo, params_n_param1, params_n_param2, params_n_param3, params_n_param4, usuario_creador, nombre_completo) == 1) {
 
-                        Log.info("Insert OK");
-                        status = Status.SUCCESS_OK;
-                        message = "INSERT_OK";
+                            Log.info("Insert OK");
+                            status = Status.SUCCESS_OK;
+                            message = "INSERT_OK";
 
-                    } else {
+                        } else {
 
-                        Log.info("Error de insercion");
-                        message = "INSERT_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
+                            Log.info("Error de insercion");
+                            message = "INSERT_NO_OK";
+                            status = Status.CLIENT_ERROR_BAD_REQUEST;
 
-                    }
+                        }
 
-                    /* if ("CLAVE OK".equals(arr[0].trim())) {
+                        /* if ("CLAVE OK".equals(arr[0].trim())) {
                     
                     map.put("CORREO", arr[14].trim());
                     map.put("POSLOCAL", arr[15].trim());
                     map.put("ESTADO", arr[16].trim());
                 }*/
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
+                    }
                 } catch (Exception e) {
                     Log.error(e.toString());
                     status = Status.CLIENT_ERROR_BAD_REQUEST;

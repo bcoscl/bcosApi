@@ -44,7 +44,7 @@ public class ApiCrearEnfermedadesCronicas extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -76,35 +76,41 @@ public class ApiCrearEnfermedadesCronicas extends ServerResource {
 //                    String empresaName = jwt.getJwt().getValue("empresaName").toString();
 //                    String Roles = jwt.getJwt().getValue("Roles").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
                     Log.info("usuario Creador:" + usuario_creador);
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO")) {
 
-                    switch (accion) {
+                        switch (accion) {
 
-                        case CREATE:
+                            case CREATE:
 
-                            if (LFEnfermedadesCronicas.insertEnfermedadesCronicas(
-                                    cronica_c_name, cronica_c_obs,
-                                    cronica_c_numuser_paciente, usuario_creador,
-                                    nombre_completo, empresa) == 1) {
+                                if (LFEnfermedadesCronicas.insertEnfermedadesCronicas(
+                                        cronica_c_name, cronica_c_obs,
+                                        cronica_c_numuser_paciente, usuario_creador,
+                                        nombre_completo, empresa) == 1) {
 
-                                Log.info("Insert OK");
-                                status = Status.SUCCESS_OK;
-                                message = INSERT_OK;
+                                    Log.info("Insert OK");
+                                    status = Status.SUCCESS_OK;
+                                    message = INSERT_OK;
 
-                            } else {
+                                } else {
 
-                                Log.info("Error de insercion");
+                                    Log.info("Error de insercion");
 
-                                message = INSERT_NO_OK;
-                                status = Status.CLIENT_ERROR_BAD_REQUEST;
+                                    message = INSERT_NO_OK;
+                                    status = Status.CLIENT_ERROR_BAD_REQUEST;
 
-                            }
-                            break;
-                        default:
-                            Log.error("no Soportada :" + accion);
+                                }
+                                break;
+                            default:
+                                Log.error("no Soportada :" + accion);
+                        }
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
-
                 } catch (Exception e) {
                     Log.error("getMessage :" + e.getMessage());
                     Log.error(e.toString());

@@ -8,7 +8,6 @@ package cl.bcos.option;
 import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
 import cl.bcos.LF.LFConsultas;
-import cl.bcos.LF.LFPaciente;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.HashMap;
@@ -43,10 +42,10 @@ public class ApiUpdateConsultas extends ServerResource {
     @Post
     public Representation UpdateConsulta() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
-        
+
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -77,46 +76,54 @@ public class ApiUpdateConsultas extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
-                    Log.info("usaurio creador : " + usuario_creador);
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN") || roles.contains("RECEPCION")) {
 
-                    if (accion.equalsIgnoreCase(UPDATE_CONSULTA_PROFILE)) {
+                        Log.info("usaurio creador : " + usuario_creador);
 
-                        if (LFConsultas.updateConsultas(
-                                ConsultaRowId,
-                                Consulta_titulo,
-                                Consulta_obs,
-                                usuario_creador,
-                                nombre_completo,
-                                empresa) == 1) {
+                        if (accion.equalsIgnoreCase(UPDATE_CONSULTA_PROFILE)) {
 
-                            Log.info("UPDATE OK");
-                            status = Status.SUCCESS_OK;
-                            message = "UPDATE_OK";
+                            if (LFConsultas.updateConsultas(
+                                    ConsultaRowId,
+                                    Consulta_titulo,
+                                    Consulta_obs,
+                                    usuario_creador,
+                                    nombre_completo,
+                                    empresa) == 1) {
+
+                                Log.info("UPDATE OK");
+                                status = Status.SUCCESS_OK;
+                                message = "UPDATE_OK";
+                            } else {
+                                Log.info("Error de Udpate/Delete");
+                                message = "UPDATE_NO_OK";
+                                status = Status.CLIENT_ERROR_BAD_REQUEST;
+                            }
+                        } else if (accion.equalsIgnoreCase(DELETE_CONSULTA_PROFILE)) {
+
+                            if (LFConsultas.deleteConsultas(ConsultaRowId, empresa) == 1) {
+
+                                Log.info("UPDATE OK");
+                                status = Status.SUCCESS_OK;
+                                message = "UPDATE_OK";
+                            } else {
+                                Log.info("Error de Udpate/Delete");
+                                message = "UPDATE_NO_OK";
+                                status = Status.CLIENT_ERROR_BAD_REQUEST;
+                            }
                         } else {
+
+                            Log.info("No Soportada");
                             Log.info("Error de Udpate/Delete");
                             message = "UPDATE_NO_OK";
                             status = Status.CLIENT_ERROR_BAD_REQUEST;
-                        }
-                    } else if (accion.equalsIgnoreCase(DELETE_CONSULTA_PROFILE)) {
 
-                        if (LFConsultas.deleteConsultas(ConsultaRowId, empresa) == 1) {
-
-                            Log.info("UPDATE OK");
-                            status = Status.SUCCESS_OK;
-                            message = "UPDATE_OK";
-                        } else {
-                            Log.info("Error de Udpate/Delete");
-                            message = "UPDATE_NO_OK";
-                            status = Status.CLIENT_ERROR_BAD_REQUEST;
                         }
                     } else {
-
-                        Log.info("No Soportada");
-                        Log.info("Error de Udpate/Delete");
-                        message = "UPDATE_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
-
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
                 } catch (Exception e) {
                     Log.error("getMessage :" + e.getMessage());

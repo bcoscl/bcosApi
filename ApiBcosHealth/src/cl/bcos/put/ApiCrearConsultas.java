@@ -46,7 +46,7 @@ public class ApiCrearConsultas extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -54,7 +54,7 @@ public class ApiCrearConsultas extends ServerResource {
 
         String rowFichaId = "";
         String rowPacienteId = "";
-        String empresa ="";
+        String empresa = "";
 
         String accion = getQuery().getValues("accion");
         String consult_c_titulo = getQuery().getValues("consult_c_titulo");
@@ -73,8 +73,6 @@ public class ApiCrearConsultas extends ServerResource {
         Log.info("consult_c_numuser_paciente :" + consult_c_numuser_paciente);
         Log.info("consult_paciente_name :" + consult_paciente_name);
         Log.info("consult_c_createdate :" + consult_c_createdate);
-        
-       
 
         Log.info("token : " + token);
 
@@ -87,42 +85,46 @@ public class ApiCrearConsultas extends ServerResource {
                     String nombre_usuario = jwt.getJwt().getValue("name").toString();
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
-                     empresa = jwt.getJwt().getValue("empresaName").toString();
-                    String Roles = jwt.getJwt().getValue("Roles").toString();
+                    empresa = jwt.getJwt().getValue("empresaName").toString();
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
                     Log.info("usuario Creador:" + usuario_creador);
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO")) {
+                        switch (accion) {
 
-                    switch (accion) {
+                            case CREATE:
 
-                        case CREATE:
+                                if (LFConsultas.insertConsultas(consult_c_titulo,
+                                        consult_c_obs_consulta,
+                                        consult_c_tipoconsulta,
+                                        consult_c_numuser_paciente,
+                                        consult_paciente_name,
+                                        usuario_creador,
+                                        nombre_completo,
+                                        consult_c_createdate,
+                                        empresa) == 1) {
 
-                            if (LFConsultas.insertConsultas(consult_c_titulo,
-                                    consult_c_obs_consulta,
-                                    consult_c_tipoconsulta,
-                                    consult_c_numuser_paciente,
-                                    consult_paciente_name,
-                                    usuario_creador,
-                                    nombre_completo,
-                                    consult_c_createdate,
-                                    empresa) == 1) {
+                                    Log.info("Insert OK");
+                                    status = Status.SUCCESS_OK;
+                                    message = INSERT_OK;
 
-                                Log.info("Insert OK");
-                                status = Status.SUCCESS_OK;
-                                message = INSERT_OK;
+                                } else {
 
-                            } else {
+                                    Log.info("Error de insercion");
 
-                                Log.info("Error de insercion");
+                                    message = INSERT_NO_OK;
+                                    status = Status.CLIENT_ERROR_BAD_REQUEST;
 
-                                message = INSERT_NO_OK;
-                                status = Status.CLIENT_ERROR_BAD_REQUEST;
-
-                            }
-                            break;
-                        default:
-                            Log.error("no Soportada :" + accion);
+                                }
+                                break;
+                            default:
+                                Log.error("no Soportada :" + accion);
+                        }
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
-
                 } catch (Exception e) {
                     Log.error("getMessage :" + e.getMessage());
                     Log.error(e.toString());

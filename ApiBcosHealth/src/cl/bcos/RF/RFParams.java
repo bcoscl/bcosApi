@@ -47,7 +47,7 @@ public class RFParams extends Registro {
         qry.append(" params_n_param2,  ");
         qry.append(" params_n_param3,  ");
         qry.append(" params_n_param4,params_d_ultmod,params_c_numuser_utlmod,params_c_nombre_ultmod ");
-        qry.append(" FROM public.health_params ");
+        qry.append(" FROM health_params ");
         qry.append(" where params_n_grupo= ? ");/*'TOKEN'*/
         qry.append(" and params_n_subgrupo= ? ");/*'BLOWFISH'*/
         qry.append(" and params_n_param1= ? ");/*'CRYPT' */
@@ -88,7 +88,7 @@ public class RFParams extends Registro {
         qry.append(" params_n_param2,  ");
         qry.append(" params_n_param3,  ");
         qry.append(" params_n_param4,params_d_ultmod,params_c_numuser_utlmod,params_c_nombre_ultmod ");
-        qry.append(" FROM public.health_params ");
+        qry.append(" FROM health_params ");
        
         Log.debug(qry.toString());
         try {

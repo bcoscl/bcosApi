@@ -57,7 +57,7 @@ public class ApiProfile extends ServerResource {
         Log.info("numuser : " + numuser);
         Log.info("accion : " + accion);
         Log.info("token : " + token);
-        
+
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
 
@@ -65,68 +65,69 @@ public class ApiProfile extends ServerResource {
         try {
             if (token != null && !token.equals("") && validaJWT.validarTokenRS(token)) {
                 try {
-                    if (accion.equalsIgnoreCase("CP-BYUSER")) {
-                        //consulta  por usuario
-                        Iterator it = LFUsuarios.getUserInformation(numuser);
+                    String roles = jwt.getJwt().getValue("Roles").toString();
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN") || roles.contains("RECEPCION")) {
 
-                        while (it.hasNext()) {
+                        if (accion.equalsIgnoreCase("CP-BYUSER")) {
+                            //consulta  por usuario
+                            Iterator it = LFUsuarios.getUserInformation(numuser);
 
-                            Registro reg = (Registro) it.next();
+                            while (it.hasNext()) {
 
-                            prof.put("name", reg.get(RFUsuarios.user_c_nombres));
-                            prof.put("LastName", reg.get(RFUsuarios.user_c_apellido));
-                            prof.put("numUser", reg.get(RFUsuarios.user_c_numuser));
-                            prof.put("Roles", reg.get(RFUsuarios.user_c_role));
-                            prof.put("celular", reg.get(RFUsuarios.user_c_celular));
-                            prof.put("nombreOficina", reg.get(RFUsuarios.user_c_nombre_oficina));
-                            prof.put("email", reg.get(RFUsuarios.user_c_email));
-                            prof.put("fechaCracion", reg.get(RFUsuarios.user_d_createdate));
-                            prof.put("creadoPor", reg.get(RFUsuarios.user_c_createusername));
-                            prof.put("imgUrl", reg.get(RFUsuarios.user_c_img));
-                            prof.put("Profesion", reg.get(RFUsuarios.user_c_profesion));
-                            prof.put("AboutMe", reg.get(RFUsuarios.user_c_obs));
-                            prof.put("empresaName", reg.get(RFUsuarios.user_c_empresaname));
-                            prof.put("numUserCreador", reg.get(RFUsuarios.user_n_createuser));
-                            prof.put("CodEmpresa", reg.get(RFUsuarios.user_n_cod_empresa));
-                            prof.put("userId", reg.get(RFUsuarios.user_n_iduser));
-                            prof.put("pUserId", reg.get(RFUsuarios.pass_n_id));
-                            prof.put("status", reg.get(RFUsuarios.pass_c_activo));
+                                Registro reg = (Registro) it.next();
+
+                                prof.put("name", reg.get(RFUsuarios.user_c_nombres));
+                                prof.put("LastName", reg.get(RFUsuarios.user_c_apellido));
+                                prof.put("numUser", reg.get(RFUsuarios.user_c_numuser));
+                                prof.put("Roles", reg.get(RFUsuarios.user_c_role));
+                                prof.put("celular", reg.get(RFUsuarios.user_c_celular));
+                                prof.put("nombreOficina", reg.get(RFUsuarios.user_c_nombre_oficina));
+                                prof.put("email", reg.get(RFUsuarios.user_c_email));
+                                prof.put("fechaCracion", reg.get(RFUsuarios.user_d_createdate));
+                                prof.put("creadoPor", reg.get(RFUsuarios.user_c_createusername));
+                                prof.put("imgUrl", reg.get(RFUsuarios.user_c_img));
+                                prof.put("Profesion", reg.get(RFUsuarios.user_c_profesion));
+                                prof.put("AboutMe", reg.get(RFUsuarios.user_c_obs));
+                                prof.put("empresaName", reg.get(RFUsuarios.user_c_empresaname));
+                                prof.put("numUserCreador", reg.get(RFUsuarios.user_n_createuser));
+                                prof.put("CodEmpresa", reg.get(RFUsuarios.user_n_cod_empresa));
+                                prof.put("userId", reg.get(RFUsuarios.user_n_iduser));
+                                prof.put("pUserId", reg.get(RFUsuarios.pass_n_id));
+                                prof.put("status", reg.get(RFUsuarios.pass_c_activo));
+                            }
+                        } else if (accion.equalsIgnoreCase("CP-PERFIL")) {
+
+                            prof.put("name", jwt.getJwt().getValue("name").toString());
+                            prof.put("LastName", jwt.getJwt().getValue("LastName").toString());
+                            prof.put("numUser", jwt.getJwt().getValue("numUser").toString());
+                            prof.put("Roles", jwt.getJwt().getValue("Roles").toString());
+                            prof.put("celular", jwt.getJwt().getValue("celular").toString());
+                            prof.put("nombreOficina", jwt.getJwt().getValue("nombreOficina").toString());
+                            prof.put("email", jwt.getJwt().getValue("email").toString());
+                            prof.put("fechaCracion", jwt.getJwt().getValue("fechaCracion").toString());
+                            prof.put("creadoPor", jwt.getJwt().getValue("creadoPor").toString());
+                            prof.put("imgUrl", jwt.getJwt().getValue("imgUrl").toString());
+                            prof.put("Profesion", jwt.getJwt().getValue("Profesion").toString());
+                            prof.put("AboutMe", jwt.getJwt().getValue("AboutMe").toString());
+                            prof.put("empresaName", jwt.getJwt().getValue("empresaName").toString());
+                            prof.put("numUserCreador", jwt.getJwt().getValue("numUserCreador").toString());
+                            prof.put("CodEmpresa", jwt.getJwt().getValue("CodEmpresa").toString());
+                            prof.put("userId", jwt.getJwt().getValue("userId").toString());
+                            // String nombre_usuario = jwt.getJwt().getValue("name").toString();
+                            // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
+                            // if (roles.contains("SUPER-ADMIN")) {
                         }
-                    } else if (accion.equalsIgnoreCase("CP-PERFIL")) {
+                        map.put("Profile", prof);
 
-                        prof.put("name", jwt.getJwt().getValue("name").toString());
-                        prof.put("LastName", jwt.getJwt().getValue("LastName").toString());
-                        prof.put("numUser", jwt.getJwt().getValue("numUser").toString());
-                        prof.put("Roles", jwt.getJwt().getValue("Roles").toString());
-                        prof.put("celular", jwt.getJwt().getValue("celular").toString());
-                        prof.put("nombreOficina", jwt.getJwt().getValue("nombreOficina").toString());
-                        prof.put("email", jwt.getJwt().getValue("email").toString());
-                        prof.put("fechaCracion", jwt.getJwt().getValue("fechaCracion").toString());
-                        prof.put("creadoPor", jwt.getJwt().getValue("creadoPor").toString());
-                        prof.put("imgUrl", jwt.getJwt().getValue("imgUrl").toString());
-                        prof.put("Profesion", jwt.getJwt().getValue("Profesion").toString());
-                        prof.put("AboutMe", jwt.getJwt().getValue("AboutMe").toString());
-                        prof.put("empresaName", jwt.getJwt().getValue("empresaName").toString());
-                        prof.put("numUserCreador", jwt.getJwt().getValue("numUserCreador").toString());
-                        prof.put("CodEmpresa", jwt.getJwt().getValue("CodEmpresa").toString());
-                        prof.put("userId", jwt.getJwt().getValue("userId").toString());
-                        // String nombre_usuario = jwt.getJwt().getValue("name").toString();
-                        // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
-                        // if (roles.contains("SUPER-ADMIN")) {
+                        Log.info("SELECT OK");
+                        status = Status.SUCCESS_OK;
+                        message = "SELECT_OK";
+
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
-                    map.put("Profile", prof);
-
-                    Log.info("SELECT OK");
-                    status = Status.SUCCESS_OK;
-                    message = "SELECT_OK";
-
-//                    } else {
-//
-//                        Log.info("EL perfil no tiene acceso");
-//                        message = "SELECT_NO_OK";
-//                        status = Status.CLIENT_ERROR_BAD_REQUEST;
-//
-//                    }
                 } catch (Exception e) {
                     Log.error(e.toString());
                     status = Status.CLIENT_ERROR_BAD_REQUEST;

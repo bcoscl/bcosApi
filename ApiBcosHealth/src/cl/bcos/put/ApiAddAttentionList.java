@@ -24,8 +24,8 @@ import org.restlet.resource.ServerResource;
  *
  * @author aacantero
  */
-public class ApiAddAttentionList  extends ServerResource {
-  
+public class ApiAddAttentionList extends ServerResource {
+
     private static final Logger Log = Logger.getLogger(ApiCrearPaciente.class);
 
     private ImplementacionJWT jwt = null;
@@ -45,12 +45,11 @@ public class ApiAddAttentionList  extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         Map map = new HashMap();
-
 
         String accion = getQuery().getValues("accion");
         String nombre_paciente = getQuery().getValues("nombre_paciente");
@@ -58,7 +57,6 @@ public class ApiAddAttentionList  extends ServerResource {
         String numuser_medico = getQuery().getValues("numuser_medico");
         String nombre_medico = getQuery().getValues("nombre_medico");
         String motivo = getQuery().getValues("motivo");
-        
 
         String token = getQuery().getValues("token");
 
@@ -68,7 +66,6 @@ public class ApiAddAttentionList  extends ServerResource {
         Log.info("numuser_medico :" + numuser_medico);
         Log.info("nombre_medico :" + nombre_medico);
         Log.info("motivo :" + motivo);
-        
 
         Log.info("token : " + token);
 
@@ -82,40 +79,45 @@ public class ApiAddAttentionList  extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
-                    
-                    String Roles = jwt.getJwt().getValue("Roles").toString();
 
-                    Log.info("usuario Creador:"+usuario_creador);
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
-                    switch (accion) {
-                        
-                        case "CREATE":
+                    Log.info("usuario Creador:" + usuario_creador);
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO") || roles.contains("RECEPCION")) {
 
-                            if (LFAttentionList.insertAttentionList( numuser_paciente, 
-                                    nombre_paciente,  nombre_medico,numuser_medico,motivo, empresa) == 1) {
+                        switch (accion) {
 
-                                Log.info("Insert OK");
-                                status = Status.SUCCESS_OK;
-                                message = INSERT_OK;
+                            case "CREATE":
 
-                            } else {
+                                if (LFAttentionList.insertAttentionList(numuser_paciente,
+                                        nombre_paciente, nombre_medico, numuser_medico, motivo, empresa) == 1) {
 
-                                Log.info("Error de insercion");
-                                
-                                message = INSERT_NO_OK;
-                                status = Status.CLIENT_ERROR_BAD_REQUEST;
+                                    Log.info("Insert OK");
+                                    status = Status.SUCCESS_OK;
+                                    message = INSERT_OK;
 
-                            }
-                            break;
-                        default:
-                            Log.error("no Soportada :" + accion);
+                                } else {
+
+                                    Log.info("Error de insercion");
+
+                                    message = INSERT_NO_OK;
+                                    status = Status.CLIENT_ERROR_BAD_REQUEST;
+
+                                }
+                                break;
+                            default:
+                                Log.error("no Soportada :" + accion);
+                        }
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
 
                 } catch (Exception e) {
                     Log.error("getMessage :" + e.getMessage());
                     Log.error(e.toString());
-                    
-                    
+
                     status = Status.CLIENT_ERROR_BAD_REQUEST;
                     message = ERROR_TOKEN;
                 }
@@ -137,4 +139,3 @@ public class ApiAddAttentionList  extends ServerResource {
         return new StringRepresentation(gson.toJson(map), MediaType.APPLICATION_JSON);
     }
 }
-

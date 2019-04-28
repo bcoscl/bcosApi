@@ -76,7 +76,7 @@ public class ApiListarSucursales extends ServerResource {
                     Iterator it = null;
                     Log.info("roles :" + roles);
 
-                    if (roles.contains("SUPER-ADMIN")) {
+                    if (roles.contains("SUPER-ADMIN")||roles.contains("ADMIN")) {
 
                         if (accion.equalsIgnoreCase(LISTAR_SELECT_MULTIPLE_BY_ACTIVE)) {
                             it = LFSucursales.selectSucursalesActive(empresa);
@@ -112,12 +112,10 @@ public class ApiListarSucursales extends ServerResource {
                         status = Status.SUCCESS_OK;
                         message = "SELECT_OK";
 
-                    } else {
-
-                        Log.info("EL perfil no tiene acceso");
-                        message = "SELECT_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
-
+                   } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
 
                 } catch (Exception e) {

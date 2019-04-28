@@ -34,7 +34,6 @@ public class ApiCrearFarmacos extends ServerResource {
     private final String INSERT_OK = "INSERT_OK";
     private final String INSERT_NO_OK = "INSERT_NO_OK";
     private final String CREATE = "PUP-FARMACO-CREATE";
-  
 
     public ApiCrearFarmacos() {
         jwt = new ImplementacionJWT();
@@ -45,19 +44,16 @@ public class ApiCrearFarmacos extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         Map map = new HashMap();
 
-       
-
         String accion = getQuery().getValues("accion");
         String farmaco_c_name = getQuery().getValues("farmaco_name");
         String farmaco_c_obs = getQuery().getValues("farmaco_obs");
         String Paciente = getQuery().getValues("Paciente");
-        
 
         String token = getQuery().getValues("token");
 
@@ -65,7 +61,6 @@ public class ApiCrearFarmacos extends ServerResource {
         Log.info("farmaco_c_name :" + farmaco_c_name);
         Log.info("farmaco_c_obs :" + farmaco_c_obs);
         Log.info("Paciente :" + Paciente);
-       
 
         Log.info("token : " + token);
 
@@ -79,40 +74,45 @@ public class ApiCrearFarmacos extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
-                    String Roles = jwt.getJwt().getValue("Roles").toString();
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
-                    Log.info("usuario Creador:"+usuario_creador);
+                    Log.info("usuario Creador:" + usuario_creador);
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO")) {
 
-                    switch (accion) {
-                        
-                        case CREATE:
+                        switch (accion) {
 
-                           if (LFFarmacos.insertFarmacos(
-                                    farmaco_c_name, farmaco_c_obs,
-                                    Paciente, usuario_creador,
-                                    nombre_completo, empresa) == 1) {
+                            case CREATE:
 
-                                Log.info("Insert OK");
-                                status = Status.SUCCESS_OK;
-                                message = INSERT_OK;
+                                if (LFFarmacos.insertFarmacos(
+                                        farmaco_c_name, farmaco_c_obs,
+                                        Paciente, usuario_creador,
+                                        nombre_completo, empresa) == 1) {
 
-                            } else {
+                                    Log.info("Insert OK");
+                                    status = Status.SUCCESS_OK;
+                                    message = INSERT_OK;
 
-                                Log.info("Error de insercion");
-                                
-                                message = INSERT_NO_OK;
-                                status = Status.CLIENT_ERROR_BAD_REQUEST;
+                                } else {
 
-                            }
-                            break;
-                        default:
-                            Log.error("no Soportada :" + accion);
+                                    Log.info("Error de insercion");
+
+                                    message = INSERT_NO_OK;
+                                    status = Status.CLIENT_ERROR_BAD_REQUEST;
+
+                                }
+                                break;
+                            default:
+                                Log.error("no Soportada :" + accion);
+                        }
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
-
                 } catch (Exception e) {
                     Log.error("getMessage :" + e.getMessage());
                     Log.error(e.toString());
-                   
+
                     status = Status.CLIENT_ERROR_BAD_REQUEST;
                     message = ERROR_TOKEN;
                 }

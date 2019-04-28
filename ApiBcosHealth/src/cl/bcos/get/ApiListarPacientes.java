@@ -57,7 +57,7 @@ public class ApiListarPacientes extends ServerResource {
         //Log.info("nombrePlan : " + nombre_plan);
         //Log.info("userMax : " + numero_maximo);
         Log.info("token : " + token);
-        
+
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
 
@@ -73,7 +73,7 @@ public class ApiListarPacientes extends ServerResource {
 
                     Log.info("roles :" + roles);
 
-                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")) {
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN") || roles.contains("RECEPCION")) {
 
                         Iterator it = LFPaciente.selectPacientes(empresa);
                         List<Paciente> l = new ArrayList();
@@ -89,7 +89,7 @@ public class ApiListarPacientes extends ServerResource {
                             s.setC_estado_civil(reg.get(RFPaciente.paciente_c_estado_civil));
                             s.setC_img(reg.get(RFPaciente.paciente_c_img));
                             s.setC_numuser(reg.get(RFPaciente.paciente_c_numuser));
-                            
+
                             s.setC_obs(reg.get(RFPaciente.paciente_c_obs));
                             s.setC_pacientename(reg.get(RFPaciente.paciente_c_pacientename));
                             s.setC_prevision(reg.get(RFPaciente.paciente_c_prevision));
@@ -99,7 +99,6 @@ public class ApiListarPacientes extends ServerResource {
                             s.setN_id(reg.get(RFPaciente.paciente_n_id));
                             s.setD_fechaNacimiento(reg.get(RFPaciente.paciente_d_fechaNacimiento));
                             s.setN_edad(reg.get(RFPaciente.paciente_n_edad));
-                           
 
                             l.add(s);
 
@@ -112,11 +111,9 @@ public class ApiListarPacientes extends ServerResource {
                         message = "SELECT_OK";
 
                     } else {
-
-                        Log.info("EL perfil no tiene acceso");
-                        message = "SELECT_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
-
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
 
                 } catch (Exception e) {

@@ -7,13 +7,9 @@ package cl.bcos.option;
 
 import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
-import cl.bcos.LF.LFFarmacos;
 import cl.bcos.LF.LFParams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -84,23 +80,24 @@ public class ApiUpdateParam extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
                     Log.info(usuario_creador);
+                    if (roles.contains("SUPER-ADMIN")) {
+                        if (accion.equalsIgnoreCase(DELETE_PARAM)) {
+                            if (LFParams.deleteParams(params_n_id) == 1) {
 
-                    if (accion.equalsIgnoreCase(DELETE_PARAM)) {
-                        if (LFParams.deleteParams(params_n_id) == 1) {
+                                Log.info("DELETE_OK");
+                                status = Status.SUCCESS_OK;
+                                message = "UPDATE_OK";
 
-                            Log.info("DELETE_OK");
-                            status = Status.SUCCESS_OK;
-                            message = "UPDATE_OK";
+                            } else {
+                                Log.info("Error de Udpate/Delete");
+                                message = "UPDATE_NO_OK";
+                                status = Status.CLIENT_ERROR_BAD_REQUEST;
+                            }
 
-                        } else {
-                            Log.info("Error de Udpate/Delete");
-                            message = "UPDATE_NO_OK";
-                            status = Status.CLIENT_ERROR_BAD_REQUEST;
-                        }
-
-                    } /*else if (accion.equalsIgnoreCase(UPDATE_PARAM)) {
+                        } /*else if (accion.equalsIgnoreCase(UPDATE_PARAM)) {
 
                         if (LFParams..updateFarmacos(params_n_id) == 1) {
 
@@ -112,14 +109,18 @@ public class ApiUpdateParam extends ServerResource {
                             message = "UPDATE_NO_OK";
                             status = Status.CLIENT_ERROR_BAD_REQUEST;
                         }
-                    } */else {
+                    } */ else {
 
-                        Log.info("Error NO SOPORTADO");
-                        message = "UPDATE_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
+                            Log.info("Error NO SOPORTADO");
+                            message = "UPDATE_NO_OK";
+                            status = Status.CLIENT_ERROR_BAD_REQUEST;
 
+                        }
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
-
                 } catch (Exception e) {
                     Log.error(e.toString());
                     status = Status.CLIENT_ERROR_BAD_REQUEST;

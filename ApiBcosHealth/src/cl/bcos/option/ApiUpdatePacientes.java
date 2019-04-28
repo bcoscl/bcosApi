@@ -43,7 +43,7 @@ public class ApiUpdatePacientes extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -84,8 +84,6 @@ public class ApiUpdatePacientes extends ServerResource {
         Log.info("token : " + token);
         Log.info("token bearer:" + token);
 
-     
-
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {
             if (token != null && !token.equals("") && validaJWT.validarTokenRS(token)) {
@@ -96,39 +94,44 @@ public class ApiUpdatePacientes extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
-
+                    String roles = jwt.getJwt().getValue("Roles").toString();
                     Log.info(usuario_creador);
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN")) {
+                        if (accion.equalsIgnoreCase(UPDATE_PACIENTE_PROFILE)) {
 
-                    if (accion.equalsIgnoreCase(UPDATE_PACIENTE_PROFILE)) {
+                            if (LFPaciente.updatePacienteInformation(direccion_paciente,
+                                    prevision,
+                                    profesion_paciente,
+                                    estado_civil_paciente,
+                                    aboutme_obs_paciente,
+                                    email_contacto_paciente,
+                                    numero_telefono_paciente,
+                                    sexo,
+                                    fecha_nacimiento_paciente,
+                                    edad_paciente,
+                                    usuario_creador,
+                                    numuser_paciente,
+                                    empresa) == 1) {
 
-                        if (LFPaciente.updatePacienteInformation(direccion_paciente,
-                                prevision,
-                                profesion_paciente,
-                                estado_civil_paciente,
-                                aboutme_obs_paciente,
-                                email_contacto_paciente,
-                                numero_telefono_paciente,
-                                sexo,
-                                fecha_nacimiento_paciente,
-                                edad_paciente,
-                                usuario_creador,
-                                numuser_paciente,
-                                empresa) == 1) {
-
-                            Log.info("UPDATE OK");
-                            status = Status.SUCCESS_OK;
-                            message = "UPDATE_OK";
+                                Log.info("UPDATE OK");
+                                status = Status.SUCCESS_OK;
+                                message = "UPDATE_OK";
+                            } else {
+                                Log.info("Error de Udpate/Delete");
+                                message = "UPDATE_NO_OK";
+                                status = Status.CLIENT_ERROR_BAD_REQUEST;
+                            }
                         } else {
+
                             Log.info("Error de Udpate/Delete");
                             message = "UPDATE_NO_OK";
                             status = Status.CLIENT_ERROR_BAD_REQUEST;
+
                         }
                     } else {
-
-                        Log.info("Error de Udpate/Delete");
-                        message = "UPDATE_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
-
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
                 } catch (Exception e) {
                     Log.error("getMessage :" + e.getMessage());

@@ -42,7 +42,7 @@ public class ApiCrearRole extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -66,23 +66,28 @@ public class ApiCrearRole extends ServerResource {
                         String nombre_usuario = jwt.getJwt().getValue("name").toString();
                         String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                         String empresa = jwt.getJwt().getValue("empresaName").toString();
+                        String roles = jwt.getJwt().getValue("Roles").toString();
 
-                        Log.info(usuario_creador);
+                        Log.info("usuario Creador:" + usuario_creador);
+                        if (roles.contains("SUPER-ADMIN")) {
+                            if (LFRoles.insertRole(RoleName, usuario_creador, nombre_usuario + " " + apellido_usuario) == 1) {
 
-                        if (LFRoles.insertRole(RoleName, usuario_creador, nombre_usuario + " " + apellido_usuario) == 1) {
+                                Log.info("Insert OK");
+                                status = Status.SUCCESS_OK;
+                                message = "INSERT_OK";
 
-                            Log.info("Insert OK");
-                            status = Status.SUCCESS_OK;
-                            message = "INSERT_OK";
+                            } else {
 
+                                Log.info("Error de insercion");
+                                message = "INSERT_NO_OK";
+                                status = Status.CLIENT_ERROR_BAD_REQUEST;
+
+                            }
                         } else {
-
-                            Log.info("Error de insercion");
-                            message = "INSERT_NO_OK";
-                            status = Status.CLIENT_ERROR_BAD_REQUEST;
-
+                            status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                            Log.error("Perfil sin acceso");
+                            message = ERROR_TOKEN;
                         }
-
                     } catch (Exception e) {
                         Log.error(e.toString());
                         status = Status.CLIENT_ERROR_BAD_REQUEST;

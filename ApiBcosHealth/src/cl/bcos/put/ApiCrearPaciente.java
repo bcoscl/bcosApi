@@ -48,7 +48,7 @@ public class ApiCrearPaciente extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -73,8 +73,8 @@ public class ApiCrearPaciente extends ServerResource {
         String sexo = getQuery().getValues("sexo");
 
         String token = getQuery().getValues("token");
-        
-        String empresa ="";
+
+        String empresa = "";
 
         Log.info("accion :" + accion);
         Log.info("numuser_paciente :" + numuser_paciente);
@@ -103,64 +103,68 @@ public class ApiCrearPaciente extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     empresa = jwt.getJwt().getValue("empresaName").toString();
-                    String Roles = jwt.getJwt().getValue("Roles").toString();
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
-                    Log.info("usuario Creador:"+usuario_creador);
+                    Log.info("usuario Creador:" + usuario_creador);
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO") || roles.contains("RECEPCION")) {
+                        switch (accion) {
+                            case "EXISTE_PACIENTE":
+                                if (LFPaciente.existeRegistro(numuser_paciente, empresa).equalsIgnoreCase("NO")
+                                        && LFFichas.existeRegistro(numuser_paciente, empresa).equalsIgnoreCase("NO")) {
 
-                    switch (accion) {
-                        case "EXISTE_PACIENTE":
-                            if (LFPaciente.existeRegistro(numuser_paciente, empresa).equalsIgnoreCase("NO")
-                                    && LFFichas.existeRegistro(numuser_paciente, empresa).equalsIgnoreCase("NO")) {
+                                    Log.info("USUARIO NO REGISTRADO");
+                                    status = Status.SUCCESS_OK;
+                                    message = USUARIO_NO_EXISTE;
+                                } else {
+                                    Log.info("USUARIO REGISTRADO");
+                                    status = Status.SUCCESS_OK;
+                                    message = USUARIO_EXISTE;
+                                }
+                                break;
+                            case "CREATE":
 
-                                Log.info("USUARIO NO REGISTRADO");
-                                status = Status.SUCCESS_OK;
-                                message = USUARIO_NO_EXISTE;
-                            } else {
-                                Log.info("USUARIO REGISTRADO");
-                                status = Status.SUCCESS_OK;
-                                message = USUARIO_EXISTE;
-                            }
-                            break;
-                        case "CREATE":
+                                rowFichaId = LFFichas.getNewFichaId();
+                                rowPacienteId = LFPaciente.getNewPacienteId();
 
-                            rowFichaId = LFFichas.getNewFichaId();
-                            rowPacienteId = LFPaciente.getNewPacienteId();
+                                Log.info("rowFichaId : " + rowFichaId);
+                                Log.info("rowPacienteId : " + rowPacienteId);
 
-                            Log.info("rowFichaId : " + rowFichaId);
-                            Log.info("rowPacienteId : " + rowPacienteId);
+                                if (!rowPacienteId.isEmpty() && (!rowFichaId.isEmpty())
+                                        && (LFPaciente.insertPaciente(numuser_paciente,
+                                                nombre_paciente, apellido_paciente, email_contacto_paciente,
+                                                numero_telefono_paciente, profesion_paciente, estado_civil_paciente,
+                                                fecha_nacimiento_paciente, edad_paciente, prevision, aboutme_obs_paciente,
+                                                usuario_creador, nombre_completo, empresa, rowPacienteId, direccion_paciente, sexo) == 1)
+                                        && (LFFichas.insertFicha(rowFichaId, numuser_paciente,
+                                                nombre_paciente, apellido_paciente,
+                                                nombre_completo, roles, usuario_creador, nombre_completo,
+                                                empresa) == 1)) {
 
-                            if (!rowPacienteId.isEmpty() && (!rowFichaId.isEmpty())
-                                    && (LFPaciente.insertPaciente(numuser_paciente,
-                                            nombre_paciente, apellido_paciente, email_contacto_paciente,
-                                            numero_telefono_paciente, profesion_paciente, estado_civil_paciente,
-                                            fecha_nacimiento_paciente, edad_paciente, prevision, aboutme_obs_paciente,
-                                            usuario_creador, nombre_completo, empresa, rowPacienteId, direccion_paciente,sexo) == 1)
-                                    && (LFFichas.insertFicha(rowFichaId, numuser_paciente,
-                                            nombre_paciente, apellido_paciente,
-                                            nombre_completo, Roles, usuario_creador, nombre_completo,
-                                            empresa) == 1)) {
+                                    Log.info("Insert OK");
+                                    status = Status.SUCCESS_OK;
+                                    message = INSERT_OK;
 
-                                Log.info("Insert OK");
-                                status = Status.SUCCESS_OK;
-                                message = INSERT_OK;
+                                } else {
 
-                            } else {
+                                    Log.info("Error de insercion");
+                                    //Roll back - delete
+                                    LFSSO.rollBack(rowFichaId);
+                                    LFUsuarios.rollBack(rowPacienteId, empresa);
+                                    // rowFichaId ;
+                                    //rowUserId ;
+                                    message = INSERT_NO_OK;
+                                    status = Status.CLIENT_ERROR_BAD_REQUEST;
 
-                                Log.info("Error de insercion");
-                                //Roll back - delete
-                                LFSSO.rollBack(rowFichaId);
-                                LFUsuarios.rollBack(rowPacienteId, empresa);
-                                // rowFichaId ;
-                                //rowUserId ;
-                                message = INSERT_NO_OK;
-                                status = Status.CLIENT_ERROR_BAD_REQUEST;
-
-                            }
-                            break;
-                        default:
-                            Log.error("no Soportada :" + accion);
+                                }
+                                break;
+                            default:
+                                Log.error("no Soportada :" + accion);
+                        }
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
-
                 } catch (Exception e) {
                     Log.error("getMessage :" + e.getMessage());
                     Log.error(e.toString());

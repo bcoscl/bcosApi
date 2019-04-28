@@ -41,10 +41,10 @@ public class ApiUpdateExamenes extends ServerResource {
     @Post
     public Representation updateSucursales() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
-        
+
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -79,44 +79,48 @@ public class ApiUpdateExamenes extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
-                    
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
                     Log.info(usuario_creador);
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN") || roles.contains("RECEPCION")) {
+                        if (accion.equalsIgnoreCase(DELETE_EXAMEN)) {
+                            if (LFExamenes.deleteExamenes(exa_n_id, empresa) == 1) {
 
-                    if (accion.equalsIgnoreCase(DELETE_EXAMEN)) {
-                        if (LFExamenes.deleteExamenes(exa_n_id,empresa) == 1) {
+                                Log.info("DELETE_OK");
+                                status = Status.SUCCESS_OK;
+                                message = "UPDATE_OK";
 
-                            Log.info("DELETE_OK");
-                            status = Status.SUCCESS_OK;
-                            message = "UPDATE_OK";
+                            } else {
+                                Log.info("Error de Udpate/Delete");
+                                message = "UPDATE_NO_OK";
+                                status = Status.CLIENT_ERROR_BAD_REQUEST;
+                            }
 
+                        } else if (accion.equalsIgnoreCase(UPDATE_EXAMEN)) {
+
+                            if (LFExamenes.updateExamenes(exa_n_id, exa_c_name,
+                                    exa_c_obs, usuario_creador, nombre_completo, exa_c_url, empresa) == 1) {
+
+                                Log.info("UPDATE OK");
+                                status = Status.SUCCESS_OK;
+                                message = "UPDATE_OK";
+                            } else {
+                                Log.info("Error de Udpate/Delete");
+                                message = "UPDATE_NO_OK";
+                                status = Status.CLIENT_ERROR_BAD_REQUEST;
+                            }
                         } else {
+
                             Log.info("Error de Udpate/Delete");
                             message = "UPDATE_NO_OK";
                             status = Status.CLIENT_ERROR_BAD_REQUEST;
-                        }
 
-                    } else if (accion.equalsIgnoreCase(UPDATE_EXAMEN)) {
-
-                        if (LFExamenes.updateExamenes(exa_n_id, exa_c_name,
-                                exa_c_obs, usuario_creador, nombre_completo, exa_c_url,empresa) == 1) {
-
-                            Log.info("UPDATE OK");
-                            status = Status.SUCCESS_OK;
-                            message = "UPDATE_OK";
-                        } else {
-                            Log.info("Error de Udpate/Delete");
-                            message = "UPDATE_NO_OK";
-                            status = Status.CLIENT_ERROR_BAD_REQUEST;
                         }
                     } else {
-
-                        Log.info("Error de Udpate/Delete");
-                        message = "UPDATE_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
-
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
-
                 } catch (Exception e) {
                     Log.error(e.toString());
                     status = Status.CLIENT_ERROR_BAD_REQUEST;

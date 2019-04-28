@@ -73,7 +73,7 @@ public class ApiListarFarmacos extends ServerResource {
 
                     Log.info("roles :" + roles);
 
-                    if (roles.contains("SUPER-ADMIN")) {
+                    if (roles.contains("SUPER-ADMIN")||roles.contains("MEDICO")||roles.contains("ADMIN")) {
                         Iterator it = LFFarmacos.selectFarmacos(Paciente, empresa);
                         List<Farmacos> l = new ArrayList();
                         while (it.hasNext()) {
@@ -99,11 +99,9 @@ public class ApiListarFarmacos extends ServerResource {
                         message = "SELECT_OK";
 
                     } else {
-
-                        Log.info("EL perfil no tiene acceso");
-                        message = "SELECT_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
-
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
                 } catch (Exception e) {
                     Log.error(e.toString());

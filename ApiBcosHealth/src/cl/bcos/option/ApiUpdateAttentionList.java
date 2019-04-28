@@ -39,10 +39,10 @@ public class ApiUpdateAttentionList extends ServerResource {
     @Post
     public Representation updateSucursales() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
-        
+
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -68,29 +68,36 @@ public class ApiUpdateAttentionList extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
-                    Log.info(usuario_creador);
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN") || roles.contains("RECEPCION")) {
 
-                    if (accion.equalsIgnoreCase("AT-DELETE_FROM_LIST")) {
-                        LFAttentionList.deleteFromAttentionList(row, empresa);
+                        Log.info(usuario_creador);
 
-                        Log.info("UPDATE OK");
-                        status = Status.SUCCESS_OK;
-                        message = "UPDATE_OK";
-                    } else if (accion.equalsIgnoreCase("AT-SEND_TO_FINAL_LIST")) {
-                        LFAttentionList.moverAlfinal(row, empresa);
+                        if (accion.equalsIgnoreCase("AT-DELETE_FROM_LIST")) {
+                            LFAttentionList.deleteFromAttentionList(row, empresa);
 
-                        Log.info("UPDATE OK");
-                        status = Status.SUCCESS_OK;
-                        message = "UPDATE_OK";
+                            Log.info("UPDATE OK");
+                            status = Status.SUCCESS_OK;
+                            message = "UPDATE_OK";
+                        } else if (accion.equalsIgnoreCase("AT-SEND_TO_FINAL_LIST")) {
+                            LFAttentionList.moverAlfinal(row, empresa);
+
+                            Log.info("UPDATE OK");
+                            status = Status.SUCCESS_OK;
+                            message = "UPDATE_OK";
+                        } else {
+
+                            Log.info("Error de insercion");
+                            message = "UPDATE_NO_OK";
+                            status = Status.CLIENT_ERROR_BAD_REQUEST;
+
+                        }
                     } else {
-
-                        Log.info("Error de insercion");
-                        message = "UPDATE_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
-
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
-
                     /* if ("CLAVE OK".equals(arr[0].trim())) {
                     
                     map.put("CORREO", arr[14].trim());

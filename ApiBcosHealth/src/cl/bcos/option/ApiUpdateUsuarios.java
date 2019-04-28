@@ -41,15 +41,15 @@ public class ApiUpdateUsuarios extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         Map map = new HashMap();
-        
+
         String id = getQuery().getValues("id");
         String accion = getQuery().getValues("accion");
-        
+
 //        String nombre_empresa = getQuery().getValues("nombre_empresa");
 //        String contacto_empresa = getQuery().getValues("contacto_empresa");
 //        String email_contacto = getQuery().getValues("email_contacto");
@@ -84,40 +84,46 @@ public class ApiUpdateUsuarios extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
                     Log.info(usuario_creador);
-                    
-                    if(accion.equalsIgnoreCase("ESTADO")){
-                        LFUsuarios.updateEstado(id,checkbox_activo,nombre_completo, empresa);
-                    
-                        Log.info("UPDATE OK");
-                        status = Status.SUCCESS_OK;
-                        message = "UPDATE_OK";
-                    }
-//                    if (LFSuscripcion.insertSuscripcion(nombre_empresa,
-//                            contacto_empresa, email_contacto, numero_telefono, 
-//                            fecha_inicio, select_plan_code, select_plan_name, 
-//                            checkbox_activo, nombre_completo, usuario_creador) == 1) {
-//
-//                        Log.info("UPDATE OK");
-//                        status = Status.SUCCESS_OK;
-//                        message = "UPDATE_OK";
-//
-//                    } 
-                    else {
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")) {
 
-                        Log.info("Error de insercion");
-                        message = "UPDATE_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
+                        if (accion.equalsIgnoreCase("ESTADO")) {
+                            LFUsuarios.updateEstado(id, checkbox_activo, nombre_completo, empresa);
 
-                    }
+                            Log.info("UPDATE OK");
+                            status = Status.SUCCESS_OK;
+                            message = "UPDATE_OK";
+                        } //                    if (LFSuscripcion.insertSuscripcion(nombre_empresa,
+                        //                            contacto_empresa, email_contacto, numero_telefono, 
+                        //                            fecha_inicio, select_plan_code, select_plan_name, 
+                        //                            checkbox_activo, nombre_completo, usuario_creador) == 1) {
+                        //
+                        //                        Log.info("UPDATE OK");
+                        //                        status = Status.SUCCESS_OK;
+                        //                        message = "UPDATE_OK";
+                        //
+                        //                    } 
+                        else {
 
-                    /* if ("CLAVE OK".equals(arr[0].trim())) {
+                            Log.info("Error de insercion");
+                            message = "UPDATE_NO_OK";
+                            status = Status.CLIENT_ERROR_BAD_REQUEST;
+
+                        }
+
+                        /* if ("CLAVE OK".equals(arr[0].trim())) {
                     
                     map.put("CORREO", arr[14].trim());
                     map.put("POSLOCAL", arr[15].trim());
                     map.put("ESTADO", arr[16].trim());
                 }*/
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
+                    }
                 } catch (Exception e) {
                     Log.error(e.toString());
                     status = Status.CLIENT_ERROR_BAD_REQUEST;

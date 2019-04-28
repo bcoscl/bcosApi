@@ -35,7 +35,6 @@ public class ApiCrearExamenes extends ServerResource {
     private final String INSERT_NO_OK = "INSERT_NO_OK";
     private final String CREATE = "PUP-EXAMENES-CREATE";
     private final String CREATE_ = "IE";
-    
 
     public ApiCrearExamenes() {
         jwt = new ImplementacionJWT();
@@ -46,7 +45,7 @@ public class ApiCrearExamenes extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -80,35 +79,39 @@ public class ApiCrearExamenes extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
-                    String Roles = jwt.getJwt().getValue("Roles").toString();
+                    String roles = jwt.getJwt().getValue("Roles").toString();
 
                     Log.info("usuario Creador:" + usuario_creador);
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO") || roles.contains("RECEPCION")) {
+                        switch (accion) {
 
-                    switch (accion) {
+                            case CREATE:
+                            case CREATE_:
 
-                        case CREATE:
-                        case CREATE_:
+                                if (LFExamenes.insertExamenes(exa_c_name, exa_c_obs, exa_c_numuser_paciente,
+                                        usuario_creador, nombre_completo, exa_c_url, examen_pacientename, empresa) == 1) {
 
-                            if (LFExamenes.insertExamenes(exa_c_name, exa_c_obs, exa_c_numuser_paciente,
-                                    usuario_creador, nombre_completo, exa_c_url,examen_pacientename,empresa) == 1) {
+                                    Log.info("Insert OK");
+                                    status = Status.SUCCESS_OK;
+                                    message = INSERT_OK;
 
-                                Log.info("Insert OK");
-                                status = Status.SUCCESS_OK;
-                                message = INSERT_OK;
+                                } else {
 
-                            } else {
+                                    Log.info("Error de insercion");
 
-                                Log.info("Error de insercion");
+                                    message = INSERT_NO_OK;
+                                    status = Status.CLIENT_ERROR_BAD_REQUEST;
 
-                                message = INSERT_NO_OK;
-                                status = Status.CLIENT_ERROR_BAD_REQUEST;
-
-                            }
-                            break;
-                        default:
-                            Log.error("no Soportada :" + accion);
+                                }
+                                break;
+                            default:
+                                Log.error("no Soportada :" + accion);
+                        }
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
-
                 } catch (Exception e) {
                     Log.error("getMessage :" + e.getMessage());
                     Log.error(e.toString());
