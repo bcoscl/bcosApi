@@ -91,6 +91,29 @@ public class CFParams {
         }
         return ret;
     }
+    public static String getsysdate() {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+        String ret = "";
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            String[] param = {};
+            TabRegistros tab = new TabRegistros();
+            tab.setContext(RFParams.getsysdate(con));
+            tab.execute(tab.USE_RS, param);
+            Iterator it = tab.getRegistros();
+
+            while (it.hasNext()) {
+                Registro reg = (Registro) it.next();
+                ret = reg.get(RFParams.params_now);
+            }
+        } catch (Exception e) {
+            Log.error(e.toString());
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+        return ret;
+    }
 
     public static int insertParam(String params_n_grupo,
             String params_n_subgrupo,

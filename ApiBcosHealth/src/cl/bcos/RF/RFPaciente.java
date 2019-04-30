@@ -119,7 +119,7 @@ public class RFPaciente extends Registro {
         qry.append(fecha_nacimiento_paciente);
         qry.append("',");
         qry.append(edad_paciente);        
-        qry.append("','");
+        qry.append(",'");
         qry.append(empresaName);
         qry.append("')");
 

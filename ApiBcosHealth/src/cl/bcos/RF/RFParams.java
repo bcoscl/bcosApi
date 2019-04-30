@@ -30,9 +30,17 @@ public class RFParams extends Registro {
     public static final int params_d_ultmod = 8;
     public static final int params_c_numuser_utlmod = 9;
     public static final int params_c_nombre_ultmod = 10;
+    public static final int mail_smtp_host = 11;
+    public static final int mail_smtp_user = 12;
+    public static final int mail_smtp_clave = 13;
+    public static final int mail_smtp_auth = 14;
+    public static final int mail_smtp_port = 15;
+    public static final int mail_smtp_transport = 16;
+    public static final int mail_smtp_bcc = 17;
+    public static final int params_now = 18;
 
     public RFParams() {
-        super(11);
+        super(20);
     }
 
     /*Validacion de si existe para el ingreso de la persona, Autenticacion*/
@@ -76,6 +84,7 @@ public class RFParams extends Registro {
         }
 
     }
+
     /*Validacion de si existe para el ingreso de la persona, Autenticacion*/
     public static AdmRegistros getAllParams(Connection con) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -89,7 +98,7 @@ public class RFParams extends Registro {
         qry.append(" params_n_param3,  ");
         qry.append(" params_n_param4,params_d_ultmod,params_c_numuser_utlmod,params_c_nombre_ultmod ");
         qry.append(" FROM health_params ");
-       
+
         Log.debug(qry.toString());
         try {
             AdmRegistros adm = new AdmRegistros(con,
@@ -107,6 +116,63 @@ public class RFParams extends Registro {
             adm.setColumna(8, params_d_ultmod);
             adm.setColumna(9, params_c_numuser_utlmod);
             adm.setColumna(10, params_c_nombre_ultmod);
+
+            return adm;
+        } catch (Exception e) {
+            Log.error(e.getMessage());
+            throw e;
+        }
+
+    }
+
+    public static AdmRegistros getEmailConfig(Connection con) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append(" select (SELECT params_n_param1 ");
+        qry.append("FROM health_params ");
+        qry.append("where params_n_grupo='EMAIL' ");
+        qry.append("and params_n_subgrupo='MAIL.SMTP.HOST') mail_smtp_host, ");
+        qry.append("(SELECT params_n_param1 ");
+        qry.append("FROM health_params ");
+        qry.append("where params_n_grupo='EMAIL' ");
+        qry.append("and params_n_subgrupo='MAIL.SMTP.USER') mail_smtp_user, ");
+        qry.append("(SELECT params_n_param1 ");
+        qry.append("FROM health_params ");
+        qry.append("where params_n_grupo='EMAIL' ");
+        qry.append("and params_n_subgrupo='MAIL.SMTP.CLAVE') mail_smtp_clave, ");
+        qry.append("(SELECT params_n_param1 ");
+        qry.append("FROM health_params ");
+        qry.append("where params_n_grupo='EMAIL' ");
+        qry.append("and params_n_subgrupo='MAIL.SMTP.AUTH') mail_smtp_auth, ");
+        qry.append("(SELECT params_n_param1 ");
+        qry.append("FROM health_params ");
+        qry.append("where params_n_grupo='EMAIL' ");
+        qry.append("and params_n_subgrupo='MAIL.SMTP.PORT') mail_smtp_port, ");
+        qry.append("(SELECT params_n_param1 ");
+        qry.append("FROM health_params ");
+        qry.append("where params_n_grupo='EMAIL' ");
+        qry.append("and params_n_subgrupo='TRANSPORT') mail_smtp_transport, ");
+        qry.append("(SELECT params_n_param1 ");
+        qry.append("FROM health_params ");
+        qry.append("where params_n_grupo='EMAIL' ");
+        qry.append("and params_n_subgrupo='BCC') mail_smtp_bcc ");
+
+        Log.debug(qry.toString());
+        try {
+            AdmRegistros adm = new AdmRegistros(con,
+                    qry.toString(),
+                    7,
+                    new RFParams());
+
+            adm.setColumna(1, mail_smtp_host);
+            adm.setColumna(2, mail_smtp_user);
+            adm.setColumna(3, mail_smtp_clave);
+            adm.setColumna(4, mail_smtp_auth);
+            adm.setColumna(5, mail_smtp_port);
+            adm.setColumna(6, mail_smtp_transport);
+            adm.setColumna(7, mail_smtp_bcc);
+            
 
             return adm;
         } catch (Exception e) {
@@ -138,11 +204,32 @@ public class RFParams extends Registro {
         }
 
     }
+    public static AdmRegistros getsysdate(Connection con) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
 
-    public static int insertParam(Connection con, 
-            String params_n_grupo, 
-            String params_n_subgrupo, 
-            String params_n_param1, 
+        qry.append("select NOW()");
+        Log.debug(qry.toString());
+        try {
+            AdmRegistros adm = new AdmRegistros(con,
+                    qry.toString(),
+                    1,
+                    new RFParams());
+
+            adm.setColumna(1, params_now);
+
+            return adm;
+        } catch (Exception e) {
+            Log.error(e.getMessage());
+            throw e;
+        }
+
+    }
+
+    public static int insertParam(Connection con,
+            String params_n_grupo,
+            String params_n_subgrupo,
+            String params_n_param1,
             String params_n_param2,
             String params_n_param3,
             String params_n_param4,
@@ -170,7 +257,7 @@ public class RFParams extends Registro {
         qry.append("','");
         qry.append(params_c_nombre_ultmod);
         qry.append("')");
-        
+
         Log.debug(qry.toString());
         PreparedStatement ps = null;
         try {
@@ -191,7 +278,6 @@ public class RFParams extends Registro {
         }
     }
 
-    
     public static int deleteParams(Connection con, String rowParamId) {
 
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -221,6 +307,5 @@ public class RFParams extends Registro {
             }
         }
     }
-    
-    
+
 }

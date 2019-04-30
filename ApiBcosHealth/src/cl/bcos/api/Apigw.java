@@ -26,6 +26,8 @@ import cl.bcos.get.ApiListarSucursales;
 import cl.bcos.get.ApiListarFichas;
 import cl.bcos.get.ApiListarMenu;
 import cl.bcos.get.ApiListarParam;
+import cl.bcos.healthCheck.HealthCheck;
+import cl.bcos.healthCheck.HealthCheckBD;
 import cl.bcos.option.ApiUpdateConsultas;
 import cl.bcos.option.ApiUpdateEnfermedadesCronicas;
 import cl.bcos.option.ApiUpdateExamenes;
@@ -86,6 +88,10 @@ public class Apigw extends ServerResource {
                 Component component = new Component();
                 component.getServers().add(Protocol.HTTP, port);
                 /*End Point de Autenticacion*/
+                component.getDefaultHost().attach("/bcos/api/json/HealthCheck", HealthCheck.class);
+                component.getDefaultHost().attach("/bcos/api/json/HealthCheckBD", HealthCheckBD.class);
+                
+                
                 component.getDefaultHost().attach("/bcos/api/json/SSO", ApiSSO.class);
                 
                 /*End Point Control de Configuracione avanzadas*/

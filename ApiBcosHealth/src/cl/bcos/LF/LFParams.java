@@ -49,6 +49,12 @@ public class LFParams {
 
         return Response;
     }
+    public static String getsysdate() {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        String Response = CFParams.getsysdate();
+
+        return Response;
+    }
      public static int deleteParams(String Rowid) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         int Response = CFParams.deleteParams(Rowid);
