@@ -21,6 +21,7 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
+import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 
 /**
@@ -39,7 +40,7 @@ public class HealthCheckBD extends ServerResource {
         jwt = new ImplementacionJWT();
     }
 
-    @Post
+    @Get
     public Representation HealthCheckBD() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Status status = null;
