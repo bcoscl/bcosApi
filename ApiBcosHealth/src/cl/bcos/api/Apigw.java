@@ -63,7 +63,7 @@ public class Apigw extends ServerResource {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         // TODO code application Logic here
 
 //        System.setProperty("http.proxyHost", "proxyfal.falabella.cl");
@@ -75,111 +75,106 @@ public class Apigw extends ServerResource {
 //        System.setProperty("https.proxyPort", "8080");
 //        System.setProperty("https.proxyUser", "aacantero");
 //        System.setProperty("https.proxyPassword", "Kantero32.");
+        try {
+            int port = 0;
+            if (args != null && args.length > 0) {
 
-        int port = 0;
-        if (args != null && args.length > 0) {
+                try {
+                    port = Integer.parseInt(args[0]);
+                } catch (NumberFormatException e) {
+                    Log.error(e.toString());
+                }
+                if (port != 0) {
+                    Component component = new Component();
+                    component.getServers().add(Protocol.HTTP, port);
+                    /*End Point de Autenticacion*/
+                    component.getDefaultHost().attach("/bcos/api/json/HealthCheck", HealthCheck.class);
+                    component.getDefaultHost().attach("/bcos/api/json/HealthCheckBD", HealthCheckBD.class);
 
-            try {
-                port = Integer.parseInt(args[0]);
-            } catch (NumberFormatException e) {
-                Log.error(e.toString());
-            }
-            if (port != 0) {
-                Component component = new Component();
-                component.getServers().add(Protocol.HTTP, port);
-                /*End Point de Autenticacion*/
-                component.getDefaultHost().attach("/bcos/api/json/HealthCheck", HealthCheck.class);
-                component.getDefaultHost().attach("/bcos/api/json/HealthCheckBD", HealthCheckBD.class);
-                
-                
-                component.getDefaultHost().attach("/bcos/api/json/SSO", ApiSSO.class);
-                
-                /*End Point Control de Configuracione avanzadas*/
-                component.getDefaultHost().attach("/bcos/api/json/crearParam", ApiCrearParam.class);
-                component.getDefaultHost().attach("/bcos/api/json/listarParam", ApiListarParam.class);                
-                component.getDefaultHost().attach("/bcos/api/json/updateParam", ApiUpdateParam.class); 
-                
-                component.getDefaultHost().attach("/bcos/api/json/listarMenu", ApiListarMenu.class); 
-                
-                /*End Point Control de Planes*/
-                component.getDefaultHost().attach("/bcos/api/json/planes", ApiCrearPlanes.class);
-                component.getDefaultHost().attach("/bcos/api/json/listarPlanes", ApiListarPlanes.class);
-                
-                /*End Point Suscripciones*/
-                component.getDefaultHost().attach("/bcos/api/json/crearSuscripcion", ApiCrearSuscripcion.class);
-                component.getDefaultHost().attach("/bcos/api/json/listarSuscripcion", ApiListarSuscripciones.class);
-                component.getDefaultHost().attach("/bcos/api/json/updateSuscripcion", ApiUpdateSuscripcion.class);
-                
-                
-                /*End Point de registro de Fichas*/
-                component.getDefaultHost().attach("/bcos/api/json/listarFichas", ApiListarFichas.class);
-                
-                /*End Point Administracion de Roles*/
-                component.getDefaultHost().attach("/bcos/api/json/crearRole", ApiCrearRole.class);
-                component.getDefaultHost().attach("/bcos/api/json/listarRoles", ApiListarRole.class);
-                
-                /*End Point Administracion de Profesiones*/
-                component.getDefaultHost().attach("/bcos/api/json/crearProfesiones", ApiCrearProfesiones.class);
-                component.getDefaultHost().attach("/bcos/api/json/listarProfesiones", ApiListarProfesiones.class);
-                
-                /*End Point Administracion de usuarios de la aplicacion*/
-                component.getDefaultHost().attach("/bcos/api/json/crearUsuarios", ApiCrearUsuarios.class);
-                component.getDefaultHost().attach("/bcos/api/json/updateUsuarios", ApiUpdateUsuarios.class);
-                component.getDefaultHost().attach("/bcos/api/json/ListarUsuarios", ApiListarUsuarios.class);
-                
-                
-                /*End Point controla la informacion del componente profile*/
-                component.getDefaultHost().attach("/bcos/api/json/Profile", ApiProfile.class);
-                /*End Point Profile de pacientes*/
-                component.getDefaultHost().attach("/bcos/api/json/PacienteProfile", ApiPacienteProfile.class);
-                
-                
-                /*End Point Adminsitracion de Sucursales*/
-                component.getDefaultHost().attach("/bcos/api/json/listarSucursales", ApiListarSucursales.class);
-                component.getDefaultHost().attach("/bcos/api/json/updateSucursales", ApiUpdateSucursales.class);
-                component.getDefaultHost().attach("/bcos/api/json/crearSucursales", ApiCrearSucursales.class);
-                
-                /*End Point Administracion de Pacientes*/
-                component.getDefaultHost().attach("/bcos/api/json/crearPaciente", ApiCrearPaciente.class);
-                component.getDefaultHost().attach("/bcos/api/json/ListarPacientes", ApiListarPacientes.class);
-                component.getDefaultHost().attach("/bcos/api/json/updatePacientes", ApiUpdatePacientes.class);
-                
-                
-                /*End Point gestiona la Lista de Atencion*/
-                component.getDefaultHost().attach("/bcos/api/json/addAttentionList", ApiAddAttentionList.class);
-                component.getDefaultHost().attach("/bcos/api/json/updateAttentionList", ApiUpdateAttentionList.class);
-                component.getDefaultHost().attach("/bcos/api/json/listarAttentionList", ApiListarAttentionList.class);
-                
-                /*End Point Administracion de las enfermedades cronicas*/
-                component.getDefaultHost().attach("/bcos/api/json/listarEnfermedadesCronicas", ApiListarEnfermedadesCronicas.class);
-                component.getDefaultHost().attach("/bcos/api/json/updateEnfermedadesCronicas", ApiUpdateEnfermedadesCronicas.class);
-                component.getDefaultHost().attach("/bcos/api/json/crearEnfermedadesCronicas", ApiCrearEnfermedadesCronicas.class);
-                
-                /*End Point Administracion de los farmacos*/
-                component.getDefaultHost().attach("/bcos/api/json/listarFarmacos", ApiListarFarmacos.class);
-                component.getDefaultHost().attach("/bcos/api/json/updateFarmacos", ApiUpdateFarmacos.class);
-                component.getDefaultHost().attach("/bcos/api/json/crearFarmacos", ApiCrearFarmacos.class);
-                
-                
-                /*End Point Administracion de las consultas del paciente*/
-                component.getDefaultHost().attach("/bcos/api/json/listarConsultas", ApiListarConsultas.class);
-                component.getDefaultHost().attach("/bcos/api/json/crearConsultas", ApiCrearConsultas.class);
-                component.getDefaultHost().attach("/bcos/api/json/updateConsultas", ApiUpdateConsultas.class);
-                
-                /*End Point Administracion de los examenes*/
-                component.getDefaultHost().attach("/bcos/api/json/listarExamenes", ApiListarExamenes.class);
-                component.getDefaultHost().attach("/bcos/api/json/updateExamenes", ApiUpdateExamenes.class);
-                component.getDefaultHost().attach("/bcos/api/json/crearExamenes", ApiCrearExamenes.class);
+                    component.getDefaultHost().attach("/bcos/api/json/SSO", ApiSSO.class);
 
-                
-                    
-                component.start();
+                    /*End Point Control de Configuracione avanzadas*/
+                    component.getDefaultHost().attach("/bcos/api/json/crearParam", ApiCrearParam.class);
+                    component.getDefaultHost().attach("/bcos/api/json/listarParam", ApiListarParam.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateParam", ApiUpdateParam.class);
 
+                    component.getDefaultHost().attach("/bcos/api/json/listarMenu", ApiListarMenu.class);
+
+                    /*End Point Control de Planes*/
+                    component.getDefaultHost().attach("/bcos/api/json/planes", ApiCrearPlanes.class);
+                    component.getDefaultHost().attach("/bcos/api/json/listarPlanes", ApiListarPlanes.class);
+
+                    /*End Point Suscripciones*/
+                    component.getDefaultHost().attach("/bcos/api/json/crearSuscripcion", ApiCrearSuscripcion.class);
+                    component.getDefaultHost().attach("/bcos/api/json/listarSuscripcion", ApiListarSuscripciones.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateSuscripcion", ApiUpdateSuscripcion.class);
+
+                    /*End Point de registro de Fichas*/
+                    component.getDefaultHost().attach("/bcos/api/json/listarFichas", ApiListarFichas.class);
+
+                    /*End Point Administracion de Roles*/
+                    component.getDefaultHost().attach("/bcos/api/json/crearRole", ApiCrearRole.class);
+                    component.getDefaultHost().attach("/bcos/api/json/listarRoles", ApiListarRole.class);
+
+                    /*End Point Administracion de Profesiones*/
+                    component.getDefaultHost().attach("/bcos/api/json/crearProfesiones", ApiCrearProfesiones.class);
+                    component.getDefaultHost().attach("/bcos/api/json/listarProfesiones", ApiListarProfesiones.class);
+
+                    /*End Point Administracion de usuarios de la aplicacion*/
+                    component.getDefaultHost().attach("/bcos/api/json/crearUsuarios", ApiCrearUsuarios.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateUsuarios", ApiUpdateUsuarios.class);
+                    component.getDefaultHost().attach("/bcos/api/json/ListarUsuarios", ApiListarUsuarios.class);
+
+                    /*End Point controla la informacion del componente profile*/
+                    component.getDefaultHost().attach("/bcos/api/json/Profile", ApiProfile.class);
+                    /*End Point Profile de pacientes*/
+                    component.getDefaultHost().attach("/bcos/api/json/PacienteProfile", ApiPacienteProfile.class);
+
+                    /*End Point Adminsitracion de Sucursales*/
+                    component.getDefaultHost().attach("/bcos/api/json/listarSucursales", ApiListarSucursales.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateSucursales", ApiUpdateSucursales.class);
+                    component.getDefaultHost().attach("/bcos/api/json/crearSucursales", ApiCrearSucursales.class);
+
+                    /*End Point Administracion de Pacientes*/
+                    component.getDefaultHost().attach("/bcos/api/json/crearPaciente", ApiCrearPaciente.class);
+                    component.getDefaultHost().attach("/bcos/api/json/ListarPacientes", ApiListarPacientes.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updatePacientes", ApiUpdatePacientes.class);
+
+                    /*End Point gestiona la Lista de Atencion*/
+                    component.getDefaultHost().attach("/bcos/api/json/addAttentionList", ApiAddAttentionList.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateAttentionList", ApiUpdateAttentionList.class);
+                    component.getDefaultHost().attach("/bcos/api/json/listarAttentionList", ApiListarAttentionList.class);
+
+                    /*End Point Administracion de las enfermedades cronicas*/
+                    component.getDefaultHost().attach("/bcos/api/json/listarEnfermedadesCronicas", ApiListarEnfermedadesCronicas.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateEnfermedadesCronicas", ApiUpdateEnfermedadesCronicas.class);
+                    component.getDefaultHost().attach("/bcos/api/json/crearEnfermedadesCronicas", ApiCrearEnfermedadesCronicas.class);
+
+                    /*End Point Administracion de los farmacos*/
+                    component.getDefaultHost().attach("/bcos/api/json/listarFarmacos", ApiListarFarmacos.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateFarmacos", ApiUpdateFarmacos.class);
+                    component.getDefaultHost().attach("/bcos/api/json/crearFarmacos", ApiCrearFarmacos.class);
+
+                    /*End Point Administracion de las consultas del paciente*/
+                    component.getDefaultHost().attach("/bcos/api/json/listarConsultas", ApiListarConsultas.class);
+                    component.getDefaultHost().attach("/bcos/api/json/crearConsultas", ApiCrearConsultas.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateConsultas", ApiUpdateConsultas.class);
+
+                    /*End Point Administracion de los examenes*/
+                    component.getDefaultHost().attach("/bcos/api/json/listarExamenes", ApiListarExamenes.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateExamenes", ApiUpdateExamenes.class);
+                    component.getDefaultHost().attach("/bcos/api/json/crearExamenes", ApiCrearExamenes.class);
+
+                    component.start();
+
+                } else {
+                    Log.error("No se ha especificado el puerto");
+                }
             } else {
                 Log.error("No se ha especificado el puerto");
             }
-        } else {
-            Log.error("No se ha especificado el puerto");
+        } catch (Exception e) {
+            Log.error("Excepcion al iniciar API");
         }
 
     }
