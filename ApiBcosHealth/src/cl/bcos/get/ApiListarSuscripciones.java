@@ -31,19 +31,19 @@ import org.restlet.resource.Post;
  * @author aacantero
  */
 public class ApiListarSuscripciones extends ServerResource {
-    
+
     private static final Logger Log = Logger.getLogger(ApiListarSuscripciones.class);
-    
+
     private ImplementacionJWT jwt = null;
     private Map s = new HashMap();
     private final String ERROR_TOKEN = "TOKEN_NO_VALIDO";
     private static final String LISTAR_SELECT = "LS-SELECT";
     private static final String LISTAR_SELECT_BY = "LS-SELECT-BY-EMPRESA";
-    
+
     public ApiListarSuscripciones() {
         jwt = new ImplementacionJWT();
     }
-    
+
     @Post
     public Representation getSuscripciones() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -56,39 +56,45 @@ public class ApiListarSuscripciones extends ServerResource {
         //String numero_maximo = getQuery().getValues("userMax");
         String token = getQuery().getValues("token");
         String accion = getQuery().getValues("accion");
+        String empresasession = getQuery().getValues("empresasession");
 
         //Log.info("nombrePlan : " + nombre_plan);
         //Log.info("userMax : " + numero_maximo);
         Log.info("token : " + token);
-        
+
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {
             if (token != null && !token.equals("") && validaJWT.validarTokenRS(token)) {
                 try {
-                    
+
                     String roles = jwt.getJwt().getValue("Roles").toString();
                     // String nombre_usuario = jwt.getJwt().getValue("name").toString();
                     // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
                     
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
+
                     Log.info("roles :" + roles);
                     Iterator it = null;
                     if (roles.contains("SUPER-ADMIN")) {
-                        
+
                         if (accion.equalsIgnoreCase(LISTAR_SELECT_BY)) {
                             it = LFSuscripcion.selectSuscripcionesbyempresa(empresa);
                         } else {
                             it = LFSuscripcion.selectSuscripciones();
                         }
-                        
+
                         List<suscripciones> l = new ArrayList();
                         while (it.hasNext()) {
                             Registro reg = (Registro) it.next();
                             suscripciones s = new suscripciones();
-                            
+
                             s.setEmail(reg.get(RFSuscripcion.email));
                             s.setEstado(reg.get(RFSuscripcion.estado));
                             s.setFecha_creacion(reg.get(RFSuscripcion.fecha_creacion));
@@ -101,9 +107,9 @@ public class ApiListarSuscripciones extends ServerResource {
                             s.setTelefono(reg.get(RFSuscripcion.telefono));
                             s.setUsermax(reg.get(RFSuscripcion.usermax));
                             s.setUsuario_creador(reg.get(RFSuscripcion.usuario_creador));
-                            
+
                             l.add(s);
-                            
+
                         }
                         if (l.size() > 0) {
                             map.put("suscripciones", l);
@@ -111,13 +117,13 @@ public class ApiListarSuscripciones extends ServerResource {
                         Log.info("SELECT OK");
                         status = Status.SUCCESS_OK;
                         message = "SELECT_OK";
-                        
+
                     } else {
                         status = Status.CLIENT_ERROR_UNAUTHORIZED;
                         Log.error("Perfil sin acceso");
                         message = ERROR_TOKEN;
                     }
-                    
+
                 } catch (Exception e) {
                     Log.error(e.toString());
                     status = Status.CLIENT_ERROR_BAD_REQUEST;
@@ -131,13 +137,13 @@ public class ApiListarSuscripciones extends ServerResource {
             status = Status.CLIENT_ERROR_UNAUTHORIZED;
             message = ERROR_TOKEN;
         }
-        
+
         s.put("code", status.getCode());
         s.put("message", message);
         map.put("status", s);
-        
+
         setStatus(status, message);
-        
+
         return new StringRepresentation(gson.toJson(map), MediaType.APPLICATION_JSON);
     }
 }

@@ -90,6 +90,11 @@ public class Apigw extends ServerResource {
                     /*End Point de Autenticacion*/
                     component.getDefaultHost().attach("/bcos/api/json/HealthCheck", HealthCheck.class);
                     component.getDefaultHost().attach("/bcos/api/json/HealthCheckBD", HealthCheckBD.class);
+                    
+                    component.getDefaultHost().attach("/bcos/api/json/recuperarPassword", ApiRecuperarPassword.class);
+                    component.getDefaultHost().attach("/bcos/api/json/changePassword", ApiChangePassword.class);
+                    component.getDefaultHost().attach("/bcos/api/json/changePasswordInSite", ApiChangePasswordInSite.class);
+                    component.getDefaultHost().attach("/bcos/api/json/validaToken", ApiValidaToken.class);
 
                     component.getDefaultHost().attach("/bcos/api/json/SSO", ApiSSO.class);
 
@@ -174,7 +179,7 @@ public class Apigw extends ServerResource {
                 Log.error("No se ha especificado el puerto");
             }
         } catch (Exception e) {
-            Log.error("Excepcion al iniciar API");
+            Log.error("Excepcion al iniciar API"+e);
         }
 
     }

@@ -57,6 +57,7 @@ public class ApiCrearSucursales extends ServerResource {
         String checkbox_activo = getQuery().getValues("checkbox_activo");
 
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         Log.info("nombre_sucursal :" + nombre_sucursal);
         Log.info("comuna_sucursal :" + comuna_sucursal);
@@ -80,6 +81,11 @@ public class ApiCrearSucursales extends ServerResource {
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
                     String roles = jwt.getJwt().getValue("Roles").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("usuario Creador:" + usuario_creador);
                     if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")) {

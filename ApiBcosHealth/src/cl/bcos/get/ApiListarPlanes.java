@@ -53,11 +53,12 @@ public class ApiListarPlanes extends ServerResource {
         //String nombre_plan = getQuery().getValues("planName");
         //String numero_maximo = getQuery().getValues("userMax");
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         //Log.info("nombrePlan : " + nombre_plan);
         //Log.info("userMax : " + numero_maximo);
         Log.info("token : " + token);
-        
+
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
 
@@ -71,9 +72,14 @@ public class ApiListarPlanes extends ServerResource {
                     // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
 
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
+
                     Log.info("roles :" + roles);
 
-                    if (roles.contains("SUPER-ADMIN") ) {
+                    if (roles.contains("SUPER-ADMIN")) {
 
                         Iterator it = LFPlanes.selectPlanes();
                         List<Planes> l = new ArrayList();
@@ -84,12 +90,12 @@ public class ApiListarPlanes extends ServerResource {
                             plan.setNumeroMax(reg.get(RFPlanes.numero_maximo));
                             plan.setFechaCreacion(reg.get(RFPlanes.fecha_creacion));
                             plan.setNombreCreador(reg.get(RFPlanes.nombre_usuario_creador));
-                           l.add(plan);
-                           
+                            l.add(plan);
+
                         }
-                        if(l.size()>0){
+                        if (l.size() > 0) {
                             map.put("Planes", l);
-                        }                        
+                        }
                         Log.info("SELECT OK");
                         status = Status.SUCCESS_OK;
                         message = "SELECT_OK";

@@ -42,6 +42,7 @@ public class RFUsuarios extends Registro {
     public static final int pass_n_id = 20;
     public static final int pass_c_activo = 21;
 
+
     public RFUsuarios() {
         super(22);
     }
@@ -154,7 +155,21 @@ public class RFUsuarios extends Registro {
         adm.setColumna(1, existeRegistro);
         return adm;
     }
+    public static AdmRegistros existeRegistrobyEmail(Connection con) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
 
+        qry.append(" select coalesce((select 'SI' Existe from health_user u where u.user_c_email=? and user_c_numuser = ? limit 1),'NO') ");
+        Log.debug(qry.toString());
+        AdmRegistros adm = new AdmRegistros(con,
+                qry.toString(),
+                1,
+                new RFUsuarios()
+        );
+        adm.setColumna(1, existeRegistro);
+        return adm;
+    }
+ 
     /*Informacion del usuario*/
     public static AdmRegistros getUserInformation(Connection con) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -324,6 +339,41 @@ public class RFUsuarios extends Registro {
         qry.append(" and user_c_empresaname='");
         qry.append(empresa);
         qry.append("'");
+        
+        Log.debug(qry.toString());
+        PreparedStatement ps = null;
+
+        try {
+            ps = con.prepareStatement(qry.toString());
+            Log.debug(qry.toString());
+            return ps.executeUpdate();
+
+        } catch (Exception e) {
+            Log.error(e.getMessage());
+            return 0;
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException x) {
+                    Log.error(x.toString());
+                }
+            }
+        }
+    }
+    
+      
+    public static int changePass(Connection con, String usuario, String passs) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append(" UPDATE health_pass ");
+        qry.append(" SET  pass_c_password= '");
+        qry.append(passs);
+        qry.append("' WHERE pass_c_numuser = '");
+        qry.append(usuario);
+        qry.append("' ");
+        
         
         Log.debug(qry.toString());
         PreparedStatement ps = null;

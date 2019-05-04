@@ -36,7 +36,7 @@ public class RFParams extends Registro {
     public static final int mail_smtp_auth = 14;
     public static final int mail_smtp_port = 15;
     public static final int mail_smtp_transport = 16;
-    public static final int mail_smtp_bcc = 17;
+    public static final int mail_smtp_url = 17;
     public static final int params_now = 18;
 
     public RFParams() {
@@ -156,7 +156,7 @@ public class RFParams extends Registro {
         qry.append("(SELECT params_n_param1 ");
         qry.append("FROM health_params ");
         qry.append("where params_n_grupo='EMAIL' ");
-        qry.append("and params_n_subgrupo='BCC') mail_smtp_bcc ");
+        qry.append("and params_n_subgrupo='URL.RESET') mail_smtp_url");
 
         Log.debug(qry.toString());
         try {
@@ -171,7 +171,7 @@ public class RFParams extends Registro {
             adm.setColumna(4, mail_smtp_auth);
             adm.setColumna(5, mail_smtp_port);
             adm.setColumna(6, mail_smtp_transport);
-            adm.setColumna(7, mail_smtp_bcc);
+            adm.setColumna(7, mail_smtp_url);
             
 
             return adm;

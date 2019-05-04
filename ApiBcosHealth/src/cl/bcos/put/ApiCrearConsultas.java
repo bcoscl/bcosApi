@@ -65,6 +65,7 @@ public class ApiCrearConsultas extends ServerResource {
         String consult_c_createdate = getQuery().getValues("consult_c_createdate");
 
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         Log.info("accion :" + accion);
         Log.info("consult_c_titulo :" + consult_c_titulo);
@@ -87,6 +88,11 @@ public class ApiCrearConsultas extends ServerResource {
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     empresa = jwt.getJwt().getValue("empresaName").toString();
                     String roles = jwt.getJwt().getValue("Roles").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("usuario Creador:" + usuario_creador);
                     if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO")) {

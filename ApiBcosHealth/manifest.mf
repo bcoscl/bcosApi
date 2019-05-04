@@ -1,13 +1,3 @@
 Manifest-Version: 1.0
-Ant-Version: Apache Ant 1.9.7
-Created-By: 1.8.0_111-b14 (Oracle Corporation)
-Class-Path: lib/Jwt.jar lib/RSACrypt-v1.0.jar lib/RSACrypt.jar lib/bco
- s-conexionBD.jar lib/commons-beanutils-v1.6.jar lib/commons-codec-1.1
- 0.jar lib/commons-collections-v2.1.jar lib/commons-lang-v2.0.jar lib/
- commons-logging.jar lib/gson-2.8.2.jar lib/jackson-annotations-2.9.0.
- jar lib/jackson-core-2.8.9.jar lib/jackson-databind-2.8.9.jar lib/jav
- aee-web-api-7.0.jar lib/jjwt-0.9.0.jar lib/log4j-v1.2.8.jar lib/ojdbc
- 6-11.2.0.3.jar lib/org.restlet-2.4.0.jar lib/postgresql-9.4.1209.jar 
- lib/proxool-v0.9.0RC2.jar lib/tiene_acceso.jar
 X-COMMENT: Main-Class will be added automatically by build
-Main-Class: cl.bcos.api.Apigw
+

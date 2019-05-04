@@ -67,6 +67,27 @@ public class CFParams {
         }
 
     }
+    public static Iterator getEmailConfig() {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+        
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            String[] param = {};
+            TabRegistros tab = new TabRegistros();
+            tab.setContext(RFParams.getEmailConfig(con));
+            tab.execute(tab.USE_RS, param);
+            Iterator it = tab.getRegistros();
+            return it;
+
+        } catch (Exception e) {
+            Log.error(e.toString());
+            return null;
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+
+    }
 
     public static String getNewParamId() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

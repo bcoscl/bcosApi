@@ -55,12 +55,13 @@ public class ApiListarSucursales extends ServerResource {
         //String numero_maximo = getQuery().getValues("userMax");
         String token = getQuery().getValues("token");
         String accion = getQuery().getValues("accion");
+        String empresasession = getQuery().getValues("empresasession");
 
         //Log.info("nombrePlan : " + nombre_plan);
         //Log.info("userMax : " + numero_maximo);
         Log.info("token : " + token);
         Log.info("accion : " + accion);
-        
+
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
 
@@ -73,10 +74,16 @@ public class ApiListarSucursales extends ServerResource {
                     // String nombre_usuario = jwt.getJwt().getValue("name").toString();
                     // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
+
                     Iterator it = null;
                     Log.info("roles :" + roles);
 
-                    if (roles.contains("SUPER-ADMIN")||roles.contains("ADMIN")) {
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")) {
 
                         if (accion.equalsIgnoreCase(LISTAR_SELECT_MULTIPLE_BY_ACTIVE)) {
                             it = LFSucursales.selectSucursalesActive(empresa);
@@ -112,7 +119,7 @@ public class ApiListarSucursales extends ServerResource {
                         status = Status.SUCCESS_OK;
                         message = "SELECT_OK";
 
-                   } else {
+                    } else {
                         status = Status.CLIENT_ERROR_UNAUTHORIZED;
                         Log.error("Perfil sin acceso");
                         message = ERROR_TOKEN;

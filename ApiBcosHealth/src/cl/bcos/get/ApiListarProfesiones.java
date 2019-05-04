@@ -53,11 +53,12 @@ public class ApiListarProfesiones extends ServerResource {
         //String nombre_plan = getQuery().getValues("planName");
         //String numero_maximo = getQuery().getValues("userMax");
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         //Log.info("nombrePlan : " + nombre_plan);
         //Log.info("userMax : " + numero_maximo);
         Log.info("token : " + token);
-        
+
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
 
@@ -70,36 +71,39 @@ public class ApiListarProfesiones extends ServerResource {
                     // String nombre_usuario = jwt.getJwt().getValue("name").toString();
                     // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("roles :" + roles);
 
-                    if (roles.contains("SUPER-ADMIN")||roles.contains("ADMIN")) {
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")) {
 
                         Iterator it = LFProfesiones.getProfesiones(empresa);
                         List<Profesiones> l = new ArrayList();
                         while (it.hasNext()) {
                             Registro reg = (Registro) it.next();
                             Profesiones prof = new Profesiones();
-                            
+
                             prof.setProf_c_createuser(reg.get(RFProfesiones.prof_c_createuser));
                             prof.setProf_c_createusername(reg.get(RFProfesiones.prof_c_createusername));
                             prof.setProf_c_empresaname(reg.get(RFProfesiones.prof_c_empresaname));
                             prof.setProf_c_nombre(reg.get(RFProfesiones.prof_c_nombre));
                             prof.setProf_d_createdate(reg.get(RFProfesiones.prof_d_createdate));
                             prof.setProf_n_id(reg.get(RFProfesiones.prof_n_id));
-                            
-                            
-                           l.add(prof);
-                           
+
+                            l.add(prof);
+
                         }
-                        if(l.size()>0){
+                        if (l.size() > 0) {
                             map.put("Profesiones", l);
-                        }                        
+                        }
                         Log.info("SELECT OK");
                         status = Status.SUCCESS_OK;
                         message = "SELECT_OK";
 
-                   } else {
+                    } else {
                         status = Status.CLIENT_ERROR_UNAUTHORIZED;
                         Log.error("Perfil sin acceso");
                         message = ERROR_TOKEN;

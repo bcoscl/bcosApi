@@ -53,6 +53,7 @@ public class ApiListarFarmacos extends ServerResource {
         String accion = getQuery().getValues("accion");
         String Paciente = getQuery().getValues("Paciente");// numuser Paciente
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         Log.info("accion : " + accion);
         Log.info("Paciente : " + Paciente);
@@ -60,7 +61,7 @@ public class ApiListarFarmacos extends ServerResource {
 
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
-        
+
         ValidarTokenJWT validaJWT = jwt.getJwt();
         try {
             if (token != null && !token.equals("") && validaJWT.validarTokenRS(token)) {
@@ -71,9 +72,14 @@ public class ApiListarFarmacos extends ServerResource {
                     // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
 
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
+
                     Log.info("roles :" + roles);
 
-                    if (roles.contains("SUPER-ADMIN")||roles.contains("MEDICO")||roles.contains("ADMIN")) {
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN")) {
                         Iterator it = LFFarmacos.selectFarmacos(Paciente, empresa);
                         List<Farmacos> l = new ArrayList();
                         while (it.hasNext()) {

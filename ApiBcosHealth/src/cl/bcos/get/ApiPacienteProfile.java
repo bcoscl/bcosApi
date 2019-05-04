@@ -51,6 +51,7 @@ public class ApiPacienteProfile extends ServerResource {
         String numuser = getQuery().getValues("numUser");
         String accion = getQuery().getValues("accion");
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         //Log.info("nombrePlan : " + nombre_plan);
         //Log.info("userMax : " + numero_maximo);
@@ -67,6 +68,11 @@ public class ApiPacienteProfile extends ServerResource {
                 try {
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
                     String roles = jwt.getJwt().getValue("Roles").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN") || roles.contains("RECEPCION")) {
                         if (accion.equalsIgnoreCase("CP-BYUSER")) {

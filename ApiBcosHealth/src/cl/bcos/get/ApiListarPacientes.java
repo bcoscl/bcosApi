@@ -53,6 +53,7 @@ public class ApiListarPacientes extends ServerResource {
         //String nombre_plan = getQuery().getValues("planName");
         //String numero_maximo = getQuery().getValues("userMax");
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         //Log.info("nombrePlan : " + nombre_plan);
         //Log.info("userMax : " + numero_maximo);
@@ -70,6 +71,11 @@ public class ApiListarPacientes extends ServerResource {
                     // String nombre_usuario = jwt.getJwt().getValue("name").toString();
                     // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("roles :" + roles);
 

@@ -51,9 +51,10 @@ public class ApiListarParam extends ServerResource {
         Map map = new HashMap();
 
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         Log.info("token : " + token);
-        
+
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
 
@@ -63,20 +64,25 @@ public class ApiListarParam extends ServerResource {
                 try {
 
                     String roles = jwt.getJwt().getValue("Roles").toString();
-                    
+
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("roles :" + roles);
 
-                    if (roles.contains("SUPER-ADMIN") ) {
+                    if (roles.contains("SUPER-ADMIN")) {
 
                         Iterator it = LFParams.getAllParams();
                         List<Param> l = new ArrayList();
                         while (it.hasNext()) {
                             Registro reg = (Registro) it.next();
-                            
+
                             Param param = new Param();
-                            
+
                             param.setParams_n_grupo(reg.get(RFParams.params_n_grupo));
                             param.setParams_n_id(reg.get(RFParams.params_n_id));
                             param.setParams_n_param1(reg.get(RFParams.params_n_param1));
@@ -87,13 +93,13 @@ public class ApiListarParam extends ServerResource {
                             param.setParams_d_ultmod(reg.get(RFParams.params_d_ultmod));
                             param.setParams_c_numuser_utlmod(reg.get(RFParams.params_c_numuser_utlmod));
                             param.setParams_c_nombre_ultmod(reg.get(RFParams.params_c_nombre_ultmod));
-                           
-                           l.add(param);
-                           
+
+                            l.add(param);
+
                         }
-                        if(l.size()>0){
+                        if (l.size() > 0) {
                             map.put("Param", l);
-                        }                        
+                        }
                         Log.info("SELECT OK");
                         status = Status.SUCCESS_OK;
                         message = "SELECT_OK";

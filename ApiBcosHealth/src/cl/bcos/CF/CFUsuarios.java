@@ -154,4 +154,41 @@ public class CFUsuarios {
             Pool.getInstancia().free(con);
         }
     }
+
+    public static Iterator existeRegistrobyEmail(String email, String numuser) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+        Iterator it = null;
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            String[] param = {email, numuser};
+            TabRegistros tab = new TabRegistros();
+            tab.setContext(RFUsuarios.existeRegistrobyEmail(con));
+            tab.execute(tab.USE_RS, param);
+            it = tab.getRegistros();
+            return it;
+        } catch (Exception e) {
+            Log.error(e.toString());
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+        return it;
+    }
+
+    public static int changePass(String usuario, String passs) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        
+        Connection con = null;
+
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            return RFUsuarios.changePass(con, usuario,passs);
+
+        } catch (Exception e) {
+            Log.error(e.toString());
+            return 0;
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+    }
 }

@@ -50,6 +50,7 @@ public class ApiCrearPlanes extends ServerResource {
         String nombre_plan = getQuery().getValues("planName");
         String numero_maximo = getQuery().getValues("userMax");
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         Log.info("nombrePlan : " + nombre_plan);
         Log.info("userMax : " + numero_maximo);
@@ -65,6 +66,11 @@ public class ApiCrearPlanes extends ServerResource {
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
                     String roles = jwt.getJwt().getValue("Roles").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("usuario Creador:" + usuario_creador);
                     if (roles.contains("SUPER-ADMIN")) {

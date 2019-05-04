@@ -59,6 +59,7 @@ public class ApiCrearExamenes extends ServerResource {
         String examen_pacientename = getQuery().getValues("examen_pacientename");
 
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         Log.info("accion :" + accion);
         Log.info("exa_c_name :" + exa_c_name);
@@ -80,6 +81,11 @@ public class ApiCrearExamenes extends ServerResource {
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
                     String roles = jwt.getJwt().getValue("Roles").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("usuario Creador:" + usuario_creador);
                     if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO") || roles.contains("RECEPCION")) {

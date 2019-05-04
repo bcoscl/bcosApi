@@ -60,6 +60,8 @@ public class ApiAddAttentionList extends ServerResource {
 
         String token = getQuery().getValues("token");
 
+        String empresasession = getQuery().getValues("empresasession");
+
         Log.info("accion :" + accion);
         Log.info("numuser_paciente :" + numuser_paciente);
         Log.info("nombre_paciente :" + nombre_paciente);
@@ -81,6 +83,11 @@ public class ApiAddAttentionList extends ServerResource {
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
 
                     String roles = jwt.getJwt().getValue("Roles").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("usuario Creador:" + usuario_creador);
                     if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO") || roles.contains("RECEPCION")) {

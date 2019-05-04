@@ -131,7 +131,7 @@ public class RFFichas extends Registro {
         qry.append(" ficha_d_createdate, ");
         qry.append(" ficha_c_createusername,");
         qry.append(" ficha_c_empresaname, ");
-        qry.append(" ficha_d_dateultimamod, ficha_c_empresaname)");
+        qry.append(" ficha_d_dateultimamod)");
         qry.append(" VALUES (");
         qry.append(rowFichaId);
         qry.append(",'");

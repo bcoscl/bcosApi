@@ -65,4 +65,20 @@ public class LFUsuarios {
         return CFUsuarios.updateEstado(id,checkbox_activo, nombre_completo, empresa);
     }
 
+    public static String  existeRegistrobyEmail(String email, String numuser) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Iterator it = CFUsuarios.existeRegistrobyEmail(email, numuser);
+        String existeRegistro = "NO";
+
+        while (it.hasNext()) {
+            Registro reg = (Registro) it.next();
+            existeRegistro = reg.get(RFUsuarios.existeRegistro);
+        }
+        return existeRegistro;
+    }
+
+    public static int changePass(String usuario, String passs) {
+        return CFUsuarios.changePass(usuario,passs);
+    }
+
 }

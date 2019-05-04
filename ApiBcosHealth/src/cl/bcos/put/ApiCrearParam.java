@@ -8,7 +8,6 @@ package cl.bcos.put;
 import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
 import cl.bcos.LF.LFParams;
-import cl.bcos.LF.LFPlanes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.HashMap;
@@ -57,6 +56,7 @@ public class ApiCrearParam extends ServerResource {
         String accion = getQuery().getValues("accion");
 
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         Log.info("params_n_grupo : " + params_n_grupo);
         Log.info("params_n_subgrupo : " + params_n_subgrupo);
@@ -78,6 +78,11 @@ public class ApiCrearParam extends ServerResource {
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String roles = jwt.getJwt().getValue("Roles").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("usuario Creador:" + usuario_creador);
                     if (roles.contains("SUPER-ADMIN")) {

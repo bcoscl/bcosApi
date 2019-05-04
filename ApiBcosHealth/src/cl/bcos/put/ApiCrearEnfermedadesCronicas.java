@@ -57,6 +57,8 @@ public class ApiCrearEnfermedadesCronicas extends ServerResource {
 
         String token = getQuery().getValues("token");
 
+        String empresasession = getQuery().getValues("empresasession");
+
         Log.info("accion :" + accion);
         Log.info("cronica_c_name :" + cronica_c_name);
         Log.info("cronica_c_obs :" + cronica_c_obs);
@@ -77,6 +79,11 @@ public class ApiCrearEnfermedadesCronicas extends ServerResource {
 //                    String Roles = jwt.getJwt().getValue("Roles").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
                     String roles = jwt.getJwt().getValue("Roles").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("usuario Creador:" + usuario_creador);
                     if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO")) {

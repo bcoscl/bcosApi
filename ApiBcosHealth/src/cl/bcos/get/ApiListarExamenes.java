@@ -56,6 +56,7 @@ public class ApiListarExamenes extends ServerResource {
         String accion = getQuery().getValues("accion");
         String Paciente = getQuery().getValues("Paciente");// numuser Paciente
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         Log.info("accion : " + accion);
         Log.info("Paciente : " + Paciente);
@@ -73,6 +74,11 @@ public class ApiListarExamenes extends ServerResource {
                     String usuario_creador = jwt.getJwt().getValue("numUser").toString();
                     String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("roles :" + roles);
                     Iterator it = null;

@@ -9,7 +9,6 @@ import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
 import cl.bcos.LF.LFFichas;
 import cl.bcos.LF.LFPaciente;
-import cl.bcos.LF.LFSSO;
 import cl.bcos.LF.LFUsuarios;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -74,6 +73,8 @@ public class ApiCrearPaciente extends ServerResource {
 
         String token = getQuery().getValues("token");
 
+        String empresasession = getQuery().getValues("empresasession");
+
         String empresa = "";
 
         Log.info("accion :" + accion);
@@ -104,6 +105,11 @@ public class ApiCrearPaciente extends ServerResource {
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     empresa = jwt.getJwt().getValue("empresaName").toString();
                     String roles = jwt.getJwt().getValue("Roles").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
 
                     Log.info("usuario Creador:" + usuario_creador);
                     if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN") || roles.contains("MEDICO") || roles.contains("RECEPCION")) {
@@ -148,7 +154,8 @@ public class ApiCrearPaciente extends ServerResource {
 
                                     Log.info("Error de insercion");
                                     //Roll back - delete
-                                    LFSSO.rollBack(rowFichaId);
+                                    LFFichas.rollBack(rowFichaId, empresa);
+
                                     LFUsuarios.rollBack(rowPacienteId, empresa);
                                     // rowFichaId ;
                                     //rowUserId ;

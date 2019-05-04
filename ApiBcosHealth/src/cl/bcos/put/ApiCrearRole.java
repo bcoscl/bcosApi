@@ -51,6 +51,7 @@ public class ApiCrearRole extends ServerResource {
         String RoleName = getQuery().getValues("RoleName");
 
         String token = getQuery().getValues("token");
+        String empresasession = getQuery().getValues("empresasession");
 
         Log.info("RoleName : " + RoleName);
 
@@ -67,6 +68,11 @@ public class ApiCrearRole extends ServerResource {
                         String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                         String empresa = jwt.getJwt().getValue("empresaName").toString();
                         String roles = jwt.getJwt().getValue("Roles").toString();
+
+                        if (roles.contains("SUPER-ADMIN")) {
+                            empresa = empresasession;
+                        }
+                        Log.info("empresa :" + empresa);
 
                         Log.info("usuario Creador:" + usuario_creador);
                         if (roles.contains("SUPER-ADMIN")) {

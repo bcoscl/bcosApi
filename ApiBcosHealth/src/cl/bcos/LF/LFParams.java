@@ -29,6 +29,12 @@ public class LFParams {
 
         
     }
+    public static Iterator getEmailConfig() {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        return CFParams.getEmailConfig();
+
+        
+    }
 
     public static int insertParam(String params_n_grupo,
             String params_n_subgrupo,

@@ -57,6 +57,8 @@ public class ApiUpdateFarmacos extends ServerResource {
 
         String token = getQuery().getValues("token");
 
+        String empresasession = getQuery().getValues("empresasession");
+
         Log.info("farmaco_n_id :" + farmaco_n_id);
         Log.info("farmaco_c_name :" + farmaco_c_name);
         Log.info("farmaco_c_obs :" + farmaco_c_obs);
@@ -75,6 +77,12 @@ public class ApiUpdateFarmacos extends ServerResource {
                     String nombre_completo = nombre_usuario + " " + apellido_usuario;
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
                     String roles = jwt.getJwt().getValue("Roles").toString();
+
+                    if (roles.contains("SUPER-ADMIN")) {
+                        empresa = empresasession;
+                    }
+                    Log.info("empresa :" + empresa);
+
                     Log.info(usuario_creador);
                     if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN")) {
                         if (accion.equalsIgnoreCase(DELETE_FARMACO)) {
