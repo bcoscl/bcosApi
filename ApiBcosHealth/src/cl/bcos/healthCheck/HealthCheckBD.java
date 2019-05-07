@@ -26,6 +26,8 @@ import org.restlet.resource.Get;
 public class HealthCheckBD extends ServerResource {
 
     private static final Logger Log = Logger.getLogger(HealthCheckBD.class);    
+    private static final String AMBIENTE = "AMB";
+    private static final String ENV = System.getenv(AMBIENTE);
 
     private ImplementacionJWT jwt = null;
     private Map s = new HashMap();
@@ -55,7 +57,7 @@ public class HealthCheckBD extends ServerResource {
             map.put("healthCheck", "OK");
             
             status = Status.SUCCESS_OK;
-            message = "sysdate : "+LFParams.getsysdate();
+            message = "sysdate : "+LFParams.getsysdate()+" - Ambiente : "+ENV;
 
         } catch (Exception e) {
             Log.error(e.getStackTrace());
