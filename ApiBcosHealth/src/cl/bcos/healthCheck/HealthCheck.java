@@ -60,7 +60,7 @@ public class HealthCheck extends ServerResource {
 
             //Log.info("healthCheck OK");
             status = Status.SUCCESS_OK;
-            message = "Variable de Ambiente OK";
+            message = "Ambiente : "+ENV;
 
         }
         s.put("code", status.getCode());
