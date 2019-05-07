@@ -6,14 +6,10 @@
 package cl.bcos.healthCheck;
 
 import cl.bcos.Jwt.ImplementacionJWT;
-import cl.bcos.Jwt.ValidarTokenJWT;
 import cl.bcos.LF.LFParams;
-import cl.bcos.entity.Rol;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.restlet.resource.ServerResource;
 import org.apache.log4j.Logger;
@@ -22,7 +18,6 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
-import org.restlet.resource.Post;
 
 /**
  *
@@ -30,7 +25,7 @@ import org.restlet.resource.Post;
  */
 public class HealthCheckBD extends ServerResource {
 
-    private static final Logger Log = Logger.getLogger(HealthCheckBD.class);
+    private static final Logger Log = Logger.getLogger(HealthCheckBD.class);    
 
     private ImplementacionJWT jwt = null;
     private Map s = new HashMap();
@@ -42,7 +37,7 @@ public class HealthCheckBD extends ServerResource {
 
     @Get
     public Representation HealthCheckBD() {
-        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        //Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Status status = null;
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -50,22 +45,25 @@ public class HealthCheckBD extends ServerResource {
 
         String token = getQuery().getValues("token");
 
-        Log.info("token : " + token);
-
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
-        Log.info("path : " + path);
+        
 
         try {
             /*Consulta a la BD*/
-            map.put("sysdate", LFParams.getsysdate());
-
-            Log.info("SELECT OK");
+            //map.put("sysdate", LFParams.getsysdate());
+            
+            map.put("healthCheck", "OK");
+            
             status = Status.SUCCESS_OK;
-            message = "SELECT_OK";
+            message = "sysdate : "+LFParams.getsysdate();
 
         } catch (Exception e) {
-            status = Status.CLIENT_ERROR_UNAUTHORIZED;
-            message = ERROR_TOKEN;
+            Log.error(e.getStackTrace());
+            //map.put("Error", e.getMessage());
+            map.put("healthCheck", "ERROR");
+           
+            status = Status.CLIENT_ERROR_BAD_REQUEST;
+            message = e.getMessage();
         }
 
         s.put("code", status.getCode());
