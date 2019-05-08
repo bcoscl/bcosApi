@@ -5,6 +5,7 @@
  */
 package cl.bcos.api;
 
+import cl.bcos.get.ApiExportFichas;
 import cl.bcos.get.ApiProfile;
 import cl.bcos.get.ApiPacienteProfile;
 import cl.bcos.option.ApiUpdateSuscripcion;
@@ -107,6 +108,7 @@ public class Apigw extends ServerResource {
 
                     /*End Point de registro de Fichas*/
                     component.getDefaultHost().attach("/bcos/api/json/listarFichas", ApiListarFichas.class);
+                    component.getDefaultHost().attach("/bcos/api/json/exportFichas", ApiExportFichas.class);
 
                     /*End Point Administracion de Roles*/
                     component.getDefaultHost().attach("/bcos/api/json/crearRole", ApiCrearRole.class);

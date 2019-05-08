@@ -83,6 +83,11 @@ public class LFPaciente {
         Iterator it = CFPaciente.selectPacientes(empresa);
         return it;
     }
+    public static Iterator selectPacientesBynumuser(String empresa, String numusers) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Iterator it = CFPaciente.selectPacientesBynumuser(empresa,numusers);
+        return it;
+    }
 
     public static Iterator getUserInformation(String numuser, String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

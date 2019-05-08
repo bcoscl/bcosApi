@@ -265,6 +265,56 @@ public class RFPaciente extends Registro {
 
         return adm;
     }
+    public static AdmRegistros selectPacientesBynumuser(Connection con, String numusers) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append(" SELECT paciente_n_id, ");
+        qry.append(" paciente_c_numuser,  ");
+        qry.append(" paciente_c_direccion,  ");
+        qry.append(" paciente_c_prevision,  ");
+        qry.append(" paciente_c_profesion,  ");
+        qry.append(" paciente_c_estado_civil,  ");
+        qry.append(" paciente_c_obs,  ");
+        qry.append(" paciente_c_pacientename,  ");
+        qry.append(" paciente_c_apellidos,  ");
+        qry.append(" paciente_c_email,  ");
+        qry.append(" paciente_c_celular,  ");
+        qry.append(" paciente_c_createusername,  ");
+        qry.append(" to_char(paciente_d_createdate, 'yyyy-mm-dd HH24:MI:SS'), ");
+        qry.append(" paciente_c_createuser, ");
+        qry.append(" paciente_c_img,paciente_c_sexo ,paciente_d_fechanacimiento,paciente_n_edad,paciente_c_empresa");
+        qry.append(" FROM health_pacientes_user where paciente_c_empresa =? and paciente_c_numuser in (");
+        qry.append(numusers);
+        qry.append(") order by paciente_c_pacientename ASC ");
+        Log.debug(qry.toString());
+        AdmRegistros adm = new AdmRegistros(con,
+                qry.toString(),
+                19,
+                new RFPaciente()
+        );
+        adm.setColumna(1, paciente_n_id);
+        adm.setColumna(2, paciente_c_numuser);
+        adm.setColumna(3, paciente_c_direccion);
+        adm.setColumna(4, paciente_c_prevision);
+        adm.setColumna(5, paciente_c_profesion);
+        adm.setColumna(6, paciente_c_estado_civil);
+        adm.setColumna(7, paciente_c_obs);
+        adm.setColumna(8, paciente_c_pacientename);
+        adm.setColumna(9, paciente_c_apellidos);
+        adm.setColumna(10, paciente_c_email);
+        adm.setColumna(11, paciente_c_celular);
+        adm.setColumna(12, paciente_c_createusername);
+        adm.setColumna(13, paciente_d_createdate);
+        adm.setColumna(14, paciente_c_createuser);
+        adm.setColumna(15, paciente_c_img);
+        adm.setColumna(16, paciente_c_sexo);
+        adm.setColumna(17, paciente_d_fechaNacimiento);
+        adm.setColumna(18, paciente_n_edad);
+        adm.setColumna(19, paciente_c_empresa);
+
+        return adm;
+    }
 
     /*Obtiene el ID de Insercion de la secuencia*/
     public static AdmRegistros getNewPacienteId(Connection con) {

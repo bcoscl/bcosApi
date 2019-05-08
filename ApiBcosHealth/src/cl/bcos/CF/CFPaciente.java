@@ -177,5 +177,24 @@ public class CFPaciente {
         }
         return it;
     }
+    public static Iterator selectPacientesBynumuser(String empresa, String numusers) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+        Iterator it = null;
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            String[] param = {empresa};
+            TabRegistros tab = new TabRegistros();
+            tab.setContext(RFPaciente.selectPacientesBynumuser(con,numusers));
+            tab.execute(tab.USE_RS, param);
+            it = tab.getRegistros();
+            return it;
+        } catch (Exception e) {
+            Log.error(e.toString());
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+        return it;
+    }
 
 }
