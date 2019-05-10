@@ -25,7 +25,7 @@ import org.restlet.resource.Get;
  */
 public class HealthCheckBD extends ServerResource {
 
-    private static final Logger Log = Logger.getLogger(HealthCheckBD.class);    
+    private static final Logger Log = Logger.getLogger(HealthCheckBD.class);
     private static final String AMBIENTE = "AMB";
     private static String ENV;
 
@@ -34,7 +34,6 @@ public class HealthCheckBD extends ServerResource {
     private final String ERROR_TOKEN = "TOKEN_NO_VALIDO";
 
     public HealthCheckBD() {
-        ENV = System.getProperty(AMBIENTE);
         jwt = new ImplementacionJWT();
     }
 
@@ -45,26 +44,25 @@ public class HealthCheckBD extends ServerResource {
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         Map map = new HashMap();
-
+        ENV = System.getenv(AMBIENTE);
         String token = getQuery().getValues("token");
 
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
-        
 
         try {
             /*Consulta a la BD*/
             //map.put("sysdate", LFParams.getsysdate());
-            
+
             map.put("healthCheck", "OK");
-            
+
             status = Status.SUCCESS_OK;
-            message = "sysdate : "+LFParams.getsysdate()+" - Ambiente : "+ENV;
+            message = "sysdate : " + LFParams.getsysdate() + " - Ambiente : " + ENV;
 
         } catch (Exception e) {
             Log.error(e.getMessage());
             //map.put("Error", e.getMessage());
-            map.put("healthCheck", "ERROR");
-           
+            map.put("healthCheck", "ERROR - " + e.getCause());
+
             status = Status.CLIENT_ERROR_BAD_REQUEST;
             message = e.getMessage();
         }

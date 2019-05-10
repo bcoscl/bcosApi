@@ -33,7 +33,7 @@ public class HealthCheck extends ServerResource {
     private final String ERROR_TOKEN = "TOKEN_NO_VALIDO";
 
     public HealthCheck() {
-        ENV = System.getProperty(AMBIENTE);
+        
         jwt = new ImplementacionJWT();
     }
 
@@ -44,16 +44,16 @@ public class HealthCheck extends ServerResource {
         String message = "ok";
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         Map map = new HashMap();
-
+        ENV = System.getenv(AMBIENTE);
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         //Log.info("path : " + path);
 
         if (ENV == null || ENV.equals("")) {
-
-            Log.error("Falta Variable de ambiente :" + AMBIENTE + " valor : " + ENV);
+            String Error = "Falta Variable de ambiente :" + AMBIENTE + " valor : " + ENV;
+            Log.error(Error);
 
             status = Status.CLIENT_ERROR_NOT_FOUND;
-            message = "ERROR";
+            message = "ERROR - "+Error;
 
         } else {
 
