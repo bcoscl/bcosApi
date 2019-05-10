@@ -34,7 +34,7 @@ public class HealthCheckBD extends ServerResource {
     private final String ERROR_TOKEN = "TOKEN_NO_VALIDO";
 
     public HealthCheckBD() {
-        ENV = System.getenv(AMBIENTE);
+        ENV = System.getProperty(AMBIENTE);
         jwt = new ImplementacionJWT();
     }
 
