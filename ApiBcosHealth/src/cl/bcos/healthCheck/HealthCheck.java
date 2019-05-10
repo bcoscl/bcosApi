@@ -26,13 +26,14 @@ public class HealthCheck extends ServerResource {
 
     private static final Logger Log = Logger.getLogger(HealthCheck.class);
     private static final String AMBIENTE = "AMB";
-    private static final String ENV = System.getenv().get(AMBIENTE);
+    private static String ENV;
 
     private ImplementacionJWT jwt = null;
     private Map s = new HashMap();
     private final String ERROR_TOKEN = "TOKEN_NO_VALIDO";
 
     public HealthCheck() {
+        ENV = System.getenv(AMBIENTE);
         jwt = new ImplementacionJWT();
     }
 
