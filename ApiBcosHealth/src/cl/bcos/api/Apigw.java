@@ -5,6 +5,11 @@
  */
 package cl.bcos.api;
 
+import cl.bcos.val.ApiSSO;
+import cl.bcos.val.ApiValidaToken;
+import cl.bcos.val.ApiRecuperarPassword;
+import cl.bcos.option.ApiChangePasswordInSite;
+import cl.bcos.option.ApiChangePassword;
 import cl.bcos.get.ApiExportFichas;
 import cl.bcos.get.ApiProfile;
 import cl.bcos.get.ApiPacienteProfile;

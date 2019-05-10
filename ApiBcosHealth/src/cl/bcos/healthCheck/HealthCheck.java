@@ -26,7 +26,7 @@ public class HealthCheck extends ServerResource {
 
     private static final Logger Log = Logger.getLogger(HealthCheck.class);
     private static final String AMBIENTE = "AMB";
-    private static final String ENV = System.getenv(AMBIENTE);
+    private static final String ENV = System.getProperty(AMBIENTE,System.getenv(AMBIENTE));
 
     private ImplementacionJWT jwt = null;
     private Map s = new HashMap();
