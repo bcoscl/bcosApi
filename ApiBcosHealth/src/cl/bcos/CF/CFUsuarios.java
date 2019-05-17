@@ -191,4 +191,28 @@ public class CFUsuarios {
             Pool.getInstancia().free(con);
         }
     }
+    public static int cuentaUsuarios(String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+        Iterator it = null;
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            String[] param = {empresa};
+            TabRegistros tab = new TabRegistros();
+            tab.setContext(RFUsuarios.cuentaUsuarios(con));
+            tab.execute(tab.USE_RS, param);
+            it = tab.getRegistros();
+            String max="0";
+            while (it.hasNext()) {
+                Registro reg = (Registro) it.next();
+                max = reg.get(RFUsuarios.count);
+            }
+            return Integer.valueOf(max);
+        } catch (Exception e) {
+            Log.error(e.toString());
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+        return 0;
+    }
 }

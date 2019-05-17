@@ -53,6 +53,7 @@ import cl.bcos.put.ApiCrearRole;
 import cl.bcos.put.ApiCrearPaciente;
 import cl.bcos.put.ApiCrearParam;
 import cl.bcos.put.ApiCrearPlanes;
+import cl.bcos.val.ApiUserMax;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
 import org.restlet.resource.ServerResource;
@@ -127,6 +128,7 @@ public class Apigw extends ServerResource {
                     component.getDefaultHost().attach("/bcos/api/json/crearUsuarios", ApiCrearUsuarios.class);
                     component.getDefaultHost().attach("/bcos/api/json/updateUsuarios", ApiUpdateUsuarios.class);
                     component.getDefaultHost().attach("/bcos/api/json/ListarUsuarios", ApiListarUsuarios.class);
+                    component.getDefaultHost().attach("/bcos/api/json/userMax", ApiUserMax.class);
 
                     /*End Point controla la informacion del componente profile*/
                     component.getDefaultHost().attach("/bcos/api/json/Profile", ApiProfile.class);

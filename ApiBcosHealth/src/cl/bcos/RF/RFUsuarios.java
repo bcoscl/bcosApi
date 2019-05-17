@@ -41,10 +41,11 @@ public class RFUsuarios extends Registro {
     public static final int user_c_empresaname = 19;
     public static final int pass_n_id = 20;
     public static final int pass_c_activo = 21;
+    public static final int count = 22;
 
 
     public RFUsuarios() {
-        super(22);
+        super(23);
     }
 
     public static int insertUsuarios(Connection con,
@@ -397,4 +398,27 @@ public class RFUsuarios extends Registro {
         }
     }
 
+    
+    public static AdmRegistros cuentaUsuarios(Connection con) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append("SELECT count(1) FROM health_user where user_c_empresaname = ? ");
+        Log.debug(qry.toString());
+        try {
+            AdmRegistros adm = new AdmRegistros(con,
+                    qry.toString(),
+                    1,
+                    new RFUsuarios());
+
+            adm.setColumna(1, count);
+
+            return adm;
+        } catch (Exception e) {
+            Log.error(e.getMessage());
+            throw e;
+        }
+
+    }
+    
 }

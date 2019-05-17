@@ -51,7 +51,7 @@ public class HealthCheck extends ServerResource {
         if (ENV == null || ENV.equals("")) {
             String Error = "Falta Variable de ambiente :" + AMBIENTE + " valor : " + ENV;
             Log.error(Error);
-
+            map.put("healthCheck", "ERROR");
             status = Status.CLIENT_ERROR_NOT_FOUND;
             message = "ERROR - "+Error;
 

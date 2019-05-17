@@ -78,7 +78,14 @@ public class LFUsuarios {
     }
 
     public static int changePass(String usuario, String passs) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFUsuarios.changePass(usuario,passs);
+    }
+    
+    public static int cuentaUsuarios(String empresa){
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        return CFUsuarios.cuentaUsuarios(empresa);
+    
     }
 
 }

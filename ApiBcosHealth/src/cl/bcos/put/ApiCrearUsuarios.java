@@ -10,6 +10,7 @@ import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
 import cl.bcos.LF.LFParams;
 import cl.bcos.LF.LFSSO;
+import cl.bcos.LF.LFUserMax;
 import cl.bcos.LF.LFUsuarios;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -106,75 +107,84 @@ public class ApiCrearUsuarios extends ServerResource {
                         empresa = empresasession;
                     }
                     Log.info("empresa :" + empresa);
+                    if (LFUserMax.quedanCuposSuscripcion(empresa)) {
+                        /*Quedan */
 
-                    Log.info("usuario Creador:" + usuario_creador);
-                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")) {
-                        switch (accion) {
-                            case "EXISTE_REGISTRO":
-                                if (LFUsuarios.existeRegistro(numuser_user, empresa).equalsIgnoreCase("NO")) {
-                                    Log.info("USUARIO NO REGISTRADO");
-                                    status = Status.SUCCESS_OK;
-                                    message = USUARIO_NO_EXISTE;
-                                } else {
-                                    Log.info("USUARIO REGISTRADO");
-                                    status = Status.SUCCESS_OK;
-                                    message = USUARIO_EXISTE;
-                                }
-                                break;
-                            case "CREATE":
+                        Log.info("usuario Creador:" + usuario_creador);
+                        if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")) {
+                            switch (accion) {
+                                case "EXISTE_REGISTRO":
+                                    if (LFUsuarios.existeRegistro(numuser_user, empresa).equalsIgnoreCase("NO")) {
+                                        Log.info("USUARIO NO REGISTRADO");
+                                        status = Status.SUCCESS_OK;
+                                        message = USUARIO_NO_EXISTE;
+                                    } else {
+                                        Log.info("USUARIO REGISTRADO");
+                                        status = Status.SUCCESS_OK;
+                                        message = USUARIO_EXISTE;
+                                    }
+                                    break;
+                                case "CREATE":
 
-                                //Encriptacion password
-                                String key = LFParams.getParams("PASS", "BLOWFISH", "CRYPT");
-                                password = BlowFish.encryptNoPadding(key, password);
+                                    //Encriptacion password
+                                    String key = LFParams.getParams("PASS", "BLOWFISH", "CRYPT");
+                                    password = BlowFish.encryptNoPadding(key, password);
 
-                                Log.info("Encriptada :" + password);
+                                    Log.info("Encriptada :" + password);
 
-                                Log.info("DesEncriptada :" + BlowFish.decryptNoPadding(key, password));
+                                    Log.info("DesEncriptada :" + BlowFish.decryptNoPadding(key, password));
 
-                                rowSSOId = LFSSO.getNewUserId();
-                                rowUserId = LFUsuarios.getNewUserId();
+                                    rowSSOId = LFSSO.getNewUserId();
+                                    rowUserId = LFUsuarios.getNewUserId();
 
-                                Log.info("rowSSOId : " + rowSSOId);
-                                Log.info("rowUserId : " + rowUserId);
+                                    Log.info("rowSSOId : " + rowSSOId);
+                                    Log.info("rowUserId : " + rowUserId);
 
-                                if (!rowUserId.isEmpty() && (!rowSSOId.isEmpty())
-                                        && (LFUsuarios.insertUsuario(numuser_user,
-                                                nombre_user, apellido_user, email_contacto_user,
-                                                numero_telefono_user, profesion_select, textarea_obs,
-                                                sucursal_select, roles_select, password, checkbox_activo,
-                                                usuario_creador, nombre_completo, empresa, rowUserId) == 1)
-                                        && (LFSSO.insertUserPass(numuser_user/* pass_c_numuser*/,
-                                                password/*pass_c_password*/,
-                                                /*pass_d_vencimiento,*/
-                                                usuario_creador/*pass_c_createuser*/,
-                                                checkbox_activo/*pass_c_activo*/,
-                                                nombre_completo/*pass_c_createusername*/,
-                                                rowSSOId/*pass_n_id*/) == 1)) {
+                                    if (!rowUserId.isEmpty() && (!rowSSOId.isEmpty())
+                                            && (LFUsuarios.insertUsuario(numuser_user,
+                                                    nombre_user, apellido_user, email_contacto_user,
+                                                    numero_telefono_user, profesion_select, textarea_obs,
+                                                    sucursal_select, roles_select, password, checkbox_activo,
+                                                    usuario_creador, nombre_completo, empresa, rowUserId) == 1)
+                                            && (LFSSO.insertUserPass(numuser_user/* pass_c_numuser*/,
+                                                    password/*pass_c_password*/,
+                                                    /*pass_d_vencimiento,*/
+                                                    usuario_creador/*pass_c_createuser*/,
+                                                    checkbox_activo/*pass_c_activo*/,
+                                                    nombre_completo/*pass_c_createusername*/,
+                                                    rowSSOId/*pass_n_id*/) == 1)) {
 
-                                    Log.info("Insert OK");
-                                    status = Status.SUCCESS_OK;
-                                    message = INSERT_OK;
+                                        Log.info("Insert OK");
+                                        status = Status.SUCCESS_OK;
+                                        message = INSERT_OK;
 
-                                } else {
+                                    } else {
 
-                                    Log.info("Error de insercion");
-                                    //Roll back - delete
-                                    LFSSO.rollBack(rowSSOId);
-                                    LFUsuarios.rollBack(rowUserId, empresa);
-                                    // rowSSOId ;
-                                    //rowUserId ;
-                                    message = INSERT_NO_OK;
-                                    status = Status.CLIENT_ERROR_BAD_REQUEST;
+                                        Log.info("Error de insercion");
+                                        //Roll back - delete
+                                        LFSSO.rollBack(rowSSOId);
+                                        LFUsuarios.rollBack(rowUserId, empresa);
+                                        // rowSSOId ;
+                                        //rowUserId ;
+                                        message = INSERT_NO_OK;
+                                        status = Status.CLIENT_ERROR_BAD_REQUEST;
 
-                                }
-                                break;
-                            default:
-                                Log.error("no Soportada :" + accion);
+                                    }
+                                    break;
+                                default:
+                                    Log.error("no Soportada :" + accion);
+                            }
+                        } else {
+                            status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                            Log.error("Perfil sin acceso");
+                            message = ERROR_TOKEN;
                         }
                     } else {
+                        /*no quedan mas cupos*/
                         status = Status.CLIENT_ERROR_UNAUTHORIZED;
-                        Log.error("Perfil sin acceso");
+                        Log.error("PNo quedan Mas cupos para crear usuarios");
                         message = ERROR_TOKEN;
+
                     }
                 } catch (Exception e) {
                     Log.error("getMessage :" + e.getMessage());
