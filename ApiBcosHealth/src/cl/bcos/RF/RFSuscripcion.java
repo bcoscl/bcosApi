@@ -56,7 +56,7 @@ public class RFSuscripcion extends Registro {
         qry.append(" subscr_c_planname, ");
         qry.append(" subscr_n_max, ");
         qry.append(" subscr_c_estado, ");
-        qry.append(" subscr_n_createuser, ");
+        qry.append(" subscr_c_createuser, ");
         qry.append(" subscr_d_createdate, ");
         qry.append(" subscr_c_createusername) ");
         qry.append(" VALUES ( ");
@@ -78,7 +78,7 @@ public class RFSuscripcion extends Registro {
         qry.append("','");
         qry.append(checkbox_activo);/* subscr_c_estado */
         qry.append("','");
-        qry.append(usuario_creador);/* subscr_n_createuser */
+        qry.append(usuario_creador);/* subscr_c_createuser */
         qry.append("',");
         qry.append("NOW()/* subscr_d_createdate */,'");
         qry.append(nombre_completo/* subscr_c_createusername */);
@@ -117,7 +117,7 @@ public class RFSuscripcion extends Registro {
         qry.append(" subscr_c_planname,  ");
         qry.append(" subscr_n_max,  ");
         qry.append(" subscr_c_estado,  ");
-        qry.append(" subscr_n_createuser,  ");
+        qry.append(" subscr_c_createuser,  ");
         qry.append(" subscr_d_createdate,  ");
         qry.append(" subscr_c_createusername ");
         qry.append(" FROM health_subscription order by subscr_c_empresaname ASC ");
@@ -155,7 +155,7 @@ public class RFSuscripcion extends Registro {
         qry.append(" subscr_c_planname,  ");
         qry.append(" subscr_n_max,  ");
         qry.append(" subscr_c_estado,  ");
-        qry.append(" subscr_n_createuser,  ");
+        qry.append(" subscr_c_createuser,  ");
         qry.append(" subscr_d_createdate,  ");
         qry.append(" subscr_c_createusername ");
         qry.append(" FROM health_subscription where  subscr_c_empresaname=? order by subscr_c_empresaname ASC ");

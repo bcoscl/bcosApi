@@ -82,7 +82,7 @@ public class RFProfesiones extends Registro {
         qry.append(" prof_c_nombre,  ");
         qry.append(" prof_c_empresaname,  ");
         qry.append(" prof_c_createuser,  ");
-        qry.append(" prof_d_createdate,  ");
+        qry.append(" to_char(prof_d_createdate, 'yyyy-mm-dd HH24:MI:SS'),  ");
         qry.append(" prof_c_createusername ");
         qry.append(" FROM health_profesiones where prof_c_empresaname=? order by prof_c_nombre ASC ");
         Log.debug(qry.toString());

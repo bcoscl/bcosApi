@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/healthCheck/HealthCheck.java</file>
-            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/healthCheck/HealthCheckBD.java</file>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/get/ApiListarRole.java</file>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/put/ApiCrearPaciente.java</file>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/get/ApiListarUsuarios.java</file>
+            <file>file:/C:/Users/aacantero/Documents/NetBeansProjects/ApiBcosHealth/src/cl/bcos/get/ApiListarSuscripciones.java</file>
         </group>
     </open-files>
 </project-private>

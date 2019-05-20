@@ -76,7 +76,7 @@ public class RFRoles extends Registro {
         qry.append(" rol_c_rolename,  ");
         qry.append(" rol_c_empresaname,  ");
         qry.append(" rol_c_createuser,  ");
-        qry.append(" rol_d_createdate,  ");
+        qry.append(" to_char(rol_d_createdate, 'yyyy-mm-dd HH24:MI:SS'),  ");
         qry.append(" rol_c_createusername ");
         qry.append(" FROM health_roles order by rol_c_rolename ASC ");
         Log.debug(qry.toString());

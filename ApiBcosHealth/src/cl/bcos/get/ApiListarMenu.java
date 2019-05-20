@@ -71,8 +71,9 @@ public class ApiListarMenu extends ServerResource {
                     if (roles.contains("MEDICO")) {
                         pre = "Dr. ";
                     } else {
-                        pre = "Mr. ";
+                        pre = "";
                     }
+                    
                     
                     if (roles.contains("SUPER-ADMIN")) {
                         pos = " - Super Admin ";

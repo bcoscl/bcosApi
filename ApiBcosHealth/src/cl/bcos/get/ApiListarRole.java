@@ -70,6 +70,7 @@ public class ApiListarRole extends ServerResource {
                     // String nombre_usuario = jwt.getJwt().getValue("name").toString();
                     // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
+                    String rolesbd = "";
 
                     if (roles.contains("SUPER-ADMIN")) {
                         empresa = empresasession;
@@ -78,22 +79,37 @@ public class ApiListarRole extends ServerResource {
 
                     Log.info("roles :" + roles);
 
-                    if (roles.contains("SUPER-ADMIN")) {
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")) {
 
                         Iterator it = LFRoles.getRoles();
                         List<Roles> l = new ArrayList();
                         while (it.hasNext()) {
                             Registro reg = (Registro) it.next();
                             Roles rol = new Roles();
+                            rolesbd = reg.get(RFRoles.rol_c_rolename);
 
-                            rol.setRol_c_createuser(reg.get(RFRoles.rol_c_createuser));
-                            rol.setRol_c_createusername(reg.get(RFRoles.rol_c_createusername));
-                            rol.setRol_c_empresaname(reg.get(RFRoles.rol_c_empresaname));
-                            rol.setRol_c_rolename(reg.get(RFRoles.rol_c_rolename));
-                            rol.setRol_d_createdate(reg.get(RFRoles.rol_d_createdate));
-                            rol.setRol_n_id(reg.get(RFRoles.rol_n_id));
+                            if (!rolesbd.equalsIgnoreCase("SUPER-ADMIN")) {
 
-                            l.add(rol);
+                                rol.setRol_c_createuser(reg.get(RFRoles.rol_c_createuser));
+                                rol.setRol_c_createusername(reg.get(RFRoles.rol_c_createusername));
+                                rol.setRol_c_empresaname(reg.get(RFRoles.rol_c_empresaname));
+                                rol.setRol_c_rolename(reg.get(RFRoles.rol_c_rolename));
+                                rol.setRol_d_createdate(reg.get(RFRoles.rol_d_createdate));
+                                rol.setRol_n_id(reg.get(RFRoles.rol_n_id));
+                                l.add(rol);
+
+                            } else if (roles.contains("SUPER-ADMIN")) {
+
+                                rol.setRol_c_createuser(reg.get(RFRoles.rol_c_createuser));
+                                rol.setRol_c_createusername(reg.get(RFRoles.rol_c_createusername));
+                                rol.setRol_c_empresaname(reg.get(RFRoles.rol_c_empresaname));
+                                rol.setRol_c_rolename(reg.get(RFRoles.rol_c_rolename));
+                                rol.setRol_d_createdate(reg.get(RFRoles.rol_d_createdate));
+                                rol.setRol_n_id(reg.get(RFRoles.rol_n_id));
+                                l.add(rol);
+                            }
+
+                            
 
                         }
                         if (l.size() > 0) {

@@ -61,6 +61,7 @@ public class ApiListarSuscripciones extends ServerResource {
         //Log.info("nombrePlan : " + nombre_plan);
         //Log.info("userMax : " + numero_maximo);
         Log.info("token : " + token);
+        Log.info("accion : " + accion);
 
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         Log.info("path : " + path);
@@ -74,7 +75,7 @@ public class ApiListarSuscripciones extends ServerResource {
                     // String nombre_usuario = jwt.getJwt().getValue("name").toString();
                     // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
-                    
+
                     if (roles.contains("SUPER-ADMIN")) {
                         empresa = empresasession;
                     }
@@ -119,9 +120,18 @@ public class ApiListarSuscripciones extends ServerResource {
                         message = "SELECT_OK";
 
                     } else {
-                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
-                        Log.error("Perfil sin acceso");
-                        message = ERROR_TOKEN;
+//                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+//                        Log.error("Perfil sin acceso");
+//                        message = ERROR_TOKEN;
+                        suscripciones s = new suscripciones();
+                        List<suscripciones> l = new ArrayList();
+                        s.setNombre_empresa("Sin Acceso");
+                        l.add(s);
+                        map.put("suscripciones", l);
+                        Log.info("SELECT OK");
+                        status = Status.SUCCESS_OK;
+                        message = "SELECT_OK";
+
                     }
 
                 } catch (Exception e) {

@@ -34,14 +34,14 @@ public class RFPlanes extends Registro {
         StringBuilder qry = new StringBuilder();
 
         qry.append(" insert into health_plan  ");
-        qry.append(" (plan_n_id,plan_c_name,plan_n_max,plan_n_createuser,plan_d_createdate,plan_c_createusername)  ");
+        qry.append(" (plan_n_id,plan_c_name,plan_n_max,plan_c_createuser,plan_d_createdate,plan_c_createusername)  ");
         qry.append(" values (nextval('health_seq_plan'), upper('");
         qry.append(nombre_plan);
         qry.append("'),");
         qry.append(numero_maximo);
-        qry.append(",");
+        qry.append(",'");
         qry.append(usuario_creador);
-        qry.append(", NOW(),'");
+        qry.append("', NOW(),'");
         qry.append(nombreUsuario);
         qry.append("')");
         Log.debug(qry.toString());
@@ -68,7 +68,7 @@ public class RFPlanes extends Registro {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
 
-        qry.append(" SELECT plan_c_name,plan_n_max,plan_d_createdate,plan_c_createusername  ");
+        qry.append(" SELECT plan_c_name,plan_n_max,to_char(plan_d_createdate, 'yyyy-mm-dd HH24:MI:SS'),plan_c_createusername  ");
         qry.append(" FROM public.health_plan p order by plan_n_max ASC ");
         Log.debug(qry.toString());
         AdmRegistros adm = new AdmRegistros(con,

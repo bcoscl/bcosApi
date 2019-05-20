@@ -7,17 +7,10 @@ package cl.bcos.val;
 
 import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
-import cl.bcos.LF.LFRoles;
 import cl.bcos.LF.LFUserMax;
-import cl.bcos.RF.RFRoles;
-import cl.bcos.data.Registro;
-import cl.bcos.entity.Roles;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import org.restlet.resource.ServerResource;
 import org.apache.log4j.Logger;
@@ -68,7 +61,6 @@ public class ApiUserMax extends ServerResource {
                     // String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
 
-                    
                     if (roles.contains("SUPER-ADMIN")) {
                         empresa = empresasession;
                     }
@@ -78,7 +70,13 @@ public class ApiUserMax extends ServerResource {
 
                     if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")) {
 
-                        if (LFUserMax.quedanCuposSuscripcion(empresa)) {
+                        /*if (roles.contains("SUPER-ADMIN") && (empresa.equalsIgnoreCase("") || empresa == null)) {
+
+                            Log.info("MAX_OK");
+                            status = Status.SUCCESS_OK;
+                            message = "MAX_OK";
+
+                        } else*/ if (LFUserMax.quedanCuposSuscripcion(empresa)) {
                             /*Quedan */
 
                             Log.info("MAX_OK");
