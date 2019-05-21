@@ -162,7 +162,7 @@ public class ApiSSO extends ServerResource {
 
         }
 
-        tokken = token.generaToken("bcosHealth", "bearer", "public", "54000");
+        tokken = token.generaToken("bcosHealth", "bearer", "public", "1800");
         Log.info(tokken);
         // tokken = token.generaToken("bcosHealth", "bearer", "public","15");
 

@@ -87,6 +87,7 @@ public class ApiUserMax extends ServerResource {
                             /*no quedan mas cupos*/
 
                             Log.info("TOKEN_OK");
+                            Log.error("No quedan Mas cupos para crear usuarios");
                             Status s = new Status(400);
                             status = s;
                             message = "TOKEN_OK";

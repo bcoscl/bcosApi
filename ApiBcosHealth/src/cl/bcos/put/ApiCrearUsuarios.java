@@ -181,9 +181,13 @@ public class ApiCrearUsuarios extends ServerResource {
                         }
                     } else {
                         /*no quedan mas cupos*/
-                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
-                        Log.error("PNo quedan Mas cupos para crear usuarios");
-                        message = ERROR_TOKEN;
+                        Log.error("No quedan Mas cupos para crear usuarios");
+                            Status s = new Status(400);
+                            status = s;
+                            message = "TOKEN_OK";
+                        
+                        
+                       
 
                     }
                 } catch (Exception e) {

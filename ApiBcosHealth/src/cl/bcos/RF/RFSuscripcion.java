@@ -142,6 +142,7 @@ public class RFSuscripcion extends Registro {
 
         return adm;
     }
+
     public static AdmRegistros selectSuscripcionesByEmpresa(Connection con) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
@@ -190,6 +191,50 @@ public class RFSuscripcion extends Registro {
         qry.append(checkbox_activo);
         qry.append("' WHERE subscr_n_id = ");
         qry.append(id);
+        Log.debug(qry.toString());
+        PreparedStatement ps = null;
+
+        try {
+            ps = con.prepareStatement(qry.toString());
+            return ps.executeUpdate();
+
+        } catch (Exception e) {
+            Log.error(e.getMessage());
+            return 0;
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException x) {
+                    Log.error(x.toString());
+                }
+            }
+        }
+    }
+
+    public static int updatePlanSuscripcion(Connection con, String id, String nombre_empresa,
+            String contacto_empresa, String email_contacto, String numero_telefono,
+            String select_plan_name, String select_plan_code) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append(" UPDATE health_subscription ");
+        qry.append(" SET  subscr_c_contacto= '");
+        qry.append(contacto_empresa);
+        qry.append("', subscr_c_email= '");
+        qry.append(email_contacto);
+        qry.append("', subscr_c_telefono= '");
+        qry.append(numero_telefono);
+        qry.append("', subscr_c_planname= '");
+        qry.append(select_plan_name);
+        qry.append("', subscr_n_max= ");
+        qry.append(select_plan_code);
+        qry.append(" WHERE subscr_n_id = ");
+        qry.append(id);
+        qry.append(" and  subscr_c_empresaname = upper('");
+        qry.append(nombre_empresa);
+        qry.append("')");
+
         Log.debug(qry.toString());
         PreparedStatement ps = null;
 

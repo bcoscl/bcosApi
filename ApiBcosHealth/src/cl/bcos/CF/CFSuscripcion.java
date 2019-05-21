@@ -46,8 +46,8 @@ public class CFSuscripcion {
             String[] param = {};
             TabRegistros tab = new TabRegistros();
             tab.setContext(RFSuscripcion.selectSuscripciones(con));
-            tab.execute(tab.USE_RS, param);            
-             it = tab.getRegistros();
+            tab.execute(tab.USE_RS, param);
+            it = tab.getRegistros();
             return it;
         } catch (Exception e) {
             Log.error(e.toString());
@@ -56,6 +56,7 @@ public class CFSuscripcion {
         }
         return it;
     }
+
     public static Iterator selectSuscripcionesbyEmpresa(String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
@@ -65,8 +66,8 @@ public class CFSuscripcion {
             String[] param = {empresa};
             TabRegistros tab = new TabRegistros();
             tab.setContext(RFSuscripcion.selectSuscripcionesByEmpresa(con));
-            tab.execute(tab.USE_RS, param);            
-             it = tab.getRegistros();
+            tab.execute(tab.USE_RS, param);
+            it = tab.getRegistros();
             return it;
         } catch (Exception e) {
             Log.error(e.toString());
@@ -76,14 +77,14 @@ public class CFSuscripcion {
         return it;
     }
 
-    public static int updateEstado(String id,String checkbox_activo, String nombre_completo) {
+    public static int updateEstado(String id, String checkbox_activo, String nombre_completo) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
-        
+
         Connection con = null;
 
         try {
             con = Pool.getInstancia().getConnection(conexionName);
-            return RFSuscripcion.updateEstado(con, id,checkbox_activo, nombre_completo);
+            return RFSuscripcion.updateEstado(con, id, checkbox_activo, nombre_completo);
 
         } catch (Exception e) {
             Log.error(e.toString());
@@ -93,4 +94,21 @@ public class CFSuscripcion {
         }
     }
 
+    public static int updatePlanSuscripcion(String id, String nombre_empresa, String contacto_empresa, String email_contacto, String numero_telefono, String select_plan_name, String select_plan_code) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        Connection con = null;
+
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            return RFSuscripcion.updatePlanSuscripcion(con, id, nombre_empresa, contacto_empresa, email_contacto, numero_telefono, select_plan_name, select_plan_code);
+
+        } catch (Exception e) {
+            Log.error(e.toString());
+            return 0;
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+
+    }
 }

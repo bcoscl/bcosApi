@@ -79,7 +79,8 @@ public class ApiListarUsuarios extends ServerResource {
 
                     Log.info("roles :" + roles);
 
-                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")|| roles.contains("MEDICO")) {
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("ADMIN")|| 
+                            roles.contains("MEDICO")|| roles.contains("RECEPCION")) {
 
                         Iterator it = LFUsuarios.selectUsuarios(empresa);
                         List<Profile> l = new ArrayList();

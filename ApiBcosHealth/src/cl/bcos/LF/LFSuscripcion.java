@@ -33,7 +33,13 @@ public class LFSuscripcion {
 
 
     public static int updateEstado(String id, String checkbox_activo, String nombre_completo) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFSuscripcion.updateEstado(id,checkbox_activo, nombre_completo);
+    }
+
+    public static int updatePlanSuscripcion(String id, String nombre_empresa, String contacto_empresa, String email_contacto, String numero_telefono, String select_plan_name, String select_plan_code) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        return CFSuscripcion.updatePlanSuscripcion( id,  nombre_empresa,  contacto_empresa,  email_contacto,  numero_telefono,  select_plan_name,  select_plan_code);
     }
 
 }

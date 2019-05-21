@@ -99,22 +99,29 @@ public class ApiUpdateSuscripcion extends ServerResource {
                         if (accion.equalsIgnoreCase("ESTADO")) {
                             LFSuscripcion.updateEstado(id, checkbox_activo, nombre_completo);
 
-                            Log.info("UPDATE OK");
+                            Log.info("UPDATE Estado OK");
                             status = Status.SUCCESS_OK;
                             message = "UPDATE_OK";
-                        } //                    if (LFSuscripcion.insertSuscripcion(nombre_empresa,
-                        //                            contacto_empresa, email_contacto, numero_telefono, 
-                        //                            fecha_inicio, select_plan_code, select_plan_name, 
-                        //                            checkbox_activo, nombre_completo, usuario_creador) == 1) {
-                        //
-                        //                        Log.info("UPDATE OK");
-                        //                        status = Status.SUCCESS_OK;
-                        //                        message = "UPDATE_OK";
-                        //
-                        //                    } 
-                        else {
+                        } else if (accion.equalsIgnoreCase("UPDATE-SUSCRIPCION")) {
 
-                            Log.info("Error de insercion");
+                            LFSuscripcion.updatePlanSuscripcion(id, nombre_empresa, contacto_empresa, email_contacto, numero_telefono, select_plan_name, select_plan_code);
+                            Log.info("UPDATE Suscripcion OK");
+                            status = Status.SUCCESS_OK;
+                            message = "UPDATE_OK";
+
+                            //                    if (LFSuscripcion.insertSuscripcion(nombre_empresa,
+                            //                            contacto_empresa, email_contacto, numero_telefono, 
+                            //                            fecha_inicio, select_plan_code, select_plan_name, 
+                            //                            checkbox_activo, nombre_completo, usuario_creador) == 1) {
+                            //
+                            //                        Log.info("UPDATE OK");
+                            //                        status = Status.SUCCESS_OK;
+                            //                        message = "UPDATE_OK";
+                            //
+                            //                    } 
+                        } else {
+
+                            Log.info("Error de Update");
                             message = "UPDATE_NO_OK";
                             status = Status.CLIENT_ERROR_BAD_REQUEST;
 

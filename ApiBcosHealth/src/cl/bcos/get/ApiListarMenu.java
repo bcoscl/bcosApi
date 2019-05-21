@@ -67,20 +67,22 @@ public class ApiListarMenu extends ServerResource {
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
                     String pre = "";
                     String pos = "";
-
-                    if (roles.contains("MEDICO")) {
-                        pre = "Dr. ";
-                    } else {
-                        pre = "";
-                    }
+//
+//                    if (roles.contains("MEDICO")) {
+//                        pre = "Dr. ";
+//                    } else {
+//                        pre = "";
+//                    }
                     
                     
                     if (roles.contains("SUPER-ADMIN")) {
                         pos = " - Super Admin ";
                     }else if(roles.contains("ADMIN")) {
-                        pos = " - Admin ";
+                        pos = " - Admin ("+empresa+")";
                     }else if(roles.contains("RECEPCION")) {
-                        pos = " - Recepcionista";
+                        pos = " - Recepcionista ("+empresa+")";
+                    }else if(roles.contains("MEDICO")) {
+                        pos = " - Medico ("+empresa+")";
                     }
                     
                     nombre_completo = pre+nombre_completo+pos;
