@@ -214,4 +214,25 @@ public class CFParams {
 //            Pool.getInstancia().free(con);
 //        }
 //    }
+
+    public static Iterator getS3Params(String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+        
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            String[] param = {empresa};
+            TabRegistros tab = new TabRegistros();
+            tab.setContext(RFParams.getS3Params(con));
+            tab.execute(tab.USE_RS, param);
+            Iterator it = tab.getRegistros();
+            return it;
+
+        } catch (Exception e) {
+            Log.error(e.toString());
+            return null;
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+    }
 }

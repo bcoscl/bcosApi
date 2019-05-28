@@ -23,17 +23,17 @@ public class LFParams {
 
         return Response;
     }
+
     public static Iterator getAllParams() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFParams.getAllParams();
 
-        
     }
+
     public static Iterator getEmailConfig() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFParams.getEmailConfig();
 
-        
     }
 
     public static int insertParam(String params_n_grupo,
@@ -45,8 +45,8 @@ public class LFParams {
             String params_c_numuser_utlmod,
             String params_c_nombre_ultmod) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
-        return CFParams.insertParam(params_n_grupo, params_n_subgrupo, params_n_param1, params_n_param2, params_n_param3, params_n_param4,params_c_numuser_utlmod,params_c_nombre_ultmod);
-       
+        return CFParams.insertParam(params_n_grupo, params_n_subgrupo, params_n_param1, params_n_param2, params_n_param3, params_n_param4, params_c_numuser_utlmod, params_c_nombre_ultmod);
+
     }
 
     public static String getNewParamId() {
@@ -55,19 +55,21 @@ public class LFParams {
 
         return Response;
     }
+
     public static String getsysdate() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         String Response = CFParams.getsysdate();
 
         return Response;
     }
-     public static int deleteParams(String Rowid) {
+
+    public static int deleteParams(String Rowid) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         int Response = CFParams.deleteParams(Rowid);
 
         return Response;
     }
-    
+
 //
 //    public static int insertUserPass(String numuser_user, String password, String usuario_creador, String checkbox_activo, String nombre_completo, String rowid) {
 //        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -78,5 +80,9 @@ public class LFParams {
 //        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
 //        CFSSO.rollBack(id);
 //    }
+    public static Iterator getS3Params(String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        return CFParams.getS3Params(empresa);
+    }
 
 }

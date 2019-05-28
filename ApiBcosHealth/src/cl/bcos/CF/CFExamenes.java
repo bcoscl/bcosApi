@@ -6,7 +6,9 @@
 package cl.bcos.CF;
 
 import cl.bcos.RF.RFExamenes;
+import cl.bcos.RF.RFSSO;
 import cl.bcos.bd.Pool;
+import cl.bcos.data.Registro;
 import cl.bcos.data.TabRegistros;
 import java.sql.Connection;
 import java.util.Iterator;
@@ -27,7 +29,7 @@ public class CFExamenes {
         Iterator it = null;
         try {
             con = Pool.getInstancia().getConnection(conexionName);
-            String[] param = {Paciente,empresa};
+            String[] param = {Paciente, empresa};
             TabRegistros tab = new TabRegistros();
             tab.setContext(RFExamenes.selectExamenesbyPaciente(con));
             tab.execute(tab.USE_RS, param);
@@ -40,6 +42,7 @@ public class CFExamenes {
         }
         return it;
     }
+
     public static Iterator selectExamenesAll(String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
@@ -108,4 +111,48 @@ public class CFExamenes {
         }
     }
 
+    public static String selectExamenesbyData(String exa_c_name, String exa_c_obs, String exa_c_numuser_paciente, String usuario_creador, String nombre_completo, String exa_c_url, String examen_pacientename, String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+        Iterator it = null;
+        String ret = "";
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            String[] param = {exa_c_name, exa_c_numuser_paciente,
+                empresa
+            };
+            TabRegistros tab = new TabRegistros();
+            tab.setContext(RFExamenes.selectExamenesbyData(con));
+            tab.execute(tab.USE_RS, param);
+            it = tab.getRegistros();
+            while (it.hasNext()) {
+                Registro reg = (Registro) it.next();
+                ret = reg.get(RFExamenes.exa_n_id);
+                break;
+            }
+
+        } catch (Exception e) {
+            Log.error(e.toString());
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+        return ret;
+
+    }
+
+    public static void updateExamenUrlFile(String id, String examenUrl, String empresa) {
+         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        Connection con = null;
+
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            RFExamenes.updateExamenUrlFile(con, id, examenUrl, empresa);
+
+        } catch (Exception e) {
+            Log.error(e.toString());
+           
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+    }
 }

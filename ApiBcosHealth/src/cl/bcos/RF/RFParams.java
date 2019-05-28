@@ -38,9 +38,15 @@ public class RFParams extends Registro {
     public static final int mail_smtp_transport = 16;
     public static final int mail_smtp_url = 17;
     public static final int params_now = 18;
+    public static final int ACCESS_KEY_ID = 19;
+    public static final int ACCESS_SEC_KEY = 20;
+    public static final int FOLDER_NAME_EXAMENES = 21;
+    public static final int FOLDER_NAME_PROFILE = 22;
+    public static final int POLICY_RULES = 23;
+    public static final int BUCKETNAME = 24;
 
     public RFParams() {
-        super(20);
+        super(25);
     }
 
     /*Validacion de si existe para el ingreso de la persona, Autenticacion*/
@@ -172,7 +178,6 @@ public class RFParams extends Registro {
             adm.setColumna(5, mail_smtp_port);
             adm.setColumna(6, mail_smtp_transport);
             adm.setColumna(7, mail_smtp_url);
-            
 
             return adm;
         } catch (Exception e) {
@@ -204,6 +209,7 @@ public class RFParams extends Registro {
         }
 
     }
+
     public static AdmRegistros getsysdate(Connection con) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
@@ -306,6 +312,61 @@ public class RFParams extends Registro {
                 }
             }
         }
+    }
+
+    public static AdmRegistros getS3Params(Connection con) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append(" select (SELECT params_n_param2 ");
+        qry.append(" FROM public.health_params  ");
+        qry.append(" where params_n_grupo='AWS'  ");
+        qry.append(" and params_n_subgrupo='S3' ");
+        qry.append(" and params_n_param1='ACCESS_KEY_ID') ACCESS_KEY_ID, ");
+        qry.append(" (SELECT params_n_param2	 ");
+        qry.append(" FROM public.health_params  ");
+        qry.append(" where params_n_grupo='AWS'  ");
+        qry.append(" and params_n_subgrupo='S3' ");
+        qry.append(" and params_n_param1='ACCESS_SEC_KEY') ACCESS_SEC_KEY, ");
+        qry.append(" (SELECT lower(params_n_param2)	 ");
+        qry.append(" FROM public.health_params  ");
+        qry.append(" where params_n_grupo='AWS'  ");
+        qry.append(" and params_n_subgrupo='S3' ");
+        qry.append(" and params_n_param1='FOLDER_NAME-PROFILE') FOLDER_NAME_PROFILE, ");
+        qry.append(" (SELECT lower(params_n_param2)	 ");
+        qry.append(" FROM public.health_params  ");
+        qry.append(" where params_n_grupo='AWS'  ");
+        qry.append(" and params_n_subgrupo='S3' ");
+        qry.append(" and params_n_param1='FOLDER_NAME-EXAMENES') FOLDER_NAME_EXAMENES, ");
+        qry.append(" (SELECT params_n_param2	 ");
+        qry.append(" FROM public.health_params  ");
+        qry.append(" where params_n_grupo='AWS'  ");
+        qry.append(" and params_n_subgrupo='S3' ");
+        qry.append(" and params_n_param1='POLICY-RULES') POLICY_RULES, ");
+        qry.append(" (SELECT subscr_c_bucketname ");
+        qry.append(" 	FROM public.health_subscription ");
+        qry.append(" 	where subscr_c_empresaname=upper(?)) ");
+
+        Log.debug(qry.toString());
+        try {
+            AdmRegistros adm = new AdmRegistros(con,
+                    qry.toString(),
+                    6,
+                    new RFParams());
+
+            adm.setColumna(1, ACCESS_KEY_ID);
+            adm.setColumna(2, ACCESS_SEC_KEY);
+            adm.setColumna(3, FOLDER_NAME_PROFILE);
+            adm.setColumna(4, FOLDER_NAME_EXAMENES);
+            adm.setColumna(5, POLICY_RULES);
+            adm.setColumna(6, BUCKETNAME);
+
+            return adm;
+        } catch (Exception e) {
+            Log.error(e.getMessage());
+            throw e;
+        }
+
     }
 
 }

@@ -64,6 +64,9 @@ public class LFUsuarios {
     public static int updateEstado(String id, String checkbox_activo, String nombre_completo, String empresa) {
         return CFUsuarios.updateEstado(id,checkbox_activo, nombre_completo, empresa);
     }
+    public static int updateImg(String id, String imgName, String empresa) {
+        return CFUsuarios.updateImg(id,imgName,empresa);
+    }
 
     public static String  existeRegistrobyEmail(String email, String numuser) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

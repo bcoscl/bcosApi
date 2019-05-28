@@ -154,6 +154,22 @@ public class CFUsuarios {
             Pool.getInstancia().free(con);
         }
     }
+     public static int updateImg(String id,String imgName,String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        
+        Connection con = null;
+
+        try {
+            con = Pool.getInstancia().getConnection(conexionName);
+            return RFUsuarios.updateImg(con, id,imgName, empresa);
+
+        } catch (Exception e) {
+            Log.error(e.toString());
+            return 0;
+        } finally {
+            Pool.getInstancia().free(con);
+        }
+    }
 
     public static Iterator existeRegistrobyEmail(String email, String numuser) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

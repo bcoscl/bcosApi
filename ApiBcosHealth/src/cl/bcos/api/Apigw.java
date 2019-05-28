@@ -32,12 +32,15 @@ import cl.bcos.get.ApiListarSucursales;
 import cl.bcos.get.ApiListarFichas;
 import cl.bcos.get.ApiListarMenu;
 import cl.bcos.get.ApiListarParam;
+import cl.bcos.get.ApiS3Params;
 import cl.bcos.healthCheck.HealthCheck;
 import cl.bcos.healthCheck.HealthCheckBD;
 import cl.bcos.option.ApiUpdateConsultas;
 import cl.bcos.option.ApiUpdateEnfermedadesCronicas;
+import cl.bcos.option.ApiUpdateExamenFile;
 import cl.bcos.option.ApiUpdateExamenes;
 import cl.bcos.option.ApiUpdateFarmacos;
+import cl.bcos.option.ApiUpdateImgProfile;
 import cl.bcos.option.ApiUpdatePacientes;
 import cl.bcos.option.ApiUpdateParam;
 import cl.bcos.put.ApiCrearSucursales;
@@ -128,7 +131,11 @@ public class Apigw extends ServerResource {
                     component.getDefaultHost().attach("/bcos/api/json/crearUsuarios", ApiCrearUsuarios.class);
                     component.getDefaultHost().attach("/bcos/api/json/updateUsuarios", ApiUpdateUsuarios.class);
                     component.getDefaultHost().attach("/bcos/api/json/ListarUsuarios", ApiListarUsuarios.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateImgProfile", ApiUpdateImgProfile.class);
+                    
                     component.getDefaultHost().attach("/bcos/api/json/userMax", ApiUserMax.class);
+                    
+                    component.getDefaultHost().attach("/bcos/api/json/S3", ApiS3Params.class);
 
                     /*End Point controla la informacion del componente profile*/
                     component.getDefaultHost().attach("/bcos/api/json/Profile", ApiProfile.class);
@@ -169,6 +176,7 @@ public class Apigw extends ServerResource {
                     component.getDefaultHost().attach("/bcos/api/json/listarExamenes", ApiListarExamenes.class);
                     component.getDefaultHost().attach("/bcos/api/json/updateExamenes", ApiUpdateExamenes.class);
                     component.getDefaultHost().attach("/bcos/api/json/crearExamenes", ApiCrearExamenes.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateExamenFile", ApiUpdateExamenFile.class);
 
                     component.start();
 

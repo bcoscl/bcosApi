@@ -51,4 +51,17 @@ public class LFExamenes {
                 exa_c_obs, exa_n_ultmod_numuser, exa_c_ultmod_username,
                 exa_c_url, empresa);
     }
+
+    public static String selectExamenesbyData(String exa_c_name, String exa_c_obs, String exa_c_numuser_paciente, String usuario_creador, String nombre_completo, String exa_c_url, String examen_pacientename, String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        return CFExamenes.selectExamenesbyData( exa_c_name,  exa_c_obs,  exa_c_numuser_paciente, 
+                usuario_creador,  nombre_completo,  exa_c_url,  examen_pacientename,  empresa);
+
+    }
+
+    public static void updateExamenUrlFile(String id, String examenUrl, String empresa) {
+         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+         CFExamenes.updateExamenUrlFile(id, examenUrl,
+                empresa);
+    }
 }

@@ -31,6 +31,10 @@ public class RFExamenes extends Registro {
     public static int exa_c_paciente_name = 9;
     public static int exa_c_empresa = 10;
 
+   
+
+   
+
     public RFExamenes() {
         super(11);
     }
@@ -68,6 +72,25 @@ public class RFExamenes extends Registro {
 
         return adm;
     }
+    public static AdmRegistros selectExamenesbyData(Connection con) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append(" SELECT exa_n_id  ");      
+        qry.append(" FROM health_examenes where exa_c_name = ? and exa_c_numuser_paciente=? and exa_c_empresa = ? ");
+        
+        
+        Log.debug(qry.toString());
+        AdmRegistros adm = new AdmRegistros(con,
+                qry.toString(),
+                1,
+                new RFExamenes()
+        );
+        adm.setColumna(1, exa_n_id);
+       
+
+        return adm;
+    }
     public static AdmRegistros selectExamenesAll(Connection con) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
@@ -82,7 +105,7 @@ public class RFExamenes extends Registro {
         qry.append(" exa_c_ultmod_username, ");
         qry.append(" exa_c_url,exa_c_paciente_name, exa_c_empresa");
         qry.append(" FROM health_examenes where exa_c_empresa = ? order by exa_n_id DESC ");
-        Log.debug(qry.toString());
+        Log.debug(qry.toString()); 
         AdmRegistros adm = new AdmRegistros(con,
                 qry.toString(),
                 10,
@@ -227,6 +250,41 @@ public class RFExamenes extends Registro {
         } catch (Exception e) {
             Log.error(e.getMessage());
             return 0;
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException x) {
+                    Log.error(x.toString());
+                }
+            }
+        }
+    }
+    public static void updateExamenUrlFile(Connection con, String id, String examenUrl, String empresa) {
+       
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append(" UPDATE health_examenes ");
+        qry.append(" SET exa_c_url ='");
+        qry.append(examenUrl);
+        qry.append("'");
+        qry.append(" where exa_n_id=");
+        qry.append(id);
+        qry.append(" and  exa_c_empresa='");
+        qry.append(empresa);
+        qry.append("' ");
+
+        Log.debug(qry.toString());
+
+        PreparedStatement ps = null;
+
+        try {
+            ps = con.prepareStatement(qry.toString());
+             ps.executeUpdate();
+        } catch (Exception e) {
+            Log.error(e.getMessage());
+           
         } finally {
             if (ps != null) {
                 try {

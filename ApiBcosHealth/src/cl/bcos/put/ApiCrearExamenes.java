@@ -60,6 +60,7 @@ public class ApiCrearExamenes extends ServerResource {
 
         String token = getQuery().getValues("token");
         String empresasession = getQuery().getValues("empresasession");
+        String id = "";
 
         Log.info("accion :" + accion);
         Log.info("exa_c_name :" + exa_c_name);
@@ -96,7 +97,9 @@ public class ApiCrearExamenes extends ServerResource {
 
                                 if (LFExamenes.insertExamenes(exa_c_name, exa_c_obs, exa_c_numuser_paciente,
                                         usuario_creador, nombre_completo, exa_c_url, examen_pacientename, empresa) == 1) {
-
+                                    
+                                    id = LFExamenes.selectExamenesbyData(exa_c_name, exa_c_obs, exa_c_numuser_paciente,
+                                        usuario_creador, nombre_completo, exa_c_url, examen_pacientename, empresa);
                                     Log.info("Insert OK");
                                     status = Status.SUCCESS_OK;
                                     message = INSERT_OK;
@@ -136,6 +139,7 @@ public class ApiCrearExamenes extends ServerResource {
 
         s.put("code", status.getCode());
         s.put("message", message);
+        s.put("name", id);
         map.put("status", s);
 
         setStatus(status, message);

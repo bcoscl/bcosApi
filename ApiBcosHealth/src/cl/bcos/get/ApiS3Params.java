@@ -7,12 +7,14 @@ package cl.bcos.get;
 
 import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
-import cl.bcos.entity.Rol;
+import cl.bcos.LF.LFParams;
+import cl.bcos.RF.RFParams;
+import cl.bcos.data.Registro;
+import cl.bcos.entity.S3Config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import org.restlet.resource.ServerResource;
 import org.apache.log4j.Logger;
@@ -26,20 +28,20 @@ import org.restlet.resource.Post;
  *
  * @author aacantero
  */
-public class ApiListarMenu extends ServerResource {
+public class ApiS3Params extends ServerResource {
 
-    private static final Logger Log = Logger.getLogger(ApiListarMenu.class);
+    private static final Logger Log = Logger.getLogger(ApiS3Params.class);
 
     private ImplementacionJWT jwt = null;
     private Map s = new HashMap();
     private final String ERROR_TOKEN = "TOKEN_NO_VALIDO";
 
-    public ApiListarMenu() {
+    public ApiS3Params() {
         jwt = new ImplementacionJWT();
     }
 
     @Post
-    public Representation getMenu() {
+    public Representation getS3Params() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Status status = null;
         String message = "ok";
@@ -48,6 +50,8 @@ public class ApiListarMenu extends ServerResource {
 
         String token = getQuery().getValues("token");
         String empresasession = getQuery().getValues("empresasession");
+        String accion = getQuery().getValues("accion");
+        String empresas = getQuery().getValues("nombre_empresa");
 
         Log.info("token : " + token);
 
@@ -60,63 +64,41 @@ public class ApiListarMenu extends ServerResource {
                 try {
 
                     String roles = jwt.getJwt().getValue("Roles").toString();
-                    String nombre_usuario = jwt.getJwt().getValue("name").toString();
-                    String apellido_usuario = jwt.getJwt().getValue("LastName").toString();
-                    String img = jwt.getJwt().getValue("imgUrl").toString();
-
-                    String nombre_completo = nombre_usuario.split(" ")[0] + " " + apellido_usuario.split(" ")[0];
 
                     String empresa = jwt.getJwt().getValue("empresaName").toString();
-                    String pre = "";
-                    String pos = "";
-                    if (roles.contains("SUPER-ADMIN")) {
+                    
+                   
                         empresa = empresasession;
-                    }
-//
-//                    if (roles.contains("MEDICO")) {
-//                        pre = "Dr. ";
-//                    } else {
-//                        pre = "";
-//                    }
-                    
-                    
-                    if (roles.contains("SUPER-ADMIN")) {
-                        pos = " - Super Admin ("+empresa+")";
-                    }else if(roles.contains("ADMIN")) {
-                        pos = " - Admin ("+empresa+")";
-                    }else if(roles.contains("RECEPCION")) {
-                        pos = " - Recepcionista ("+empresa+")";
-                    }else if(roles.contains("MEDICO")) {
-                        pos = " - Medico ("+empresa+")";
-                    }
-                    
-                    nombre_completo = pre+nombre_completo+pos;
+                   
+                    Log.info("empresa :" + empresa);
 
                     Log.info("roles :" + roles);
-                    List<Rol> l = new ArrayList();
 
-                    try {
-                        String[] roles_ = roles.split(",");
+                    if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN")) {
 
-                        for (int i = 0; i < roles_.length; i++) {
-                            Rol r = new Rol();
-                            r.setRol(roles_[i]);
-                            l.add(r);
-                        }
+                        Iterator it = LFParams.getS3Params(empresa);
 
-                        map.put("Rol", l);
-                        map.put("NOMBRE", nombre_completo);
-                        map.put("IMG", img);
-                        Log.info("SELECT OK");
+                        Registro reg = (Registro) it.next();
+
+                        S3Config s3 = new S3Config();
+
+                        s3.setACCESS_KEY_ID(reg.get(RFParams.ACCESS_KEY_ID));
+                        s3.setACCESS_SEC_KEY(reg.get(RFParams.ACCESS_SEC_KEY));
+                        s3.setFOLDER_NAME_EXAMENES(reg.get(RFParams.FOLDER_NAME_EXAMENES));
+                        s3.setFOLDER_NAME_PROFILE(reg.get(RFParams.FOLDER_NAME_PROFILE));
+                        s3.setPOLICY_RULES(reg.get(RFParams.POLICY_RULES));
+                        s3.setBUCKETNAME(reg.get(RFParams.BUCKETNAME));
+
+                        map.put("S3", s3);
+
+                        Log.info("S3 OK");
                         status = Status.SUCCESS_OK;
                         message = "SELECT_OK";
 
-                    } catch (Exception e) {
-
-                        map.put("Acceso", "");
-                        Log.info("SIN ROLES");
-                        message = "SELECT_NO_OK";
-                        status = Status.CLIENT_ERROR_BAD_REQUEST;
+                    } else {
+                        status = Status.CLIENT_ERROR_UNAUTHORIZED;
+                        Log.error("Perfil sin acceso");
+                        message = ERROR_TOKEN;
                     }
 
                 } catch (Exception e) {

@@ -362,6 +362,40 @@ public class RFUsuarios extends Registro {
             }
         }
     }
+    public static int updateImg(Connection con, String id, String imgName,String empresa) {
+        Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
+        StringBuilder qry = new StringBuilder();
+
+        qry.append(" UPDATE health_user ");
+        qry.append(" SET  user_c_img= '");
+        qry.append(imgName);
+        qry.append("' WHERE user_n_iduser = ");
+        qry.append(id);
+        qry.append(" and user_c_empresaname='");
+        qry.append(empresa);
+        qry.append("'");
+        
+        Log.debug(qry.toString());
+        PreparedStatement ps = null;
+
+        try {
+            ps = con.prepareStatement(qry.toString());
+            Log.debug(qry.toString());
+            return ps.executeUpdate();
+
+        } catch (Exception e) {
+            Log.error(e.getMessage());
+            return 0;
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException x) {
+                    Log.error(x.toString());
+                }
+            }
+        }
+    }
     
       
     public static int changePass(Connection con, String usuario, String passs) {

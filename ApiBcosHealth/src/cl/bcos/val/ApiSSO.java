@@ -11,7 +11,9 @@ import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
 import cl.bcos.LF.LFParams;
 import cl.bcos.LF.LFSSO;
+import cl.bcos.LF.LFSuscripcion;
 import cl.bcos.LF.LFUsuarios;
+import cl.bcos.RF.RFSuscripcion;
 import cl.bcos.RF.RFUsuarios;
 import cl.bcos.data.Registro;
 import com.google.gson.Gson;
@@ -43,7 +45,7 @@ public class ApiSSO extends ServerResource {
     private String userr = "";
     private String passs = "";
     private String accion = "";
-    private String ValidaPassword = "";
+    //private String ValidaPassword = "";
     private GenerarTokenJWT token = null;
     private Map map = null;
     private Status status = null;
@@ -60,10 +62,10 @@ public class ApiSSO extends ServerResource {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-        
-        String path = getRequest().getResourceRef().getHostIdentifier()+ getRequest().getResourceRef().getPath();
+
+        String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
         String pathSinHost = getRequest().getResourceRef().getPath();
-        
+
         jwt = new ImplementacionJWT();
 
         tokken = "";
@@ -71,16 +73,15 @@ public class ApiSSO extends ServerResource {
         passs = getQuery().getValues("Password");
         accion = getQuery().getValues("accion");
         tokken = getQuery().getValues("token");
-        ValidaPassword = "OK";
+        //ValidaPassword = "OK";
 
         Log.info("user : " + userr);
         Log.info("pass : " + passs);
         Log.info("accion : " + accion);
         Log.info("Validar Datos con BD, pass encritar antes de comprar");
-   
+
         Log.info("getRequestURL : " + path);
         Log.info("getRequestURL sin Host : " + pathSinHost);
-
 
         try {
 
@@ -136,6 +137,7 @@ public class ApiSSO extends ServerResource {
     private void getUserInformation() {
 
         Iterator it = LFUsuarios.getUserInformation(userr);
+        String empresa = "";
 
         while (it.hasNext()) {
 
@@ -154,11 +156,23 @@ public class ApiSSO extends ServerResource {
             token.AddItem("Profesion", reg.get(RFUsuarios.user_c_profesion));
             token.AddItem("AboutMe", reg.get(RFUsuarios.user_c_obs));
             token.AddItem("empresaName", reg.get(RFUsuarios.user_c_empresaname));
+            empresa = reg.get(RFUsuarios.user_c_empresaname);
             token.AddItem("numUserCreador", reg.get(RFUsuarios.user_n_createuser));
             token.AddItem("CodEmpresa", reg.get(RFUsuarios.user_n_cod_empresa));
             token.AddItem("userId", reg.get(RFUsuarios.user_n_iduser));
             token.AddItem("pUserId", reg.get(RFUsuarios.pass_n_id));
             token.AddItem("status", reg.get(RFUsuarios.pass_c_activo));
+
+                /*se agrega el bucket de la suscripcion al token*/
+            Iterator itt = LFSuscripcion.selectSuscripcionesbyempresa(reg.get(RFUsuarios.user_c_empresaname));
+            
+            while (itt.hasNext()) {
+
+                Registro regg = (Registro) itt.next();
+                token.AddItem("bucketName", regg.get(RFSuscripcion.bucketName));
+                break;
+            }
+            break;
 
         }
 
@@ -183,8 +197,9 @@ public class ApiSSO extends ServerResource {
         map.put("login", "OK");
         map.put("token", tokken);
 //
-        message = "ok";
+        message = empresa;
         status = Status.SUCCESS_OK;
+        
 
     }
 

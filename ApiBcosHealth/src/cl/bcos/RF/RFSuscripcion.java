@@ -34,15 +34,16 @@ public class RFSuscripcion extends Registro {
     public static final int usuario_creador = 10;
     public static final int fecha_creacion = 11;
     public static final int nombre_usuario_creador = 12;
+    public static final int bucketName = 13;
 
     public RFSuscripcion() {
-        super(13);
+        super(14);
     }
 
     public static int insertSuscripcion(Connection con, String nombre_empresa, String contacto_empresa,
             String email_contacto, String numero_telefono, String fecha_inicio,
             String select_plan_code, String select_plan_name, String checkbox_activo,
-            String nombre_completo, String usuario_creador) {
+            String nombre_completo, String usuario_creador, String bucketName) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
 
@@ -58,7 +59,7 @@ public class RFSuscripcion extends Registro {
         qry.append(" subscr_c_estado, ");
         qry.append(" subscr_c_createuser, ");
         qry.append(" subscr_d_createdate, ");
-        qry.append(" subscr_c_createusername) ");
+        qry.append(" subscr_c_createusername,subscr_c_bucketname) ");
         qry.append(" VALUES ( ");
         qry.append(" nextval('health_seq_subcription') /* subscr_n_id */,UPPER('");
         qry.append(nombre_empresa);
@@ -82,7 +83,9 @@ public class RFSuscripcion extends Registro {
         qry.append("',");
         qry.append("NOW()/* subscr_d_createdate */,'");
         qry.append(nombre_completo/* subscr_c_createusername */);
-        qry.append("')");
+        qry.append("',LOWER('");
+        qry.append(bucketName/* subscr_c_createusername */);
+        qry.append("'))");
 
         PreparedStatement ps = null;
         Log.debug(qry.toString());
@@ -119,12 +122,12 @@ public class RFSuscripcion extends Registro {
         qry.append(" subscr_c_estado,  ");
         qry.append(" subscr_c_createuser,  ");
         qry.append(" subscr_d_createdate,  ");
-        qry.append(" subscr_c_createusername ");
+        qry.append(" subscr_c_createusername,subscr_c_bucketname ");
         qry.append(" FROM health_subscription order by subscr_c_empresaname ASC ");
         Log.debug(qry.toString());
         AdmRegistros adm = new AdmRegistros(con,
                 qry.toString(),
-                12,
+                13,
                 new RFSuscripcion()
         );
         adm.setColumna(1, id);
@@ -139,6 +142,7 @@ public class RFSuscripcion extends Registro {
         adm.setColumna(10, usuario_creador);
         adm.setColumna(11, fecha_creacion);
         adm.setColumna(12, nombre_usuario_creador);
+        adm.setColumna(13, bucketName);
 
         return adm;
     }
@@ -158,12 +162,12 @@ public class RFSuscripcion extends Registro {
         qry.append(" subscr_c_estado,  ");
         qry.append(" subscr_c_createuser,  ");
         qry.append(" subscr_d_createdate,  ");
-        qry.append(" subscr_c_createusername ");
+        qry.append(" subscr_c_createusername, subscr_c_bucketname");
         qry.append(" FROM health_subscription where  subscr_c_empresaname=? order by subscr_c_empresaname ASC ");
         Log.debug(qry.toString());
         AdmRegistros adm = new AdmRegistros(con,
                 qry.toString(),
-                12,
+                13,
                 new RFSuscripcion()
         );
         adm.setColumna(1, id);
@@ -178,6 +182,7 @@ public class RFSuscripcion extends Registro {
         adm.setColumna(10, usuario_creador);
         adm.setColumna(11, fecha_creacion);
         adm.setColumna(12, nombre_usuario_creador);
+        adm.setColumna(13, bucketName);
 
         return adm;
     }
