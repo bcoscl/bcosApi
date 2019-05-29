@@ -45,11 +45,11 @@ public class LFExamenes {
 
     public static int updateExamenes(String exa_n_id, String exa_c_name,
             String exa_c_obs, String exa_n_ultmod_numuser, String exa_c_ultmod_username,
-            String exa_c_url, String empresa) {
+             String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFExamenes.updateExamenes(exa_n_id, exa_c_name,
                 exa_c_obs, exa_n_ultmod_numuser, exa_c_ultmod_username,
-                exa_c_url, empresa);
+                 empresa);
     }
 
     public static String selectExamenesbyData(String exa_c_name, String exa_c_obs, String exa_c_numuser_paciente, String usuario_creador, String nombre_completo, String exa_c_url, String examen_pacientename, String empresa) {

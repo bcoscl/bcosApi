@@ -95,13 +95,13 @@ public class CFExamenes {
         }
     }
 
-    public static int updateExamenes(String exa_n_id, String exa_c_name, String exa_c_obs, String exa_n_ultmod_numuser, String exa_c_ultmod_username, String exa_c_url, String empresa) {
+    public static int updateExamenes(String exa_n_id, String exa_c_name, String exa_c_obs, String exa_n_ultmod_numuser, String exa_c_ultmod_username, String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
 
         try {
             con = Pool.getInstancia().getConnection(conexionName);
-            return RFExamenes.updateExamenes(con, exa_n_id, exa_c_name, exa_c_obs, exa_n_ultmod_numuser, exa_c_ultmod_username, exa_c_url, empresa);
+            return RFExamenes.updateExamenes(con, exa_n_id, exa_c_name, exa_c_obs, exa_n_ultmod_numuser, exa_c_ultmod_username, empresa);
 
         } catch (Exception e) {
             Log.error(e.toString());

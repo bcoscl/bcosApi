@@ -39,7 +39,7 @@ public class ApiUpdateExamenes extends ServerResource {
     }
 
     @Post
-    public Representation updateSucursales() {
+    public Representation updateExamenes() {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
 
         String path = getRequest().getResourceRef().getHostIdentifier() + getRequest().getResourceRef().getPath();
@@ -53,7 +53,7 @@ public class ApiUpdateExamenes extends ServerResource {
         String exa_n_id = getQuery().getValues("exa_n_id");
         String exa_c_name = getQuery().getValues("exa_c_name");
         String exa_c_obs = getQuery().getValues("exa_c_obs");
-        String exa_c_url = getQuery().getValues("exa_c_url");
+        //String exa_c_url = getQuery().getValues("exa_c_url");
         String examen_pacientename = getQuery().getValues("examen_pacientename");
 
         String accion = getQuery().getValues("accion");
@@ -64,7 +64,7 @@ public class ApiUpdateExamenes extends ServerResource {
         Log.info("exa_n_id :" + exa_n_id);
         Log.info("exa_c_name :" + exa_c_name);
         Log.info("exa_c_obs :" + exa_c_obs);
-        Log.info("exa_c_url :" + exa_c_url);
+        //Log.info("exa_c_url :" + exa_c_url);
         Log.info("accion :" + accion);
         Log.info("examen_pacientename :" + examen_pacientename);
 
@@ -105,7 +105,7 @@ public class ApiUpdateExamenes extends ServerResource {
                         } else if (accion.equalsIgnoreCase(UPDATE_EXAMEN)) {
 
                             if (LFExamenes.updateExamenes(exa_n_id, exa_c_name,
-                                    exa_c_obs, usuario_creador, nombre_completo, exa_c_url, empresa) == 1) {
+                                    exa_c_obs, usuario_creador, nombre_completo, empresa) == 1) {
 
                                 Log.info("UPDATE OK");
                                 status = Status.SUCCESS_OK;

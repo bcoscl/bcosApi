@@ -217,7 +217,7 @@ public class RFExamenes extends Registro {
     public static int updateExamenes(Connection con,
             String exa_n_id, String exa_c_name,
             String exa_c_obs, String exa_n_ultmod_numuser,
-            String exa_c_ultmod_username, String exa_c_url, String empresa) {
+            String exa_c_ultmod_username, String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
 
@@ -230,8 +230,8 @@ public class RFExamenes extends Registro {
         qry.append(exa_n_ultmod_numuser);
         qry.append("',exa_c_ultmod_username='");
         qry.append(exa_c_ultmod_username);
-        qry.append("',exa_c_url='");
-        qry.append(exa_c_url);
+//        qry.append("',exa_c_url='");
+//        qry.append(exa_c_url);
         qry.append("',exa_d_ultmod_date=NOW()");
 
         qry.append(" where exa_n_id=");
