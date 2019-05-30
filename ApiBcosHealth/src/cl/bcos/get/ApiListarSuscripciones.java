@@ -83,7 +83,7 @@ public class ApiListarSuscripciones extends ServerResource {
 
                     Log.info("roles :" + roles);
                     Iterator it = null;
-                    if (roles.contains("SUPER-ADMIN")) {
+                    if (roles.contains("SUPER-ADMIN")|| roles.contains("ADMIN")) {
 
                         if (accion.equalsIgnoreCase(LISTAR_SELECT_BY)) {
                             it = LFSuscripcion.selectSuscripcionesbyempresa(empresa);
