@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 public class CFRoles {
 
     private static final Logger Log = Logger.getLogger(CFRoles.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static int insertRoles(String RoleName, String nombre_completo, String usuario_creador) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

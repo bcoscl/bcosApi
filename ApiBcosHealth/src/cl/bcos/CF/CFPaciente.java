@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 public class CFPaciente {
 
     private static final Logger Log = Logger.getLogger(CFPaciente.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static int insertPaciente(String numuser_paciente, String nombre_paciente, String apellido_paciente, String email_contacto_paciente, String numero_telefono_paciente, String profesion_paciente, String estado_civil_paciente, String fecha_nacimiento_paciente, String edad_paciente, String prevision, String aboutme_obs_paciente, String usuario_creador, String nombre_completo, String empresaName, String rowPacienteId, String direccion_paciente, String sexo) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 public class CFAttentionList {
 
     private static final Logger Log = Logger.getLogger(CFAttentionList.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static Iterator selectAttentionList(String doctor, String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -46,7 +46,7 @@ public class CFAttentionList {
     public static int insertAttentionList(
             String at_c_numuser_paciente,
             String at_c_pacientename, String at_c_mediconame,
-            String at_c_numuser_medico, String motivo, String empresa){
+            String at_c_numuser_medico, String motivo, String empresa, String hora){
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         
         Connection con = null;
@@ -55,7 +55,7 @@ public class CFAttentionList {
             con = Pool.getInstancia().getConnection(conexionName);
             return RFAttentionList.insertAttentionList(con,   at_c_numuser_paciente,
              at_c_pacientename,  at_c_mediconame,
-             at_c_numuser_medico,motivo, empresa);
+             at_c_numuser_medico,motivo, empresa, hora);
 
         } catch (Exception e) {
             Log.error(e.toString());

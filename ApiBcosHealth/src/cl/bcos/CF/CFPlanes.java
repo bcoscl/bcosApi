@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 public class CFPlanes {
 
     private static final Logger Log = Logger.getLogger(CFPlanes.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static int insertPlan(String nombre_plan, String numero_maximo, String usuario_creador, String nombreUsuario) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

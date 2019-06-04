@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 public class CFConsultas {
 
     private static final Logger Log = Logger.getLogger(CFConsultas.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static Iterator selectConsultas(String Paciente, String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

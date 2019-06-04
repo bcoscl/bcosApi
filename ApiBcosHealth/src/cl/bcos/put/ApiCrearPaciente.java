@@ -74,6 +74,10 @@ public class ApiCrearPaciente extends ServerResource {
         String token = getQuery().getValues("token");
 
         String empresasession = getQuery().getValues("empresasession");
+        
+        
+        aboutme_obs_paciente = aboutme_obs_paciente.replace("\n", " - ");
+        aboutme_obs_paciente = aboutme_obs_paciente.replace(" -  - ", " - ");
 
         String empresa = "";
 

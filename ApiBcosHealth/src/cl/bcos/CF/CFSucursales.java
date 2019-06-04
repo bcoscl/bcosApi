@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 public class CFSucursales {
     
     private static final Logger Log = Logger.getLogger(CFSuscripcion.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static int insertSucursales(String nombre_sucursal, String comuna_sucursal, String numero_telefono, String correo_sucursal, String contacto_sucursal, String select_empresa, String select_empresa_name, String checkbox_activo, String nombre_completo, String usuario_creador) {
          Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

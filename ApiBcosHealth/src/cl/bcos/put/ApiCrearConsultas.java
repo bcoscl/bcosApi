@@ -66,7 +66,11 @@ public class ApiCrearConsultas extends ServerResource {
 
         String token = getQuery().getValues("token");
         String empresasession = getQuery().getValues("empresasession");
-
+        
+        consult_c_obs_consulta = consult_c_obs_consulta.replace("\n", " - ");
+        consult_c_obs_consulta = consult_c_obs_consulta.replace(" -  - ", " - ");
+        
+        
         Log.info("accion :" + accion);
         Log.info("consult_c_titulo :" + consult_c_titulo);
         Log.info("consult_c_obs_consulta :" + consult_c_obs_consulta);

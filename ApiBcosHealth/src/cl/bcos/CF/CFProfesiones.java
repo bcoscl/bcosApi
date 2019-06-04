@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 public class CFProfesiones {
 
     private static final Logger Log = Logger.getLogger(CFProfesiones.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static int insertProfesion(String profesionName, String nombre_completo, String usuario_creador, String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

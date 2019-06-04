@@ -58,6 +58,10 @@ public class ApiUpdateConsultas extends ServerResource {
 
         String token = getQuery().getValues("token");
         String empresasession = getQuery().getValues("empresasession");
+        
+        
+        Consulta_obs = Consulta_obs.replace("\n", " - ");
+        Consulta_obs = Consulta_obs.replace(" -  - ", " - ");
 
         Log.info("accion :" + accion);
         Log.info("ConsultaRowId :" + ConsultaRowId);

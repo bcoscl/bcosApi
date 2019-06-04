@@ -51,7 +51,7 @@ public class RFConsultas extends Registro {
         qry.append(" consult_c_ultmod_numuser, ");
         qry.append(" consult_c_ultmod_username, ");
         qry.append(" to_char(consult_d_createdate, 'Day, dd Month yyyy - HH24:MI:SS'),consult_c_empresa ");
-        qry.append(" FROM health_consultas where consult_c_numuser_paciente = ? and consult_c_empresa=? order by consult_n_id DESC ");
+        qry.append(" FROM health_consultas where consult_c_numuser_paciente = ? and consult_c_empresa=? order by consult_d_createdate DESC ");
         Log.debug(qry.toString());
         AdmRegistros adm = new AdmRegistros(con,
                 qry.toString(),

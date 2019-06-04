@@ -25,13 +25,13 @@ public class LFAttentionList {
     public static int insertAttentionList(
             String at_c_numuser_paciente,
             String at_c_pacientename, String at_c_mediconame,
-            String at_c_numuser_medico, String motivo, String empresa) {
+            String at_c_numuser_medico, String motivo, String empresa, String hora) {
 
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         return CFAttentionList.insertAttentionList(
                 at_c_numuser_paciente,
                 at_c_pacientename, at_c_mediconame,
-                at_c_numuser_medico, motivo, empresa);
+                at_c_numuser_medico, motivo, empresa,hora);
     }
 
     public static void deleteFromAttentionList(String rowAt, String empresa) {

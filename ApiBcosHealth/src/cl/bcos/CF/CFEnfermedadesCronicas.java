@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 public class CFEnfermedadesCronicas {
 
     private static final Logger Log = Logger.getLogger(CFEnfermedadesCronicas.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static Iterator selectEnfermedadesCronicas(String Paciente, String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

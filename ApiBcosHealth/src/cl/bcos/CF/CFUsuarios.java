@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 public class CFUsuarios {
 
     private static final Logger Log = Logger.getLogger(CFUsuarios.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static int insertUsuario(String numuser_user, String nombre_user, String apellido_user, String email_contacto_user, String numero_telefono_user, String profesion_select, String textarea_obs, String sucursal_select, String roles_select, String password, String checkbox_activo, String usuario_creador, String nombre_completo, String empresaName, String rowUserId) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

@@ -18,6 +18,15 @@ public class Attention {
     private String at_c_numuser_medico;
     private String at_c_obs;
     private String at_d_fechamod;
+    private String at_d_fechacita;
+
+    public void setAt_d_fechacita(String at_d_fechacita) {
+        this.at_d_fechacita = at_d_fechacita;
+    }
+
+    public String getAt_d_fechacita() {
+        return at_d_fechacita;
+    }
 
     public String getAt_n_id() {
         return at_n_id;

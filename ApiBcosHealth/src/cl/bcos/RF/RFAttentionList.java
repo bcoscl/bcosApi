@@ -28,16 +28,17 @@ public class RFAttentionList extends Registro {
     public static final int at_c_obs = 6;
     public static final int at_d_fechamod = 7;
     public static final int at_c_empresa = 8;
+    public static final int at_d_fechacita = 9;
 
     public RFAttentionList() {
-        super(9);
+        super(10);
     }
 
     /*Inserta en la lista de atencion del doctor*/
     public static int insertAttentionList(Connection con,
             String at_c_numuser_paciente,
             String at_c_pacientename, String at_c_mediconame,
-            String at_c_numuser_medico, String motivo, String empresa) {
+            String at_c_numuser_medico, String motivo, String empresa, String hora) {
 
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
@@ -47,7 +48,7 @@ public class RFAttentionList extends Registro {
         qry.append(" at_c_numuser_paciente,  ");
         qry.append(" at_c_pacientename, ");
         qry.append(" at_c_mediconame,  ");
-        qry.append(" at_c_numuser_medico, at_c_obs, at_d_fechamod,at_c_empresa) ");
+        qry.append(" at_c_numuser_medico, at_c_obs, at_d_fechamod,at_c_empresa,at_d_fechacita) ");
         qry.append(" VALUES ( nextval('health_seq_attetion_list'),'");
         qry.append(at_c_numuser_paciente);
         qry.append("','");
@@ -60,6 +61,8 @@ public class RFAttentionList extends Registro {
         qry.append(motivo);
         qry.append("',NOW(),'");
         qry.append(empresa);
+        qry.append("',CURRENT_DATE + time '");
+        qry.append(hora);
         qry.append("')");
 
         Log.debug(qry.toString());
@@ -123,13 +126,13 @@ public class RFAttentionList extends Registro {
         qry.append(" at_c_numuser_paciente, ");
         qry.append(" at_c_pacientename, ");
         qry.append(" at_c_mediconame, ");
-        qry.append(" at_c_numuser_medico,at_c_obs ,to_char(at_d_fechamod, 'yyyy-mm-dd HH24:MI:SS')");
+        qry.append(" at_c_numuser_medico,at_c_obs ,to_char(at_d_fechamod, 'yyyy-mm-dd HH24:MI:SS'),at_c_empresa,to_char(at_d_fechacita, 'yyyy-mm-dd HH24:MI:SS')");
         qry.append(" FROM health_attention_list");
         qry.append(" where at_c_numuser_medico =? and at_c_empresa = ? order by at_n_id ASC ");
         Log.debug(qry.toString());
         AdmRegistros adm = new AdmRegistros(con,
                 qry.toString(),
-                8,
+                9,
                 new RFAttentionList()
         );
         adm.setColumna(1, at_n_id);
@@ -140,6 +143,7 @@ public class RFAttentionList extends Registro {
         adm.setColumna(6, at_c_obs);
         adm.setColumna(7, at_d_fechamod);
         adm.setColumna(8, at_c_empresa);
+        adm.setColumna(9, at_d_fechacita);
 
         return adm;
     }

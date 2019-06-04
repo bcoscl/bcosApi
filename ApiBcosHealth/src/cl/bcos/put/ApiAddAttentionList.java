@@ -57,6 +57,7 @@ public class ApiAddAttentionList extends ServerResource {
         String numuser_medico = getQuery().getValues("numuser_medico");
         String nombre_medico = getQuery().getValues("nombre_medico");
         String motivo = getQuery().getValues("motivo");
+        String hora = getQuery().getValues("hora");
 
         String token = getQuery().getValues("token");
 
@@ -68,6 +69,7 @@ public class ApiAddAttentionList extends ServerResource {
         Log.info("numuser_medico :" + numuser_medico);
         Log.info("nombre_medico :" + nombre_medico);
         Log.info("motivo :" + motivo);
+        Log.info("hora :" + hora);
 
         Log.info("token : " + token);
 
@@ -97,7 +99,7 @@ public class ApiAddAttentionList extends ServerResource {
                             case "CREATE":
 
                                 if (LFAttentionList.insertAttentionList(numuser_paciente,
-                                        nombre_paciente, nombre_medico, numuser_medico, motivo, empresa) == 1) {
+                                        nombre_paciente, nombre_medico, numuser_medico, motivo, empresa,hora) == 1) {
 
                                     Log.info("Insert OK");
                                     status = Status.SUCCESS_OK;

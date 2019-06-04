@@ -96,9 +96,11 @@ public class ApiListarAttentionList extends ServerResource {
                             s.setAt_n_id(reg.get(RFAttentionList.at_n_id));
                             s.setAt_c_obs(reg.get(RFAttentionList.at_c_obs));
                             s.setAt_d_fechamod(reg.get(RFAttentionList.at_d_fechamod));
+                            s.setAt_d_fechacita(reg.get(RFAttentionList.at_d_fechacita));
 
                             l.add(s);
 
+                            
                         }
                         if (l.size() > 0) {
                             map.put("Attention", l);

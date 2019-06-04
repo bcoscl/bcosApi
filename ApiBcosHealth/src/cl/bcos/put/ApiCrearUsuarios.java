@@ -73,6 +73,10 @@ public class ApiCrearUsuarios extends ServerResource {
 
         String token = getQuery().getValues("token");
         String empresasession = getQuery().getValues("empresasession");
+        
+        
+        textarea_obs = textarea_obs.replace("\n", " - ");
+        textarea_obs = textarea_obs.replace(" -  - ", " - ");
 
         String empresa = "";
 

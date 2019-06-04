@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 public class CFFarmacos {
 
     private static final Logger Log = Logger.getLogger(CFFarmacos.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static Iterator selectFarmacos(String Paciente, String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

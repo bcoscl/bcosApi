@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 public class CFFichas {
 
     private static final Logger Log = Logger.getLogger(CFFichas.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static Iterator selectFichas(String empresa) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());

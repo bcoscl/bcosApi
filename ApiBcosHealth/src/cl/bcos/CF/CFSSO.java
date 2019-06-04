@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 public class CFSSO {
 
     private static final Logger Log = Logger.getLogger(CFSSO.class);
-    private static final String conexionName = "conexionOCT";
+    private static final String conexionName = "ConexionBcos";
 
     public static String autenticacion(String numuser, String pass) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
