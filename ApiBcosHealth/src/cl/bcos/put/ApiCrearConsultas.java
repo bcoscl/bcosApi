@@ -52,8 +52,7 @@ public class ApiCrearConsultas extends ServerResource {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         Map map = new HashMap();
 
-        String rowFichaId = "";
-        String rowPacienteId = "";
+        
         String empresa = "";
 
         String accion = getQuery().getValues("accion");
@@ -138,11 +137,7 @@ public class ApiCrearConsultas extends ServerResource {
                 } catch (Exception e) {
                     Log.error("getMessage :" + e.getMessage());
                     Log.error(e.toString());
-                    //Roll back - delete
-                    LFFichas.rollBack(rowFichaId, empresa);
-                    LFPaciente.rollBack(rowPacienteId, empresa);
-                    // rowFichaId ;
-                    //rowUserId ;
+                    
                     status = Status.CLIENT_ERROR_BAD_REQUEST;
                     message = ERROR_TOKEN;
                 }

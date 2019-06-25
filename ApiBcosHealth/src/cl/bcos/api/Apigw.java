@@ -22,6 +22,7 @@ import cl.bcos.get.ApiListarPlanes;
 import cl.bcos.get.ApiListarAttentionList;
 import cl.bcos.get.ApiListarConsultas;
 import cl.bcos.get.ApiListarEnfermedadesCronicas;
+import cl.bcos.get.ApiListarEvaluaciones;
 import cl.bcos.get.ApiListarExamenes;
 import cl.bcos.get.ApiListarFarmacos;
 import cl.bcos.get.ApiListarUsuarios;
@@ -37,6 +38,7 @@ import cl.bcos.healthCheck.HealthCheck;
 import cl.bcos.healthCheck.HealthCheckBD;
 import cl.bcos.option.ApiUpdateConsultas;
 import cl.bcos.option.ApiUpdateEnfermedadesCronicas;
+import cl.bcos.option.ApiUpdateEvaluacion;
 import cl.bcos.option.ApiUpdateExamenFile;
 import cl.bcos.option.ApiUpdateExamenes;
 import cl.bcos.option.ApiUpdateFarmacos;
@@ -47,6 +49,7 @@ import cl.bcos.put.ApiCrearSucursales;
 import cl.bcos.put.ApiAddAttentionList;
 import cl.bcos.put.ApiCrearConsultas;
 import cl.bcos.put.ApiCrearEnfermedadesCronicas;
+import cl.bcos.put.ApiCrearEvaluacion;
 import cl.bcos.put.ApiCrearExamenes;
 import cl.bcos.put.ApiCrearFarmacos;
 import cl.bcos.put.ApiCrearUsuarios;
@@ -178,6 +181,11 @@ public class Apigw extends ServerResource {
                     component.getDefaultHost().attach("/bcos/api/json/crearExamenes", ApiCrearExamenes.class);
                     component.getDefaultHost().attach("/bcos/api/json/updateExamenFile", ApiUpdateExamenFile.class);
 
+                    /*En pount de Evaluaciones*/
+                    component.getDefaultHost().attach("/bcos/api/json/crearEvaluacion", ApiCrearEvaluacion.class);
+                    component.getDefaultHost().attach("/bcos/api/json/updateEvaluacion", ApiUpdateEvaluacion.class);
+                    component.getDefaultHost().attach("/bcos/api/json/listarEvaluaciones", ApiListarEvaluaciones.class);
+                    
                     component.start();
 
                 } else {
