@@ -66,6 +66,7 @@ public class ApiCrearEvaluacion extends ServerResource {
         String eva_fatv = getQuery().getValues("eva_fatv");
         String eva_musc = getQuery().getValues("eva_musc");
         String eva_obs = getQuery().getValues("eva_obs");
+        String eva_imc = getQuery().getValues("eva_imc");
 
         String token = getQuery().getValues("token");
         String empresasession = getQuery().getValues("empresasession");
@@ -81,6 +82,7 @@ public class ApiCrearEvaluacion extends ServerResource {
         Log.info("eva_fatv :" + eva_fatv);
         Log.info("eva_musc :" + eva_musc);
         Log.info("eva_obs :" + eva_obs);
+        Log.info("eva_imc :" + eva_imc);
 
         Log.info("token : " + token);
 
@@ -117,7 +119,8 @@ public class ApiCrearEvaluacion extends ServerResource {
                                         eva_obs,
                                         usuario_creador,
                                         nombre_completo,
-                                        empresa) == 1) {
+                                        empresa,
+                                        eva_imc) == 1) {
 
                                     Log.info("Insert OK");
                                     status = Status.SUCCESS_OK;

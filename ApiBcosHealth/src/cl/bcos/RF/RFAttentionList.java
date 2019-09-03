@@ -59,9 +59,9 @@ public class RFAttentionList extends Registro {
         qry.append(at_c_numuser_medico);
         qry.append("','");
         qry.append(motivo);
-        qry.append("',NOW(),'");
+        qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(empresa);
-        qry.append("',CURRENT_DATE + time '");
+        qry.append("',CURRENT_DATE  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ) + time '");
         qry.append(hora);
         qry.append("')");
 
@@ -94,7 +94,7 @@ public class RFAttentionList extends Registro {
         qry.append(" INSERT INTO health_attention_list(");
         qry.append(" at_n_id, at_c_numuser_paciente, at_c_pacientename, at_c_mediconame, at_c_numuser_medico,at_c_obs,at_d_fechamod,at_c_empresa)");
         qry.append(" (select nextval('health_seq_attetion_list'),a.at_c_numuser_paciente,a.at_c_pacientename,");
-        qry.append(" a.at_c_mediconame,a.at_c_numuser_medico,a.at_c_obs, NOW(),a.at_c_empresa from health_attention_list a where  a.at_n_id=");
+        qry.append(" a.at_c_mediconame,a.at_c_numuser_medico,a.at_c_obs, NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),a.at_c_empresa from health_attention_list a where  a.at_n_id=");
         qry.append(at_n_id);
         qry.append(")");
 

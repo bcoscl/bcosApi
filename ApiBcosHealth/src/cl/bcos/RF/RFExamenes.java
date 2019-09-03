@@ -147,7 +147,7 @@ public class RFExamenes extends Registro {
         qry.append(exa_c_numuser_paciente);
         qry.append("','");
         qry.append(exa_n_ultmod_numuser);
-        qry.append("',NOW(),'");
+        qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(exa_c_ultmod_username);
         qry.append("','");
         qry.append(exa_c_url);
@@ -232,7 +232,7 @@ public class RFExamenes extends Registro {
         qry.append(exa_c_ultmod_username);
 //        qry.append("',exa_c_url='");
 //        qry.append(exa_c_url);
-        qry.append("',exa_d_ultmod_date=NOW()");
+        qry.append("',exa_d_ultmod_date=NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' )");
 
         qry.append(" where exa_n_id=");
         qry.append(exa_n_id);

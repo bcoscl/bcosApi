@@ -214,7 +214,7 @@ public class RFParams extends Registro {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
 
-        qry.append("select NOW()");
+        qry.append("select NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ) || ' - ' ||(select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' )");
         Log.debug(qry.toString());
         try {
             AdmRegistros adm = new AdmRegistros(con,
@@ -258,7 +258,7 @@ public class RFParams extends Registro {
         qry.append(params_n_param3);
         qry.append("', '");
         qry.append(params_n_param4);
-        qry.append("',NOW(),'");
+        qry.append("',NOW() at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(params_c_numuser_utlmod);
         qry.append("','");
         qry.append(params_c_nombre_ultmod);

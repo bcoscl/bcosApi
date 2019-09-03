@@ -73,13 +73,13 @@ public class CFConsultas {
         }
     }
 
-    public static int updateConsultas(String consult_n_id, String consult_c_titulo, String consult_c_obs_consulta,      String consult_c_ultmod_numuser, String consult_c_ultmod_username, String empresa) {
+    public static int updateConsultas(String consult_n_id, String consult_c_titulo, String consult_c_obs_consulta,      String consult_c_ultmod_numuser, String consult_c_ultmod_username, String empresa, String consult_c_createdate) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
 
         try {
             con = Pool.getInstancia().getConnection(conexionName);
-            return RFConsultas.updateConsultas(con, consult_n_id, consult_c_titulo, consult_c_obs_consulta,    consult_c_ultmod_numuser, consult_c_ultmod_username, empresa);
+            return RFConsultas.updateConsultas(con, consult_n_id, consult_c_titulo, consult_c_obs_consulta,    consult_c_ultmod_numuser, consult_c_ultmod_username, empresa, consult_c_createdate);
 
         } catch (Exception e) {
             Log.error(e.toString());

@@ -36,9 +36,10 @@ public class RFEvaluaciones extends Registro {
     public static final int eva_d_ultmod_date = 14;
     public static final int eva_c_ultmod_numuser = 15;
     public static final int eva_c_ultmod_username = 16;
+    public static final int eva_n_imc = 17;
 
     public RFEvaluaciones() {
-        super(17);
+        super(18);
     }
 
     public static int insertEvaluacion(Connection con,
@@ -52,7 +53,8 @@ public class RFEvaluaciones extends Registro {
             String eva_obs,
             String usuario_creador,
             String nombre_completo,
-            String empresa) {
+            String empresa,
+            String eva_imc) {
 
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
@@ -72,13 +74,13 @@ public class RFEvaluaciones extends Registro {
         qry.append(" eva_n_obs_evaluacion,");
         qry.append(" eva_d_ultmod_date,");
         qry.append(" eva_c_ultmod_numuser,");
-        qry.append(" eva_c_ultmod_username )");
+        qry.append(" eva_c_ultmod_username,eva_n_imc )");
 
         qry.append(" VALUES (nextval('health_seq_evaluaciones'),'");
         qry.append(eva_paciente);
         qry.append("','");
         qry.append(eva_fecha);
-        qry.append("',NOW(),'");
+        qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(empresa);
         qry.append("',");
         qry.append(eva_talla);
@@ -92,11 +94,13 @@ public class RFEvaluaciones extends Registro {
         qry.append(eva_musc);
         qry.append(",'");
         qry.append(eva_obs);
-        qry.append("',NOW(),'");
+        qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(usuario_creador);
         qry.append("','");
         qry.append(nombre_completo);
-        qry.append("')");
+        qry.append("',");
+        qry.append(eva_imc);
+        qry.append(")");
 
         Log.debug(qry.toString());
 
@@ -140,13 +144,13 @@ public class RFEvaluaciones extends Registro {
         qry.append(" eva_n_obs_evaluacion,   ");
         qry.append(" eva_d_ultmod_date,   ");
         qry.append(" eva_c_ultmod_numuser,   ");
-        qry.append(" eva_c_ultmod_username  ");
+        qry.append(" eva_c_ultmod_username,eva_n_imc  ");
 
         qry.append(" FROM health_evaluaciones where eva_c_numuser_paciente = ? and eva_c_empresa=? order by eva_d_createdate DESC ");
         Log.debug(qry.toString());
         AdmRegistros adm = new AdmRegistros(con,
                 qry.toString(),
-                16,
+                15,
                 new RFEvaluaciones()
         );
         adm.setColumna(1, eva_n_id);
@@ -164,6 +168,7 @@ public class RFEvaluaciones extends Registro {
         adm.setColumna(12, eva_d_ultmod_date);
         adm.setColumna(13, eva_c_ultmod_numuser);
         adm.setColumna(14, eva_c_ultmod_username);
+        adm.setColumna(15, eva_n_imc);
 
         return adm;
     }
@@ -205,7 +210,7 @@ public class RFEvaluaciones extends Registro {
             String eva_talla, String eva_peso, 
             String eva_fat, String eva_fatv, String eva_musc,
             String eva_obs_evaluacion, String eva_ultmod_numuser, 
-            String eva_ultmod_username, String eva_empresa) {
+            String eva_ultmod_username, String eva_empresa, String eva_imc) {
 
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
@@ -227,12 +232,14 @@ public class RFEvaluaciones extends Registro {
         qry.append(eva_musc);
         qry.append(",eva_n_obs_evaluacion='");
         qry.append(eva_obs_evaluacion);
-        qry.append("',eva_d_ultmod_date= NOW()");
+        qry.append("',eva_d_ultmod_date= NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' )");
         qry.append(",eva_c_ultmod_numuser='");
         qry.append(eva_ultmod_numuser);
         qry.append("',eva_c_ultmod_username='");
         qry.append(eva_ultmod_username);
-        qry.append("' ");
+        qry.append("' ,eva_n_imc=");
+        qry.append(eva_imc);
+        qry.append(" ");
 
         qry.append(" where eva_n_id=");
         qry.append(eva_id);

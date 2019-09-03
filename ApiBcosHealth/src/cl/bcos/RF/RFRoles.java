@@ -44,7 +44,7 @@ public class RFRoles extends Registro {
         /* subscr_c_empresaname */
         qry.append("'),null,'");
         qry.append(usuario_creador);
-        qry.append("',NOW(),'");
+        qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(nombre_completo);
         qry.append("')");
         Log.debug(qry.toString());

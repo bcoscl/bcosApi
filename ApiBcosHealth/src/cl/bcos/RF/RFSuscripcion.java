@@ -81,7 +81,7 @@ public class RFSuscripcion extends Registro {
         qry.append("','");
         qry.append(usuario_creador);/* subscr_c_createuser */
         qry.append("',");
-        qry.append("NOW()/* subscr_d_createdate */,'");
+        qry.append("NOW() at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' )/* subscr_d_createdate */,'");
         qry.append(nombre_completo/* subscr_c_createusername */);
         qry.append("',LOWER('");
         qry.append(bucketName/* subscr_c_createusername */);

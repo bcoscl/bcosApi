@@ -103,12 +103,12 @@ public class RFConsultas extends Registro {
         qry.append(consult_c_numuser_paciente);
         qry.append("','");
         qry.append(consult_c_paciente_name);
-        qry.append("',NOW(),'");
+        qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(consult_c_ultmod_numuser);
         qry.append("','");
         qry.append(consult_c_ultmod_username);
         if (consult_d_createdate == null || consult_d_createdate.isEmpty()) {
-            qry.append("',NOW(),");
+            qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),");
         } else {
             qry.append("','");
             qry.append(consult_d_createdate);
@@ -179,7 +179,7 @@ public class RFConsultas extends Registro {
     public static int updateConsultas(Connection con,
             String consult_n_id, String consult_c_titulo,
             String consult_c_obs_consulta,
-            String consult_c_ultmod_numuser, String consult_c_ultmod_username, String empresa) {
+            String consult_c_ultmod_numuser, String consult_c_ultmod_username, String empresa,String econsult_c_createdate) {
 
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         StringBuilder qry = new StringBuilder();
@@ -195,8 +195,18 @@ public class RFConsultas extends Registro {
         qry.append(consult_c_ultmod_numuser);
         qry.append("',consult_c_ultmod_username='");
         qry.append(consult_c_ultmod_username);
-        qry.append("',consult_d_ultmod_date=NOW()");
-
+        qry.append("',");
+        
+        if (econsult_c_createdate != null || !econsult_c_createdate.isEmpty()) {
+           
+            qry.append(" consult_d_createdate='");
+            qry.append(econsult_c_createdate);
+            qry.append("' , ");
+        }
+        
+        qry.append(" consult_d_ultmod_date=NOW() at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' )");       
+        
+        
         qry.append(" where consult_n_id=");
         qry.append(consult_n_id);
         qry.append(" and consult_c_empresa='");

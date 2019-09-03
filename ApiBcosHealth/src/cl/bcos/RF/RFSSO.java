@@ -102,9 +102,9 @@ public class RFSSO extends Registro {
         qry.append(pass_c_numuser);
         qry.append("','");
         qry.append(pass_c_password);
-        qry.append("',NOW(),'");
+        qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(pass_c_createuser);
-        qry.append("',NOW(),'");
+        qry.append("',NOW() at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(pass_c_activo);
         qry.append("','");
         qry.append(pass_c_createusername);

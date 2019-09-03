@@ -20,6 +20,7 @@ public class Evaluaciones {
     private String eva_n_peso;
     private String eva_n_fat;
     private String eva_n_fatv;
+    private String eva_n_imc;
     private String eva_n_musc;
     private String eva_n_obs_evaluacion;
     private String eva_d_ultmod_date;
@@ -28,6 +29,14 @@ public class Evaluaciones {
 
     public String getEva_n_id() {
         return eva_n_id;
+    }
+
+    public String getEva_n_imc() {
+        return eva_n_imc;
+    }
+
+    public void setEva_n_imc(String eva_n_imc) {
+        this.eva_n_imc = eva_n_imc;
     }
 
     public String getEva_c_numuser_paciente() {

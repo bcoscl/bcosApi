@@ -108,7 +108,7 @@ public class RFPaciente extends Registro {
         qry.append("','");
         qry.append(nombre_completo);//paciente_c_createusername
         qry.append("',");
-        qry.append("NOW()");//paciente_d_createdate
+        qry.append("NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' )");//paciente_d_createdate
         qry.append(",'");
         qry.append(usuario_creador);//paciente_c_createuser
         qry.append("',");
@@ -410,7 +410,7 @@ public class RFPaciente extends Registro {
         qry.append(paciente_d_fechanacimiento);
         qry.append("',paciente_n_edad='");
         qry.append(paciente_n_edad);
-        qry.append("',paciente_d_ultmod_date=NOW(),paciente_c_ultmod_username='");
+        qry.append("',paciente_d_ultmod_date=NOW() at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),paciente_c_ultmod_username='");
         qry.append(paciente_c_ultmod_username);
         qry.append("' where paciente_c_numuser='");
         qry.append(paciente_c_numuser);

@@ -7,7 +7,6 @@ package cl.bcos.option;
 
 import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
-import cl.bcos.LF.LFConsultas;
 import cl.bcos.LF.LFEvaluaciones;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -62,6 +61,7 @@ public class ApiUpdateEvaluacion extends ServerResource {
         String eva_fatv = getQuery().getValues("eva_fatv");
         String eva_musc = getQuery().getValues("eva_musc");
         String eva_obs = getQuery().getValues("eva_obs");
+        String eva_imc = getQuery().getValues("eva_imc");
 
         String token = getQuery().getValues("token");
         String empresasession = getQuery().getValues("empresasession");
@@ -79,6 +79,7 @@ public class ApiUpdateEvaluacion extends ServerResource {
         Log.info("eva_fatv :" + eva_fatv);
         Log.info("eva_musc :" + eva_musc);
         Log.info("eva_obs :" + eva_obs);
+        Log.info("eva_imc :" + eva_imc);
 
         Log.info("token : " + token);
         Log.info("token bearer:" + token);
@@ -110,7 +111,7 @@ public class ApiUpdateEvaluacion extends ServerResource {
                                     eva_talla, eva_peso,
                                     eva_fat, eva_fatv,
                                     eva_musc, eva_obs, usuario_creador,
-                                    nombre_completo, empresa) == 1) {
+                                    nombre_completo, empresa,eva_imc) == 1) {
 
                                 Log.info("UPDATE OK");
                                 status = Status.SUCCESS_OK;

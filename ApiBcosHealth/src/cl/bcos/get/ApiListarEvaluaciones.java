@@ -7,12 +7,9 @@ package cl.bcos.get;
 
 import cl.bcos.Jwt.ImplementacionJWT;
 import cl.bcos.Jwt.ValidarTokenJWT;
-import cl.bcos.LF.LFConsultas;
 import cl.bcos.LF.LFEvaluaciones;
-import cl.bcos.RF.RFConsultas;
 import cl.bcos.RF.RFEvaluaciones;
 import cl.bcos.data.Registro;
-import cl.bcos.entity.Consultas;
 import cl.bcos.entity.Evaluaciones;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -103,6 +100,7 @@ public class ApiListarEvaluaciones extends ServerResource {
                             s.setEva_n_obs_evaluacion(reg.get(RFEvaluaciones.eva_n_obs_evaluacion));
                             s.setEva_n_peso(reg.get(RFEvaluaciones.eva_n_peso));
                             s.setEva_n_talla(reg.get(RFEvaluaciones.eva_n_talla));
+                            s.setEva_n_imc(reg.get(RFEvaluaciones.eva_n_imc));
 
                             l.add(s);
 

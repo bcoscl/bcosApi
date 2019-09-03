@@ -104,7 +104,7 @@ public class RFUsuarios extends Registro {
         qry.append("','");
         qry.append(usuario_creador);
         qry.append("',");
-        qry.append("NOW(),");
+        qry.append("NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),");
         qry.append(rowUserId);
         qry.append(",'");
         qry.append(nombre_completo);

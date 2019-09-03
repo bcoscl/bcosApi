@@ -31,7 +31,8 @@ public class CFEvaluaciones {
             String eva_obs,
             String usuario_creador,
             String nombre_completo,
-            String empresa) {
+            String empresa,
+            String eva_imc) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
 
@@ -47,7 +48,8 @@ public class CFEvaluaciones {
                     eva_obs,
                     usuario_creador,
                     nombre_completo,
-                    empresa);
+                    empresa,
+                    eva_imc);
 
         } catch (Exception e) {
             Log.error(e.toString());
@@ -97,7 +99,7 @@ public class CFEvaluaciones {
             String eva_talla, String eva_peso,
             String eva_fat, String eva_fatv, String eva_musc,
             String eva_obs_evaluacion, String eva_ultmod_numuser,
-            String eva_ultmod_username, String eva_empresa) {
+            String eva_ultmod_username, String eva_empresa, String eva_imc) {
         Log.debug(Thread.currentThread().getStackTrace()[1].getMethodName());
         Connection con = null;
 
@@ -107,7 +109,7 @@ public class CFEvaluaciones {
                     eva_talla, eva_peso,
                     eva_fat, eva_fatv, eva_musc,
                     eva_obs_evaluacion, eva_ultmod_numuser,
-                    eva_ultmod_username, eva_empresa);
+                    eva_ultmod_username, eva_empresa,eva_imc);
 
         } catch (Exception e) {
             Log.error(e.toString());

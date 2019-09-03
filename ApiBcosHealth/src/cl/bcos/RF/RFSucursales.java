@@ -77,7 +77,7 @@ public class RFSucursales extends Registro {
         qry.append(suc_c_email);
         qry.append("','");
         qry.append(suc_c_createuser);
-        qry.append("',NOW(),'");
+        qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(suc_c_createusername);
         qry.append("','");
         qry.append(suc_c_contacname);

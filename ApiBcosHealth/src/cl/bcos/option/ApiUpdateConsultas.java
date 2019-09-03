@@ -55,7 +55,8 @@ public class ApiUpdateConsultas extends ServerResource {
         String ConsultaRowId = getQuery().getValues("ConsultaRowId");
         String Consulta_titulo = getQuery().getValues("Consulta_titulo");
         String Consulta_obs = getQuery().getValues("Consulta_obs");
-
+        String consult_c_createdate = getQuery().getValues("fechaCreacion");
+       
         String token = getQuery().getValues("token");
         String empresasession = getQuery().getValues("empresasession");
         
@@ -67,6 +68,8 @@ public class ApiUpdateConsultas extends ServerResource {
         Log.info("ConsultaRowId :" + ConsultaRowId);
         Log.info("Consulta_titulo :" + Consulta_titulo);
         Log.info("Consulta_obs :" + Consulta_obs);
+        Log.info("consult_c_createdate :" + consult_c_createdate);
+        
 
         Log.info("token : " + token);
         Log.info("token bearer:" + token);
@@ -90,7 +93,7 @@ public class ApiUpdateConsultas extends ServerResource {
 
                     if (roles.contains("SUPER-ADMIN") || roles.contains("MEDICO") || roles.contains("ADMIN") || roles.contains("RECEPCION")) {
 
-                        Log.info("usaurio creador : " + usuario_creador);
+                        Log.info("usuario creador : " + usuario_creador);
 
                         if (accion.equalsIgnoreCase(UPDATE_CONSULTA_PROFILE)) {
 
@@ -100,7 +103,8 @@ public class ApiUpdateConsultas extends ServerResource {
                                     Consulta_obs,
                                     usuario_creador,
                                     nombre_completo,
-                                    empresa) == 1) {
+                                    empresa,
+                                    consult_c_createdate) == 1) {
 
                                 Log.info("UPDATE OK");
                                 status = Status.SUCCESS_OK;

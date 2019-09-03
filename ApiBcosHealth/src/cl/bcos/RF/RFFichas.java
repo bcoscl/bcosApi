@@ -144,11 +144,11 @@ public class RFFichas extends Registro {
         qry.append(Roles);
         qry.append("','");
         qry.append(usuario_creador);
-        qry.append("',NOW(),'");
+        qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ),'");
         qry.append(createUsername);
         qry.append("','");
         qry.append(empresaName);
-        qry.append("',NOW())");
+        qry.append("',NOW()  at time zone (select params_n_param1 from health_params where params_n_grupo='UTC'and params_n_subgrupo='TIMEZONE' ))");
         
 
         Log.debug(qry.toString());
